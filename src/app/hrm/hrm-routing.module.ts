@@ -10,7 +10,7 @@ import { StaffManagementComponent } from './staff/staff-management.component';
 
 const routes: Routes = [
   {
-    path: '', component: AppLayoutComponent, canActivateChild: [AuthGuardService],
+    path: '', component: AppLayoutComponent/*, canActivateChild: [AuthGuardService]*/,
     children: [
       /* 인사시스템 */
       {path: 'hrmtype',           component: HrmCodeComponent},

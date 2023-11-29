@@ -33,11 +33,10 @@ const nzModules = [
     FormsModule,
     ReactiveFormsModule,
     AgGridModule,
-    nzModules
-  ],
-  declarations: [
-    ButtonRendererComponent,
-    CheckboxRendererComponent
+    nzModules,
+
+    CheckboxRendererComponent,
+    ButtonRendererComponent
   ],
   providers: [
     { provide: NZ_I18N, useValue: ko_KR },

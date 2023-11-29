@@ -17,10 +17,10 @@ import { Login3Component } from './login3.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    HttpClientXsrfModule.withOptions({cookieName: 'XSRF-TOKEN'})
+    HttpClientXsrfModule.withOptions({cookieName: 'XSRF-TOKEN'}),
+    LoginComponent
   ],
   declarations: [
-    LoginComponent,
     Login2Component,
     Login3Component
   ],

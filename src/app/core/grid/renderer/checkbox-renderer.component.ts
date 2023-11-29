@@ -1,12 +1,15 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { ICellRendererParams } from 'ag-grid-community';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 
 @Component({
   selector: 'app-checkbox-renderer',
+  standalone: true,
+  imports: [ FormsModule, NzCheckboxModule ],
   template: `
-    <!-- [nzDisabled]="disabled"  -->
-    <label nz-checkbox [(ngModel)]="_value" (click)="onClick($event)" (change)="onChange($event)">
+    <label nz-checkbox [(ngModel)]="_value" [nzDisabled]="disabled" (click)="onClick($event)" (change)="onChange($event)">
       {{label}}
     </label>
   `,

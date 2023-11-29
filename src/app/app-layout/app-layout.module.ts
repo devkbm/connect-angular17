@@ -40,7 +40,6 @@ import { SideMenuComponent } from './side-menu.component';
     SideMenuComponent
   ],
   declarations: [
-    AppLayoutComponent
   ],
   /*
   entryComponents: [
@@ -49,12 +48,11 @@ import { SideMenuComponent } from './side-menu.component';
   ],
   */
   providers: [
-    AppLayoutService,
-    AppAlarmService,
-    AuthGuardService
+    AppLayoutService
+    //AppAlarmService,
+    //AuthGuardService
   ],
   exports: [
-    AppLayoutComponent
   ]
 })
 export class AppLayoutModule { }

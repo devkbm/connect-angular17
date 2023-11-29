@@ -1,11 +1,15 @@
 import { Component } from '@angular/core';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { ICellRendererParams } from 'ag-grid-community';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'app-button-renderer',
-  template: `  
-    <button nz-button nzSize="small" nzBlock="true" (click)="onClick($event)" class="button">      
+  standalone: true,
+  imports: [ NzButtonModule, NzIconModule ],
+  template: `
+    <button nz-button nzSize="small" nzBlock="true" (click)="onClick($event)" class="button">
       <span nz-icon [nzType]="iconType" class="icon"></span>
       {{label}}
     </button>

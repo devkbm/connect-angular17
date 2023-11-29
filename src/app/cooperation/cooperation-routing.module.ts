@@ -13,7 +13,7 @@ import { WorkCalendarComponent } from './work-calendar/work-calendar.component';
 
 const routes: Routes = [
   {
-    path: '', component: AppLayoutComponent, canActivateChild: [AuthGuardService],
+    path: '', component: AppLayoutComponent/*, canActivateChild: [AuthGuardService]*/,
     children: [
       /* 협업시스템 */
       {path: 'team',          component: TeamComponent},

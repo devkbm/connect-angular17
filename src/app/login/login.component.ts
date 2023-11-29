@@ -1,17 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LoginService } from './login.service';
 import { UserToken } from './user-token.model';
 import { SessionManager } from 'src/app/core/session-manager';
 import { WindowRef } from 'src/app/core/window-ref';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
+  standalone: true,
+  imports: [ CommonModule, FormsModule, ReactiveFormsModule ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+
+  private fb = inject(FormBuilder);
+  private loginService = inject(LoginService);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private winRef = inject(WindowRef);
+
   form = this.fb.group({
     organizationCode  : new FormControl<string | null>('001', { validators: Validators.required }),
     staffNo           : new FormControl<string | null>(null, { validators: Validators.required }),
@@ -21,6 +31,7 @@ export class LoginComponent implements OnInit {
 
   private FIRST_PAGE_URL = '/home';
 
+  /*
   constructor(
     private fb: FormBuilder,
     private loginService: LoginService,
@@ -30,6 +41,8 @@ export class LoginComponent implements OnInit {
     ) {
       console.log(winRef);
   }
+  */
+
 
   ngOnInit(): void {
     const token = this.route.snapshot.params['id'];

@@ -1,13 +1,35 @@
 import { Component, OnInit, ViewChild, TemplateRef, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { AppLayoutService } from './app-layout.service';
 
 import { UserSessionService } from 'src/app/core/service/user-session.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { UserProfileComponent } from 'src/app/system/user/user-profile.component';
+import { SideMenuComponent } from 'src/app/app-layout/side-menu.component';
 
 @Component({
   selector: 'app-app-layout',
+  standalone: true,
+  imports: [
+    CommonModule, FormsModule, RouterModule,
+    NzLayoutModule,
+    NzMenuModule,
+    NzAvatarModule,
+    NzIconModule,
+    NzSelectModule,
+    NzDropDownModule,
+    UserProfileComponent,
+    SideMenuComponent
+ ],
   templateUrl: './app-layout.component.html',
   styleUrls: ['./app-layout.component.css']
 })
@@ -27,13 +49,13 @@ export class AppLayoutComponent implements OnInit  {
 
   sideMenu : {menuGroupCode: string, url: string, isCollapsed: boolean} = {menuGroupCode: '', url: '', isCollapsed: false};
 
-  private appAlarmService = inject(AppAlarmService);
+  //private appAlarmService = inject(AppAlarmService);
   private sessionService = inject(UserSessionService);
   private service = inject(AppLayoutService);
   private router = inject(Router);
 
   ngOnInit(): void {
-    this.appAlarmService.currentMessage.subscribe(message => this.footerMessage = message);
+    //this.appAlarmService.currentMessage.subscribe(message => this.footerMessage = message);
 
     this.setInitMenuGroup();
     this.setAvatar();
