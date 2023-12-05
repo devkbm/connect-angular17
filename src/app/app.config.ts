@@ -6,11 +6,20 @@ import { ko_KR, provideNzI18n } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import ko from '@angular/common/locales/ko';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule, HttpClientXsrfModule } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { CustomHttpInterceptor } from 'src/app/core/interceptor/custom-http-interceptor';
 
 registerLocaleData(ko);
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes), provideNzI18n(ko_KR), importProvidersFrom(FormsModule), importProvidersFrom(HttpClientModule), provideAnimations()]
+  providers: [
+    provideRouter(routes),
+    provideNzI18n(ko_KR),
+    importProvidersFrom(FormsModule),
+    importProvidersFrom(HttpClientModule),
+    importProvidersFrom(HttpClientXsrfModule.withOptions({cookieName: 'XSRF-TOKEN', headerName: 'X-XSRF-TOKEN'})),
+    { provide: HTTP_INTERCEPTORS, useClass: CustomHttpInterceptor, multi: true },
+    provideAnimations()
+  ]
 };
