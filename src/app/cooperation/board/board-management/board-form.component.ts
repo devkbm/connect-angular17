@@ -67,15 +67,14 @@ import { FormBase, FormType } from 'src/app/core/form/form-base';
     </app-nz-crud-button-group>
     -->
 
+    <!-- ERROR TEMPLATE-->
+    <ng-template #errorTpl let-control>
+      <ng-container *ngIf="control.hasError('required')">
+        필수 입력 값입니다.
+      </ng-container>
+    </ng-template>
 
     <form nz-form [formGroup]="fg" nzLayout="vertical">
-      <!-- ERROR TEMPLATE-->
-      <ng-template #errorTpl let-control>
-        <ng-container *ngIf="control.hasError('required')">
-          필수 입력 값입니다.
-        </ng-container>
-      </ng-template>
-
       <!-- 1 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="12">
@@ -161,7 +160,7 @@ import { FormBase, FormType } from 'src/app/core/form/form-base';
 })
 export class BoardFormComponent extends FormBase implements OnInit, OnChanges, AfterViewInit {
 
-  @ViewChild('boardName', { static: true }) boardName!: NzInputTextComponent;
+  @ViewChild('boardName') boardName!: NzInputTextComponent;
 
   parentBoardItems: BoardHierarchy[] = [];
 
@@ -206,6 +205,8 @@ export class BoardFormComponent extends FormBase implements OnInit, OnChanges, A
     this.fg.reset();
     this.fg.controls.boardId.enable();
     this.fg.controls.boardType.setValue('BOARD');
+
+    this.boardName.focus();
   }
 
   modifyForm(formData: Board): void {
