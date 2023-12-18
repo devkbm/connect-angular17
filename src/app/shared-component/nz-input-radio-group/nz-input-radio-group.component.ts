@@ -20,7 +20,9 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
           (ngModelChange)="onChange($event)"
           (ngModelChange)="valueChange($event)"
           (blur)="onTouched()">
-          <label nz-radio [nzValue]="o.value" *ngFor="let o of options">{{ o.label }}</label>
+          @for (o of options; track o.value) {
+            <label nz-radio [nzValue]="o.value">{{ o.label }}</label>
+          }
         </nz-radio-group>
       </nz-form-control>
     </nz-form-item>

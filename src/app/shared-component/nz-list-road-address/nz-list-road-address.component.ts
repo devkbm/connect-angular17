@@ -23,10 +23,12 @@ import { RoadAddressService } from './road-address.service';
       </nz-input-group>
 
       <nz-list [nzLoading]="_isLoading">
-        <nz-list-item *ngFor="let item of _data?.juso" (click)="choice(item)">
+        @for (item of _data?.juso; track item.roadAddr) {
+        <nz-list-item (click)="choice(item)">
           <span nz-typography> {{ item.roadAddr }} </span>
           {{ item.zipNo }}
         </nz-list-item>
+        }
       </nz-list>
       <nz-pagination [nzPageIndex]="_page?.index" [nzPageSize]="countPerPage" [nzTotal]="_page?.total" (nzPageIndexChange)="changePageIndex($event)"></nz-pagination>
     </div>

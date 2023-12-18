@@ -13,17 +13,14 @@ import { StaffCardService } from './staff-card.service';
     CommonModule, StaffCardComponent
   ],
   template: `
-    <div *ngFor="let item of _list; trackBy:trackByItem">
-      <app-staff-card [data]="item">
-      </app-staff-card>
-    </div>
+    @for (item of _list; track item.staffId) {
+      <app-staff-card [data]="item"></app-staff-card>
+    }
   `,
   styles: []
 })
 export class StaffCardListComponent implements OnInit {
   _list: StaffCardModel[] = [];
-
-  trackByItem = (index: number, item: StaffCardModel): string => item.staffId!;
 
   private service = inject(StaffCardService);
 

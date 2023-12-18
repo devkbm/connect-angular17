@@ -8,7 +8,9 @@
     </nz-input-group>
     <ng-template #addOnBeforeTemplate>
       <nz-select [(ngModel)]="systeTypeCode">
-        <nz-option *ngFor="let option of systemTypeCodeList" [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+        @for (option of systemTypeCodeList; track option.value) {
+        <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+        }
       </nz-select>
     </ng-template>
     <ng-template #suffixIconSearch>

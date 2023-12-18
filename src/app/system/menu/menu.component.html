@@ -7,7 +7,9 @@
     </nz-input-group>
     <ng-template #addOnBeforeTemplate>
       <nz-select [(ngModel)]="queryMenuGroup.key">
-        <nz-option *ngFor="let option of queryMenuGroup.list" [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+        @for (option of queryMenuGroup.list; track option.value) {
+        <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+        }
       </nz-select>
     </ng-template>
     <ng-template #suffixIconSearch>
@@ -21,7 +23,9 @@
     </nz-input-group>
     <ng-template #addOnBeforeTemplate2>
       <nz-select [(ngModel)]="queryMenu.key">
-        <nz-option *ngFor="let option of queryMenu.list" [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+        @for (option of queryMenu.list; track option.value) {
+        <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+        }
       </nz-select>
     </ng-template>
     <ng-template #suffixIconSearch2>

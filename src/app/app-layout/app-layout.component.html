@@ -20,11 +20,12 @@
         nzShowSearch
         [(ngModel)]="menuGroupInfo.selectedId"
         (ngModelChange)="moveToMenuGroupUrl($event)">
-          <nz-option
-            *ngFor="let menuGroup of menuGroupInfo.list"
-            [nzValue]="menuGroup.menuGroupCode"
-            [nzLabel]="menuGroup.menuGroupName">
-          </nz-option>
+          @for (menuGroup of menuGroupInfo.list; track menuGroup.menuGroupCode) {
+            <nz-option
+              [nzValue]="menuGroup.menuGroupCode"
+              [nzLabel]="menuGroup.menuGroupName">
+            </nz-option>
+          }
       </nz-select>
 
       <nz-avatar class="avatar" nzShape="square" [nzSize]='48' [nzSrc]="profileAvatarSrc" nz-dropdown [nzDropdownMenu]="menu" nzTrigger="click">

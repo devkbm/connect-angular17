@@ -37,10 +37,12 @@
       </app-article-grid>
     </div>
   </nz-tab>
-  <nz-tab *ngFor="let tab of tabs; let i = index" [nzClosable]="i >= 0" [nzTitle]="tab.tabName">
+  @for (tab of tabs; track tab.articleId) {
+  <nz-tab [nzClosable]="$index >= 0" [nzTitle]="tab.tabName">
     <app-article-view [article]="tab.article">
     </app-article-view>
   </nz-tab>
+  }
 </nz-tabset>
 
 <nz-drawer

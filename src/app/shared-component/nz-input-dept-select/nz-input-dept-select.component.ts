@@ -27,10 +27,12 @@ import { NzInputDeptSelectService } from './nz-input-dept-select.service';
           nzShowSearch
           (blur)="onTouched()"
           (ngModelChange)="onChange($event)">
-        <nz-option *ngFor="let option of deptList"
-          [nzLabel]="option[opt_label]"
-          [nzValue]="option[opt_value]">
-          </nz-option>
+          @for (option of deptList; track option[opt_value]) {
+            <nz-option
+              [nzLabel]="option[opt_label]"
+              [nzValue]="option[opt_value]">
+            </nz-option>
+          }
         </nz-select>
       </nz-form-control>
     </nz-form-item>

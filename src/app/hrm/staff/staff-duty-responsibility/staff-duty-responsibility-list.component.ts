@@ -15,9 +15,11 @@ import { StaffDutyResponsibilityService } from './staff-duty-responsibility.serv
   ],
   template: `
    <nz-list>
-      <nz-list-item *ngFor="let item of _list">
+    @for (item of _list; track item.seq) {
+      <nz-list-item>
         직책 : {{ item.dutyResponsibilityName }} &nbsp;&nbsp;&nbsp;&nbsp; 기간: {{ item.fromDate }} ~ {{ item.toDate }}
       </nz-list-item>
+    }
     </nz-list>
   `,
   styles: []

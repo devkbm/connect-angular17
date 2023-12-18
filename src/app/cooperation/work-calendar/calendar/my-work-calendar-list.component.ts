@@ -15,12 +15,14 @@ import { WorkCalendar } from './work-calendar.model';
   imports: [ CommonModule, MatListModule ],
   template: `
     <mat-selection-list #list (selectionChange)="selectionChanged($event, list)" color="primary">
+      @for (item of workGroupList; track item.workCalendarId) {
       <mat-list-option
         togglePosition="before"
-        *ngFor="let item of workGroupList" [value]="item"
+        [value]="item"
         (dblclick)="rowDbClicked(item)">
         {{item.color}}
       </mat-list-option>
+      }
     </mat-selection-list>
   `,
   styles: [`

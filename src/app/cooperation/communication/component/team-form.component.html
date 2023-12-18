@@ -26,30 +26,32 @@
 
 
 <form nz-form [formGroup]="form" [nzLayout]="'vertical'">
-    <nz-form-item>
-        <nz-form-label nzFor="teamId" [nzXs]="formLabelXs" [nzSm]="formLabelSm">팀 Id</nz-form-label>
-        <nz-form-control [nzXs]="formControlXs" [nzSm]="fromControlSm">
-            <input nz-input id="teamId" formControlName="teamId" placeholder="팀 Id를 입력해주세요.">
-        </nz-form-control>
-    </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzFor="teamId" [nzXs]="formLabelXs" [nzSm]="formLabelSm">팀 Id</nz-form-label>
+    <nz-form-control [nzXs]="formControlXs" [nzSm]="fromControlSm">
+      <input nz-input id="teamId" formControlName="teamId" placeholder="팀 Id를 입력해주세요.">
+    </nz-form-control>
+  </nz-form-item>
 
-    <nz-form-item>
-        <nz-form-label nzFor="teamName" nzRequired [nzXs]="formLabelXs" [nzSm]="formLabelSm">팀명</nz-form-label>
-        <nz-form-control [nzXs]="formControlXs" [nzSm]="fromControlSm">
-            <input nz-input id="teamName" formControlName="teamName" placeholder="팀명을 입력해주세요.">
-            <!--
-            <nz-form-explain *ngIf="isFieldErrors(form,'teamName','required')">The input is Required!</nz-form-explain>
-            -->
-        </nz-form-control>
-    </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzFor="teamName" nzRequired [nzXs]="formLabelXs" [nzSm]="formLabelSm">팀명</nz-form-label>
+    <nz-form-control [nzXs]="formControlXs" [nzSm]="fromControlSm">
+      <input nz-input id="teamName" formControlName="teamName" placeholder="팀명을 입력해주세요.">
+      <!--
+      <nz-form-explain *ngIf="isFieldErrors(form,'teamName','required')">The input is Required!</nz-form-explain>
+      -->
+    </nz-form-control>
+  </nz-form-item>
 
-    <nz-form-item>
-        <nz-form-label nzFor="memberList" [nzXs]="formLabelXs" [nzSm]="formLabelSm">팀원</nz-form-label>
-        <nz-form-control [nzXs]="formControlXs" [nzSm]="fromControlSm">
-            <nz-select formControlName="memberList"  nzMode="multiple" nzPlaceHolder="Please select">
-                <nz-option *ngFor="let option of memberList" [nzLabel]="option.name" [nzValue]="option.userId"></nz-option>
-            </nz-select>
-        </nz-form-control>
-    </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzFor="memberList" [nzXs]="formLabelXs" [nzSm]="formLabelSm">팀원</nz-form-label>
+    <nz-form-control [nzXs]="formControlXs" [nzSm]="fromControlSm">
+      <nz-select formControlName="memberList"  nzMode="multiple" nzPlaceHolder="Please select">
+        @for (option of memberList; track option.userId) {
+          <nz-option [nzLabel]="option.name" [nzValue]="option.userId"></nz-option>
+        }
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
 
 </form>

@@ -11,48 +11,48 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
   imports: [CommonModule, NzButtonModule, NzDividerModule, NzIconModule, NzPopconfirmModule],
   template:`
     <nz-button-group>
-      <div *ngIf="searchVisible">
+      @if (searchVisible) {
         <button nz-button (click)="searchButtonClick($event)">
           <span nz-icon nzType="search"></span>
           조회
         </button>
         <nz-divider nzType="vertical"></nz-divider>
-      </div>
+      }
 
-      <div *ngIf="saveVisible">
-        <!--저장 재확인할 경우 -->
-        <button *ngIf="isSavePopupConfirm" nz-button nzType="primary"
-          nz-popconfirm nzPopconfirmTitle="저장하시겠습니까?"
-          (nzOnConfirm)="saveButtonClick()" (nzOnCancel)="false">
-          <span nz-icon nzType="save" nzTheme="outline"></span>
-          저장
-        </button>
-
-        <!--저장 재확인하지 않을 경우 -->
-        <button *ngIf="!isSavePopupConfirm" nz-button nzType="primary"
-          (click)="saveButtonClick()">
-          <span nz-icon nzType="save" nzTheme="outline"></span>
-          저장
-        </button>
+      @if (saveVisible) {
+        @if (isSavePopupConfirm) {
+          <!--저장 재확인할 경우 -->
+          <button nz-button nzType="primary"
+                  nz-popconfirm nzPopconfirmTitle="저장하시겠습니까?"
+                  (nzOnConfirm)="saveButtonClick()" (nzOnCancel)="false">
+            <span nz-icon nzType="save" nzTheme="outline"></span>저장
+          </button>
+        } @else {
+          <!--저장 재확인하지 않을 경우 -->
+          <button nz-button nzType="primary"
+            (click)="saveButtonClick()">
+            <span nz-icon nzType="save" nzTheme="outline"></span>저장
+          </button>
+        }
         <nz-divider nzType="vertical"></nz-divider>
-      </div>
+      }
 
-      <div *ngIf="deleteVisible">
+      @if (deleteVisible) {
+        @if (isDeletePopupConfirm) {
         <!--삭제 재확인할 경우 -->
-        <button *ngIf="isDeletePopupConfirm" nz-button nzDanger
+        <button  nz-button nzDanger
           nz-popconfirm nzPopconfirmTitle="삭제하시겠습니까?"
           (nzOnConfirm)="deleteButtonClick()" (nzOnCancel)="false">
-          <span nz-icon nzType="delete" nzTheme="outline"></span>
-          삭제
+          <span nz-icon nzType="delete" nzTheme="outline"></span>삭제
         </button>
+        } @else {
         <!--삭제 재확인하지 않을 경우 -->
-        <button *ngIf="!isDeletePopupConfirm" nz-button nzDanger
-          (click)="deleteButtonClick()">
-          <span nz-icon nzType="delete" nzTheme="outline"></span>
-          삭제
+        <button nz-button nzDanger (click)="deleteButtonClick()">
+          <span nz-icon nzType="delete" nzTheme="outline"></span>삭제
         </button>
+        }
         <nz-divider nzType="vertical"></nz-divider>
-      </div>
+      }
 
       <button nz-button (click)="closeButtonClick($event)">
         <span nz-icon nzType="form" nzTheme="outline"></span>
@@ -60,13 +60,11 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
       </button>
     </nz-button-group>
   `,
-  styles:[
-    `
-      .select_button {
-        background-color: green;
-      }
-    `
-  ]
+  styles: `
+    .select_button {
+      background-color: green;
+    }
+  `
 })
 export class NzCrudButtonGroupComponent implements OnInit {
 

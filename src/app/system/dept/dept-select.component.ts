@@ -23,11 +23,12 @@ import { ResponseList } from 'src/app/core/model/response-list';
       nzShowSearch
       (blur)="onTouched($event)"
       (ngModelChange)="changeFn($event)">
-        <nz-option
-            *ngFor="let option of deptList"
-            [nzLabel]="option.deptNameKorean + '[' + option.deptCode + ']'"
-            [nzValue]="option.deptCode">
-        </nz-option>
+        @for (option of deptList; track option.deptCode) {
+          <nz-option
+              [nzLabel]="option.deptNameKorean + '[' + option.deptCode + ']'"
+              [nzValue]="option.deptCode">
+          </nz-option>
+        }
     </nz-select>
   `,
   styles: [`

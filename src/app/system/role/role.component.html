@@ -7,7 +7,9 @@
     </nz-input-group>
     <ng-template #addOnBeforeTemplate>
       <nz-select [(ngModel)]="queryKey">
-        <nz-option *ngFor="let option of queryOptionList" [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+        @for (option of queryOptionList; track option.value) {
+        <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+        }
       </nz-select>
     </ng-template>
     <ng-template #suffixIconSearch>

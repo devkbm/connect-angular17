@@ -14,9 +14,9 @@ export interface DutyDate {
   template: `
     {{this._data | json}}
     <div class="container">
-      <div *ngFor="let item of _data">
+      @for (item of _data; track item.date) {
         <label nz-checkbox [(ngModel)]="item.isSelected"> {{item.date | date: 'yyyy-MM-dd'}} </label>
-      </div>
+      }
     </div>
   `,
   styles: [`

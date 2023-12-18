@@ -26,10 +26,12 @@ import { Staff, NzInputSelectStaffService } from './nz-input-select-staff.servic
           nzShowSearch
           (blur)="onTouched()"
           (ngModelChange)="onChange($event)">
-        <nz-option *ngFor="let option of _list; let i=index;"
-          [nzLabel]="custom_label ? custom_label(option, i) : option[opt_label]"
-          [nzValue]="option[opt_value]">
-          </nz-option>
+          @for (option of _list; track option[opt_value]) {
+            <nz-option
+              [nzLabel]="custom_label ? custom_label(option, $index) : option[opt_label]"
+              [nzValue]="option[opt_value]">
+            </nz-option>
+          }
         </nz-select>
       </nz-form-control>
     </nz-form-item>

@@ -13,11 +13,11 @@ import { FormsModule } from '@angular/forms';
   ],
   template: `
     <div class="container" [style.height]="height">
-      <div *ngFor="let item of data">
+      @for (item of data; track item.date) {
         <label nz-checkbox [(ngModel)]="item.isSelected" [ngStyle]="{'color': getFontColor(item)}">
           {{item.date | date: 'yyyy-MM-dd'}}
         </label>
-      </div>
+      }
     </div>
   `,
   styles: [`
