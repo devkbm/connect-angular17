@@ -21,9 +21,11 @@ import { TodoService } from './todo.service';
     <mat-selection-list #todoGroups [multiple]="false"  color="primary"
                         (selectionChange)="selectTodoGroup(todoGroups.selectedOptions.selected[0].value)">
       <!--<mat-list-option *ngFor="let todoGroup of todoGroupList; index as i" [value]="todoGroup.pkTodoGroup" (contextmenu)="onContextMenu($event, todoGroup)">-->
-      <mat-list-option *ngFor="let todoGroup of todoGroupList; trackBy: trackByItem; " [value]="todoGroup.pkTodoGroup" [contextMenu]="basicMenu" [contextMenuValue]="todoGroup">
+      @for (todoGroup of todoGroupList; track todoGroup.pkTodoGroup) {
+      <mat-list-option [value]="todoGroup.pkTodoGroup" [contextMenu]="basicMenu" [contextMenuValue]="todoGroup">
         {{todoGroup.todoGroupName}}
       </mat-list-option>
+      }
     </mat-selection-list>
 
     <context-menu menuClass="custom-style">
@@ -94,8 +96,6 @@ export class TodoGroupListComponent implements OnInit {
   @Output() onDeletedTodoGroup = new EventEmitter<string>();
 
   todoGroupList: TodoGroupModel[] = [];
-  trackByItem = (index: number, item: TodoGroupModel) => item.pkTodoGroup;
-
 
   @ViewChild(MatMenuTrigger) contextMenu!: MatMenuTrigger;
   contextMenuPosition = { x: '0px', y: '0px' };

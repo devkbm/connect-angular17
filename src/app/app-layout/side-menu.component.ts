@@ -19,7 +19,7 @@ import { ResponseList } from '../core/model/response-list';
       <ul class="menu" nz-menu [nzTheme]="menuInfo.theme" [nzMode]="menuInfo.mode" [nzInlineIndent]="menuInfo.inline_indent">
         <ng-container *ngTemplateOutlet="menuTpl; context: { $implicit: menuInfo.menuItems }"></ng-container>
         <ng-template #menuTpl let-menus>
-          <ng-container *ngFor="let menu of menus">
+          @for (menu of menus; track menu.key) {
             @if (!menu.children) {
               <li
                 nz-menu-item
@@ -45,7 +45,7 @@ import { ResponseList } from '../core/model/response-list';
               </ul>
             </li>
             }
-          </ng-container>
+          }
         </ng-template>
       </ul>
   `,
