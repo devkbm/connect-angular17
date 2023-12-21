@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { AgGridModule } from 'ag-grid-angular';
-import { NzSpinModule } from 'ng-zorro-antd/spin';
 
 import { Component, OnInit, Output, EventEmitter, inject } from '@angular/core';
 
@@ -16,10 +15,9 @@ import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-rende
   selector: 'app-web-resource-grid',
   standalone: true,
   imports: [
-    CommonModule, AgGridModule, NzSpinModule
+    CommonModule, AgGridModule
   ],
   template: `
-    <nz-spin nzTip="Loading..." [nzSpinning]="isLoading">
       <ag-grid-angular
         [ngStyle]="style"
         class="ag-theme-balham-dark"
@@ -32,7 +30,6 @@ import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-rende
         (rowClicked)="rowClickedEvent($event)"
         (rowDoubleClicked)="rowDbClicked($event)">
       </ag-grid-angular>
-    </nz-spin>
   `,
   styles: [`
     nz-spin {
