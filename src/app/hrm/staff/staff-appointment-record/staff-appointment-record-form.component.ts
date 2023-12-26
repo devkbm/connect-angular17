@@ -223,10 +223,10 @@ import { StaffAppointmentRecordService } from './staff-appointment-record.servic
 
     <div class="footer">
       <app-nz-crud-button-group
-        (searchClick)="get(fg.value.staffNo!, fg.value.seq!)"
+        (searchClick)="get(fg.getRawValue().staffNo!, fg.getRawValue().seq!)"
         (closeClick)="closeForm()"
         (saveClick)="save()"
-        (deleteClick)="remove(fg.value.staffNo!, fg.value.seq!)">
+        (deleteClick)="remove(fg.getRawValue().staffNo!, fg.getRawValue().seq!)">
       </app-nz-crud-button-group>
     </div>
 
