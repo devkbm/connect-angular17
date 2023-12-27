@@ -14,6 +14,7 @@ import { StaffLicenseGridComponent } from './staff-license/staff-license-grid.co
 import { StaffAppointmentRecord } from './staff-appointment-record/staff-appointment-record.model';
 import { StaffSchoolCareer } from './staff-school-career/staff-school-career.model';
 import { StaffSchoolCareerGridComponent } from './staff-school-career/staff-school-career-grid.component';
+import { StaffCurrentAppointmentDescriptionComponent } from './staff-current-appointment-description.component';
 
 @Component({
   selector: 'app-staff-management',
@@ -28,6 +29,7 @@ export class StaffManagementComponent extends AppBase implements OnInit {
 
   @ViewChild(StaffGridComponent) gridStaff!: StaffGridComponent;
   @ViewChild(StaffRegistFormComponent) formStaff!: StaffRegistFormComponent;
+  @ViewChild(StaffCurrentAppointmentDescriptionComponent) staffDesc!: StaffCurrentAppointmentDescriptionComponent;
   @ViewChild(StaffAppointmentRecordGridComponent) gridAppointment!: StaffAppointmentRecordGridComponent;
   @ViewChild(StaffFamilyGridComponent) gridFamily!: StaffFamilyGridComponent;
   @ViewChild(StaffLicenseGridComponent) gridLicense!: StaffLicenseGridComponent;
@@ -108,6 +110,7 @@ export class StaffManagementComponent extends AppBase implements OnInit {
   selectGridAppointment() {
     this.drawerAppointment.visible = false;
     this.gridAppointment.getList(this.selectedStaff?.staffNo!);
+    this.staffDesc.get(this.selectedStaff?.staffNo!);
   }
 
   editAppointment(row: StaffAppointmentRecord) {
