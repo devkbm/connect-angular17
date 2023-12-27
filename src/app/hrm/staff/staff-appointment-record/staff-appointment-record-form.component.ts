@@ -128,26 +128,36 @@ import { StaffAppointmentRecordService } from './staff-appointment-record.servic
       <nz-divider nzPlain nzText="발령" nzOrientation="center"></nz-divider>
       <!-- 4 row -->
       <div nz-row nzGutter="8">
-        <div nz-col nzSpan="12">
+        <div nz-col nzSpan="8">
           <app-nz-dept-tree-select
             formControlName="blngDeptCode"
-            placeholder="부서 없음">소속부서
+            placeholder="부서 없음"
+            [required]="true">소속부서
           </app-nz-dept-tree-select>
         </div>
 
-        <div nz-col nzSpan="12">
+        <div nz-col nzSpan="8">
           <app-nz-dept-tree-select
             formControlName="workDeptCode"
-            placeholder="부서 없음">근무부서
+            placeholder="부서 없음"
+            [required]="true">근무부서
           </app-nz-dept-tree-select>
         </div>
 
+        <div nz-col nzSpan="8">
+          <app-nz-input-select
+            formControlName="dutyResponsibilityCode" itemId="dutyResponsibilityCode"
+            [options]="dutyResponsibilityCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
+            [placeholder]="'Please select'"
+            [nzErrorTip]="errorTpl" [required]="false">직책
+          </app-nz-input-select>
+        </div>
       </div>
 
 
       <!-- 5 row -->
       <div nz-row nzGutter="8">
-        <div nz-col nzSpan="12">
+        <div nz-col nzSpan="8">
           <app-nz-input-select
             formControlName="jobGroupCode" itemId="jobGroupCode"
             [options]="groupJobCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
@@ -156,7 +166,7 @@ import { StaffAppointmentRecordService } from './staff-appointment-record.servic
           </app-nz-input-select>
         </div>
 
-        <div nz-col nzSpan="12">
+        <div nz-col nzSpan="8">
           <app-nz-input-select
             formControlName="jobPositionCode" itemId="jobPositionCode"
             [options]="jobPositionCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
@@ -164,41 +174,8 @@ import { StaffAppointmentRecordService } from './staff-appointment-record.servic
             [nzErrorTip]="errorTpl" [required]="true">직위
           </app-nz-input-select>
         </div>
-      </div>
 
-      <!-- 6 row-->
-      <div nz-row nzGutter="8">
-        <div nz-col nzSpan="12">
-          <app-nz-input-select
-            formControlName="occupationCode" itemId="occupationCode"
-            [options]="occupationCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
-            [placeholder]="'Please select'"
-            [nzErrorTip]="errorTpl" [required]="true">직종
-          </app-nz-input-select>
-        </div>
-
-        <div nz-col nzSpan="12">
-          <app-nz-input-select
-            formControlName="jobGradeCode" itemId="jobGradeCode"
-            [options]="jobGradeCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
-            [placeholder]="'Please select'"
-            [nzErrorTip]="errorTpl" [required]="true">직급
-          </app-nz-input-select>
-        </div>
-      </div>
-
-      <!-- 7 row-->
-      <div nz-row nzGutter="8">
-        <div nz-col nzSpan="12">
-          <app-nz-input-select
-            formControlName="payStepCode" itemId="payStepCode"
-            [options]="payStepCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
-            [placeholder]="'Please select'"
-            [nzErrorTip]="errorTpl" [required]="true">호봉
-          </app-nz-input-select>
-        </div>
-
-        <div nz-col nzSpan="12">
+        <div nz-col nzSpan="8">
           <app-nz-input-select
             formControlName="jobCode" itemId="jobCode"
             [options]="jobCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
@@ -208,17 +185,37 @@ import { StaffAppointmentRecordService } from './staff-appointment-record.servic
         </div>
       </div>
 
-      <!-- 8 row-->
+      <!-- 6 row-->
       <div nz-row nzGutter="8">
-        <div nz-col nzSpan="12">
+
+        <div nz-col nzSpan="8">
           <app-nz-input-select
-            formControlName="dutyResponsibilityCode" itemId="dutyResponsibilityCode"
-            [options]="dutyResponsibilityCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
+            formControlName="occupationCode" itemId="occupationCode"
+            [options]="occupationCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
             [placeholder]="'Please select'"
-            [nzErrorTip]="errorTpl" [required]="true">직책
+            [nzErrorTip]="errorTpl" [required]="true">직종
+          </app-nz-input-select>
+        </div>
+
+        <div nz-col nzSpan="8">
+          <app-nz-input-select
+            formControlName="jobGradeCode" itemId="jobGradeCode"
+            [options]="jobGradeCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
+            [placeholder]="'Please select'"
+            [nzErrorTip]="errorTpl" [required]="true">직급
+          </app-nz-input-select>
+        </div>
+
+        <div nz-col nzSpan="8">
+          <app-nz-input-select
+            formControlName="payStepCode" itemId="payStepCode"
+            [options]="payStepCodeList" [opt_value]="'code'" [opt_label]="'codeName'"
+            [placeholder]="'Please select'"
+            [nzErrorTip]="errorTpl" [required]="true">호봉
           </app-nz-input-select>
         </div>
       </div>
+
     </form>
 
     <div class="footer">
