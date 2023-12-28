@@ -224,7 +224,7 @@ export class StaffRegistFormComponent extends FormBase implements OnInit {
               this.upload.data = { organizationCode: model.data.organizationCode, staffNo: model.data.staffNo };
 
               if (model.data.imagePath) {
-                this.imageUrl = GlobalProperty.serverUrl + '/static/' + model.data.imagePath;
+                this.imageUrl = GlobalProperty.serverUrl + '/api/system/fileimage/' + model.data.imagePath;
               }
             } else {
               this.newForm();
@@ -264,7 +264,7 @@ export class StaffRegistFormComponent extends FormBase implements OnInit {
     console.log(param);
     if (param.type === 'success') {
       const serverFilePath = param.file.response.data;
-      this.imageUrl = GlobalProperty.serverUrl + '/static/' + this.findFileName(serverFilePath);
+      this.imageUrl = GlobalProperty.serverUrl + '/api/system/fileimage/' + this.findFileName(serverFilePath);
     }
   }
 

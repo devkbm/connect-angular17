@@ -12,18 +12,18 @@ import { GlobalProperty } from 'src/app/core/global-property';
   providedIn: 'root'
 })
 export class UserSessionService extends DataService {
-  private STATIC_URI = '/static/';
+  private IMAGE_URI = '/api/system/fileimage/';
 
   constructor() {
     super('/api/system/user');
-    this.STATIC_URI = GlobalProperty.serverUrl + '/static/';
+    this.IMAGE_URI = GlobalProperty.serverUrl + '/api/system/fileimage/';
   }
 
   getAvartarImageString(): string | null {
     const imageUrl = sessionStorage.getItem('imageUrl');
     if (imageUrl === 'null') return null;
 
-    return this.STATIC_URI + sessionStorage.getItem('imageUrl');
+    return this.IMAGE_URI + sessionStorage.getItem('imageUrl');
   }
 
   getMyProfile(): Observable<ResponseObject<User>> {
