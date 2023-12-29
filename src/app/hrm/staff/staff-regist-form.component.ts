@@ -94,16 +94,6 @@ import { saveAs } from 'file-saver';
             [options]="genderOptions"
             [required]="false" [nzErrorTip]="errorTpl">성별
           </app-nz-input-radio-group>
-          <!--
-          <nz-form-item>
-            <nz-form-label nzFor="gender">성별
-            </nz-form-label>
-            <nz-radio-group id="gender" formControlName="gender">
-              <label nz-radio nzValue="M">남</label>
-              <label nz-radio nzValue="F">여</label>
-            </nz-radio-group>
-          </nz-form-item>
-          -->
         </div>
       </div>
 
@@ -163,7 +153,7 @@ export class StaffRegistFormComponent extends FormBase implements OnInit {
 
   @Input() staffNo?: string;
 
-  imageUrl: any;
+  imageUrl: string = '';
 
   upload: {url: string, headers:any, data: any} = {
     url: GlobalProperty.serverUrl + '/api/hrm/staff/changeimage',
@@ -225,6 +215,8 @@ export class StaffRegistFormComponent extends FormBase implements OnInit {
 
               if (model.data.imagePath) {
                 this.imageUrl = GlobalProperty.serverUrl + '/api/system/fileimage/' + model.data.imagePath;
+              } else {
+                this.imageUrl = '';
               }
             } else {
               this.newForm();

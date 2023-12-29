@@ -73,19 +73,19 @@ import { existingHrmTypeValidator } from './hrm-code-type-duplication-validator'
           <app-nz-input-textarea
             formControlName="comment" itemId="comment"
             placeholder="설명을 입력해주세요."
-            [rows] = "10"
+            [rows] = "8"
             [required]="false" [nzErrorTip]="errorTpl">설명
           </app-nz-input-textarea>
         </div>
       </div>
 
-      <!-- 3 row -->
+      <!--
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="12">
           <app-nz-input-textarea
             formControlName="the1AddInfoDesc" itemId="the1AddInfoDesc"
             placeholder="설명을 입력해주세요."
-            [rows] = "5"
+            [rows] = "3"
             [required]="false" [nzErrorTip]="errorTpl">추가정보1 설명
           </app-nz-input-textarea>
         </div>
@@ -93,19 +93,19 @@ import { existingHrmTypeValidator } from './hrm-code-type-duplication-validator'
           <app-nz-input-textarea
             formControlName="the2AddInfoDesc" itemId="the2AddInfoDesc"
             placeholder="설명을 입력해주세요."
-            [rows] = "5"
+            [rows] = "3"
             [required]="false" [nzErrorTip]="errorTpl">추가정보2 설명
           </app-nz-input-textarea>
         </div>
       </div>
 
-      <!-- 4 row -->
+
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="12">
           <app-nz-input-textarea
             formControlName="the3AddInfoDesc" itemId="the3AddInfoDesc"
             placeholder="설명을 입력해주세요."
-            [rows] = "5"
+            [rows] = "3"
             [required]="false" [nzErrorTip]="errorTpl">추가정보3 설명
           </app-nz-input-textarea>
         </div>
@@ -113,23 +113,23 @@ import { existingHrmTypeValidator } from './hrm-code-type-duplication-validator'
           <app-nz-input-textarea
             formControlName="the4AddInfoDesc" itemId="the4AddInfoDesc"
             placeholder="설명을 입력해주세요."
-            [rows] = "5"
+            [rows] = "3"
             [required]="false" [nzErrorTip]="errorTpl">추가정보4 설명
           </app-nz-input-textarea>
         </div>
       </div>
 
-      <!-- 5 row -->
       <div nz-row nzGutter="8">
         <div nz-col nzSpan="12">
           <app-nz-input-textarea
             formControlName="the5AddInfoDesc" itemId="the5AddInfoDesc"
             placeholder="설명을 입력해주세요."
-            [rows] = "5"
+            [rows] = "3"
             [required]="false" [nzErrorTip]="errorTpl">추가정보5 설명
           </app-nz-input-textarea>
         </div>
       </div>
+      -->
 
     </form>
 
@@ -191,12 +191,14 @@ export class HrmCodeTypeFormComponent extends FormBase implements OnInit, AfterV
                       }),
     typeName        : new FormControl<string | null>(null, { validators: Validators.required }),
     sequence        : new FormControl<number | null>(0),
-    comment         : new FormControl<string | null>(null),
+    comment         : new FormControl<string | null>(null)
+    /*
     the1AddInfoDesc : new FormControl<string | null>(null),
     the2AddInfoDesc : new FormControl<string | null>(null),
     the3AddInfoDesc : new FormControl<string | null>(null),
     the4AddInfoDesc : new FormControl<string | null>(null),
     the5AddInfoDesc : new FormControl<string | null>(null)
+    */
   });
 
   ngOnInit() {
