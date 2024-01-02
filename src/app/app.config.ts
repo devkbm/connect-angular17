@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule, HttpClientXsrfModule } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { CustomHttpInterceptor } from 'src/app/core/interceptor/custom-http-interceptor';
+import { ErrorInterceptorService } from './core/interceptor/error-interceptor';
 
 registerLocaleData(ko);
 
@@ -20,6 +21,7 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(HttpClientModule),
     importProvidersFrom(HttpClientXsrfModule.withOptions({cookieName: 'XSRF-TOKEN', headerName: 'X-XSRF-TOKEN'})),
     { provide: HTTP_INTERCEPTORS, useClass: CustomHttpInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptorService, multi: true },
     provideAnimations()
   ]
 };
