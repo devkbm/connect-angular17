@@ -21,6 +21,7 @@ import { HrmCodeService } from '../../hrm-code/hrm-code.service';
 
 import { StaffAppointmentRecord } from './staff-appointment-record.model';
 import { StaffAppointmentRecordService } from './staff-appointment-record.service';
+import { ResponseMap } from 'src/app/core/model/response-map';
 
 
 @Component({
@@ -331,14 +332,25 @@ export class StaffAppointmentRecordFormComponent extends FormBase implements OnI
   });
 
   ngOnInit(): void {
-    this.getHrmTypeDetailCodeList('HR0000', "appointmentTypeList");
-    this.getHrmTypeDetailCodeList('HR0001', "groupJobCodeList");
-    this.getHrmTypeDetailCodeList('HR0002', "jobPositionCodeList");
-    this.getHrmTypeDetailCodeList('HR0003', "occupationCodeList");
-    this.getHrmTypeDetailCodeList('HR0004', "jobGradeCodeList");
-    this.getHrmTypeDetailCodeList('HR0005', "payStepCodeList");
-    this.getHrmTypeDetailCodeList('HR0006', "jobCodeList");
-    this.getHrmTypeDetailCodeList('HR0007', "dutyResponsibilityCodeList");
+    //this.getHrmTypeDetailCodeList('HR0000', "appointmentTypeList");
+    //this.getHrmTypeDetailCodeList('HR0001', "groupJobCodeList");
+    //this.getHrmTypeDetailCodeList('HR0002', "jobPositionCodeList");
+    //this.getHrmTypeDetailCodeList('HR0003', "occupationCodeList");
+    //this.getHrmTypeDetailCodeList('HR0004', "jobGradeCodeList");
+    //this.getHrmTypeDetailCodeList('HR0005', "payStepCodeList");
+    //this.getHrmTypeDetailCodeList('HR0006', "jobCodeList");
+    //this.getHrmTypeDetailCodeList('HR0007', "dutyResponsibilityCodeList");
+
+    this.getCodeMap([
+      {typeId: 'HR0000', propertyName: "appointmentTypeList"},
+      {typeId: 'HR0001', propertyName: "groupJobCodeList"},
+      {typeId: 'HR0002', propertyName: "jobPositionCodeList"},
+      {typeId: 'HR0003', propertyName: "occupationCodeList"},
+      {typeId: 'HR0004', propertyName: "jobGradeCodeList"},
+      {typeId: 'HR0005', propertyName: "payStepCodeList"},
+      {typeId: 'HR0006', propertyName: "jobCodeList"},
+      {typeId: 'HR0007', propertyName: "dutyResponsibilityCodeList"}
+    ]);
 
     if (this.initLoadId) {
       this.get(this.initLoadId.staffId, this.initLoadId.seq);
@@ -435,6 +447,30 @@ export class StaffAppointmentRecordFormComponent extends FormBase implements OnI
 
   }
 
+  getCodeMap(objs: {typeId: string,  propertyName: string}[]): void {
+
+    const params = {
+      typeIds : objs.map(e => e.typeId)
+    };
+
+    this.hrmCodeService
+        .getMapList(params)
+        .subscribe(
+          (model: ResponseMap<HrmCode>) => {
+            if ( model.total > 0 ) {
+              let data: any = model.data;
+
+              for (const obj of objs) {
+                this[obj.propertyName] = data[obj.typeId];
+              }
+            } else {
+              //list = [];
+            }
+            this.appAlarmService.changeMessage(model.message);
+          }
+      );
+
+  }
   /*
   private getDeptList(): void {
     this.deptService

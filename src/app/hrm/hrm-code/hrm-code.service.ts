@@ -8,6 +8,7 @@ import { ResponseList } from 'src/app/core/model/response-list';
 import { ResponseObject } from 'src/app/core/model/response-object';
 
 import { HrmCode } from './hrm-code.model';
+import { ResponseMap } from 'src/app/core/model/response-map';
 
 
 @Injectable({
@@ -17,6 +18,19 @@ export class HrmCodeService extends DataService {
 
   constructor() {
     super('/api/hrm');
+  }
+
+  getMapList(params: any): Observable<ResponseMap<HrmCode>> {
+    const url = `${this.API_URL}/hrmtype/codelist`;
+    const options = {
+      headers: this.getAuthorizedHttpHeaders(),
+      withCredentials: true,
+      params: params
+    };
+
+    return this.http.get<ResponseMap<HrmCode>>(url, options).pipe(
+      catchError(this.handleError<ResponseMap<HrmCode>>('getMapList', undefined))
+    );
   }
 
   getList(params: any): Observable<ResponseList<HrmCode>> {
