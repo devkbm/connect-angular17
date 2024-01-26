@@ -145,7 +145,7 @@ import { StaffContact } from './staff-contact.model';
 })
 export class StaffContactFormComponent extends FormBase implements OnInit, AfterViewInit, OnChanges {
 
-  @Input() staff?: {organizationCode: string, staffNo: string, staffName: string};
+  @Input() staff?: {companyCode: string, staffNo: string, staffName: string};
 
   //@ViewChild('domainName') domainName?: NzInputTextComponent;
 

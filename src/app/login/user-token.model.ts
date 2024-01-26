@@ -5,7 +5,7 @@ export interface UserToken {
   sessionId: string;
   userId: string;
   userName: string;
-  organizationCode: string;
+  companyCode: string;
   staffNo: string;
   email: string;
   imageUrl: string;

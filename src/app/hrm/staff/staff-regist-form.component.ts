@@ -171,7 +171,7 @@ export class StaffRegistFormComponent extends FormBase implements OnInit {
   private appAlarmService = inject(AppAlarmService);
 
   override fg = this.fb.group({
-    organizationCode            : new FormControl<string | null>(null, { validators: Validators.required }),
+    companyCode            : new FormControl<string | null>(null, { validators: Validators.required }),
     staffNo                     : new FormControl<string | null>(null, { validators: Validators.required }),
     name                        : new FormControl<string | null>(null, { validators: Validators.required }),
     nameEng                     : new FormControl<string | null>(null),
@@ -211,7 +211,7 @@ export class StaffRegistFormComponent extends FormBase implements OnInit {
             if ( model.total > 0 ) {
               this.modifyForm(model.data);
 
-              this.upload.data = { organizationCode: model.data.organizationCode, staffNo: model.data.staffNo };
+              this.upload.data = { companyCode: model.data.companyCode, staffNo: model.data.staffNo };
 
               if (model.data.imagePath) {
                 this.imageUrl = GlobalProperty.serverUrl + '/api/system/fileimage/' + model.data.imagePath;

@@ -8,7 +8,7 @@ import { ResponseList } from 'src/app/core/model/response-list';
 
 export interface Staff {
   staffId: string;
-  organizationCode: string;
+  companyCode: string;
   staffNo: string;
   name: string;
   nameEng: string;

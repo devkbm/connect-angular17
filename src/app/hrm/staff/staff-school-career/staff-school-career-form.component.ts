@@ -197,7 +197,7 @@ import { StaffSchoolCareerService } from './staff-school-career.service';
 })
 export class StaffSchoolCareerFormComponent extends FormBase implements OnInit, AfterViewInit, OnChanges {
 
-  @Input() staff?: {organizationCode: string, staffNo: string, staffName: string};
+  @Input() staff?: {companyCode: string, staffNo: string, staffName: string};
 
   /**
    * 학력 - HR0009

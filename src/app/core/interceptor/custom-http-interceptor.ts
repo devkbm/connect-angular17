@@ -57,7 +57,7 @@ export class CustomHttpInterceptor implements HttpInterceptor {
 
   private setParamsGET(req: HttpRequest<any>): HttpRequest<any> {
     return req.clone({
-      params: req.params.set('organizationCode', String(sessionStorage.getItem('organizationCode')))
+      params: req.params.set('companyCode', String(sessionStorage.getItem('companyCode')))
     });
   }
 
@@ -65,20 +65,20 @@ export class CustomHttpInterceptor implements HttpInterceptor {
     // 배열일 경우 객체에 속성 추가
     if (Array.isArray(req.body)) {
       for (var rec of req.body) {
-        rec.organizationCode = String(sessionStorage.getItem('organizationCode'));
+        rec.companyCode = String(sessionStorage.getItem('companyCode'));
         rec.clientAppUrl = window.location.href;
       }
       return req;
     }
 
     return req.clone({
-      body: { ...req.body, organizationCode: String(sessionStorage.getItem('organizationCode')), clientAppUrl: window.location.href }
+      body: { ...req.body, companyCode: String(sessionStorage.getItem('companyCode')), clientAppUrl: window.location.href }
     });
   }
 
   private setFormDataBodyPOST(req: HttpRequest<any>): HttpRequest<any> {
     return req.clone({
-      body: req.body.append('organizationCode', String(sessionStorage.getItem('organizationCode')))
+      body: req.body.append('companyCode', String(sessionStorage.getItem('companyCode')))
                     .append('clientAppUrl', window.location.href)
     });
   }

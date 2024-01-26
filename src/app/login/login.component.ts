@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
   private winRef = inject(WindowRef);
 
   form = this.fb.group({
-    organizationCode  : new FormControl<string | null>('001', { validators: Validators.required }),
+    companyCode  : new FormControl<string | null>('001', { validators: Validators.required }),
     staffNo           : new FormControl<string | null>(null, { validators: Validators.required }),
     password          : new FormControl<string | null>(null, { validators: Validators.required }),
     remember          : new FormControl<boolean>(false, { validators: Validators.required })

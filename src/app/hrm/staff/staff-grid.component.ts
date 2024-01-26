@@ -69,7 +69,7 @@ export class StaffGridComponent extends AggridFunction implements OnInit {
     ];
 
     this.getRowId = function(params: any) {
-      return params.data.organizationCode + params.data.staffNo;
+      return params.data.companyCode + params.data.staffNo;
     };
 
     this.getList();

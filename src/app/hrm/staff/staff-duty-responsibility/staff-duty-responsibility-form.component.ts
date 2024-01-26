@@ -147,7 +147,7 @@ import { StaffDutyResponsibilityService } from './staff-duty-responsibility.serv
 })
 export class StaffDutyResponsibilityFormComponent extends FormBase implements OnInit, AfterViewInit {
 
-  @Input() staff?: {organizationCode: string, staffNo: string, staffName: string};
+  @Input() staff?: {companyCode: string, staffNo: string, staffName: string};
 
   /**
    * 직책코드 - HR0007

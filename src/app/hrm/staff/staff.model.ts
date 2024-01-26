@@ -1,5 +1,5 @@
 export interface Staff {
-  organizationCode: string | null;
+  companyCode: string | null;
   staffNo: string | null;
   name: string | null;
   nameEng: string | null;

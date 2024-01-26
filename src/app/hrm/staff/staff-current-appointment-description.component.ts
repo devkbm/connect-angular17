@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 
 export interface StaffCurrentAppointment {
-	organizationCode: string;
+	companyCode: string;
 	staffNo: string;
 	blngDeptId: string;
 	blngDeptName: string;

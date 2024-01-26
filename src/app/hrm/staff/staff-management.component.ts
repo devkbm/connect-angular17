@@ -35,7 +35,7 @@ export class StaffManagementComponent extends AppBase implements OnInit {
   @ViewChild(StaffLicenseGridComponent) gridLicense!: StaffLicenseGridComponent;
   @ViewChild(StaffSchoolCareerGridComponent) gridSchoolcareer!: StaffSchoolCareerGridComponent;
 
-  selectedStaff?: {organizationCode: string, staffNo: string, staffName: string};
+  selectedStaff?: {companyCode: string, staffNo: string, staffName: string};
 
   drawerNewStaff: { visible: boolean, initLoadId: any } = {
     visible: false,
@@ -81,7 +81,7 @@ export class StaffManagementComponent extends AppBase implements OnInit {
 
   staffGridRowClicked(params: any) {
     console.log(params);
-    this.selectedStaff = {organizationCode: params.organizationCode, staffNo: params.staffNo, staffName: params.name};
+    this.selectedStaff = {companyCode: params.companyCode, staffNo: params.staffNo, staffName: params.name};
     this.formStaff.get(params.staffNo);
   }
 

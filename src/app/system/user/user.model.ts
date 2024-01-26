@@ -1,6 +1,6 @@
 export interface User {
   userId: string | null;
-  organizationCode: string | null;
+  companyCode: string | null;
   staffNo: string | null;
   password?: string | null;
   name: string | null;

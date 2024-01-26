@@ -261,7 +261,7 @@ import { ResponseMap } from 'src/app/core/model/response-map';
 })
 export class StaffAppointmentRecordFormComponent extends FormBase implements OnInit {
 
-  @Input() staff?: {organizationCode: string, staffNo: string, staffName: string};
+  @Input() staff?: {companyCode: string, staffNo: string, staffName: string};
 
   bizTypeList = [{code:'code', name:'name'},{code:'code2', name:'name2'}];
 

@@ -257,8 +257,8 @@ export class DeptFormComponent extends FormBase implements OnInit, AfterViewInit
 
     this.fg.controls.deptCode.valueChanges.subscribe(value => {
       if (value === null) return;
-      const organizationCode = sessionStorage.getItem('organizationCode');
-      //this.fg.controls.deptId.setValue(organizationCode + value);
+      const companyCode = sessionStorage.getItem('companyCode');
+      //this.fg.controls.deptId.setValue(companyCode + value);
     });
 
     /*

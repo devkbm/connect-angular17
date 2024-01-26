@@ -173,7 +173,7 @@ import { ResponseList } from 'src/app/core/model/response-list';
 })
 export class StaffLicenseFormComponent extends FormBase implements OnInit, AfterViewInit, OnChanges {
 
-  @Input() staff?: {organizationCode: string, staffNo: string, staffName: string};
+  @Input() staff?: {companyCode: string, staffNo: string, staffName: string};
   /**
    * 자격면허 - HR0011
    */

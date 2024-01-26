@@ -173,7 +173,7 @@ import { ResponseList } from 'src/app/core/model/response-list';
 })
 export class StaffFamilyFormComponent extends FormBase implements OnInit, AfterViewInit, OnChanges {
 
-  @Input() staff?: {organizationCode: string, staffNo: string, staffName: string};
+  @Input() staff?: {companyCode: string, staffNo: string, staffName: string};
 
   /**
    * 가족관계 - HR0008

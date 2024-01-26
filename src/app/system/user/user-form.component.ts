@@ -72,7 +72,7 @@ import { GlobalProperty } from 'src/app/core/global-property';
 
         <div nz-col nzSpan="6">
           <app-nz-input-text
-            formControlName="organizationCode" itemId="organizationCode"
+            formControlName="companyCode" itemId="companyCode"
             placeholder="조직코드를 입력해주세요."
             [required]="true" [nzErrorTip]="errorTpl">조직코드
           </app-nz-input-text>
@@ -208,7 +208,7 @@ export class UserFormComponent extends FormBase implements OnInit, AfterViewInit
       asyncValidators: [existingUserValidator(this.service)],
       updateOn: 'blur'
     }),
-    organizationCode: new FormControl<string | null>({ value: null, disabled: true }, { validators: Validators.required }),
+    companyCode: new FormControl<string | null>({ value: null, disabled: true }, { validators: Validators.required }),
     staffNo: new FormControl<string | null>(null),
     name: new FormControl<string | null>({ value: null, disabled: false }, { validators: Validators.required }),
     enabled: new FormControl<boolean>(true),
@@ -246,14 +246,14 @@ export class UserFormComponent extends FormBase implements OnInit, AfterViewInit
     this.fg.reset();
 
     this.fg.controls.userId.setAsyncValidators(existingUserValidator(this.service));
-    this.fg.controls.organizationCode.setValue(sessionStorage.getItem('organizationCode'));
+    this.fg.controls.companyCode.setValue(sessionStorage.getItem('companyCode'));
     this.fg.controls.staffNo.enable();
     this.fg.controls.enabled.setValue(true);
 
     this.fg.controls.staffNo.valueChanges.subscribe(x => {
       if (x === null) return;
-      const organizationCode = sessionStorage.getItem('organizationCode');
-      //this.fg.controls.userId.setValue(organizationCode + x);
+      const companyCode = sessionStorage.getItem('companyCode');
+      //this.fg.controls.userId.setValue(companyCode + x);
       this.fg.controls.userId.setValue(x);
       this.fg.controls.userId.markAsTouched();
     });

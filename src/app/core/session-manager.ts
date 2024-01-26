@@ -17,7 +17,7 @@ export class SessionManager {
     sessionStorage.setItem('token', data.sessionId);
     sessionStorage.setItem('userId', data.userId);
     sessionStorage.setItem('userName', data.userName);
-    sessionStorage.setItem('organizationCode', data.organizationCode);
+    sessionStorage.setItem('companyCode', data.companyCode);
     sessionStorage.setItem('staffNo', data.staffNo);
     sessionStorage.setItem('email', data.email);
     sessionStorage.setItem('imageUrl', data.imageUrl);
@@ -26,8 +26,8 @@ export class SessionManager {
     sessionStorage.setItem('roleList', JSON.stringify(data.roleList));
   }
 
-  static getOrganizationCode(): string | null {
-    return sessionStorage.getItem('organizationCode');
+  static getcompanyCode(): string | null {
+    return sessionStorage.getItem('companyCode');
   }
 
   static getUserId(): string | null {
