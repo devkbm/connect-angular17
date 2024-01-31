@@ -3,11 +3,10 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzCardModule } from 'ng-zorro-antd/card';
 
 import { Component, OnInit, Output, EventEmitter, inject } from '@angular/core';
-import { UserSessionService } from 'src/app/core/service/user-session.service';
+import { SystemUserProfile, UserSessionService } from 'src/app/core/service/user-session.service';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 
 import { ResponseObject } from 'src/app/core/model/response-object';
-import { User } from './user.model';
 
 @Component({
   selector: 'app-user-popup',
@@ -54,7 +53,7 @@ export class UserPopupComponent implements OnInit {
       this.sessionService
           .getMyProfile()
           .subscribe(
-              (model: ResponseObject<User>) => {
+              (model: ResponseObject<SystemUserProfile>) => {
                   if ( model.total > 0 ) {
                       this.user = model.data;
                   }

@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 
-import { UserSessionService } from 'src/app/core/service/user-session.service';
+import { SystemUserProfile, UserSessionService } from 'src/app/core/service/user-session.service';
 import { ResponseObject } from 'src/app/core/model/response-object';
 import { User } from './user.model';
 import { CommonModule } from '@angular/common';
@@ -20,7 +20,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
         nzIcon="user"
         [nzSize]='48'>
       </nz-avatar>
-      {{user?.name}}
+      {{user?.staffName}}
     </div>
   `,
   styles: [`
@@ -41,7 +41,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 export class UserProfileComponent implements OnInit {
 
   profilePictureSrc: any;
-  user?: User;
+  user?: SystemUserProfile;
 
   private sessionService = inject(UserSessionService);
 
@@ -54,7 +54,7 @@ export class UserProfileComponent implements OnInit {
     this.sessionService
         .getMyProfile()
         .subscribe(
-            (model: ResponseObject<User>) => {
+            (model: ResponseObject<SystemUserProfile>) => {
               if ( model.total > 0 ) {
                 this.user = model.data;
               }
