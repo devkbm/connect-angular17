@@ -1,26 +1,47 @@
 import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 import { SystemUserProfile, UserSessionService } from 'src/app/core/service/user-session.service';
 import { ResponseObject } from 'src/app/core/model/response-object';
-import { User } from './user.model';
-import { CommonModule } from '@angular/common';
+
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzCardModule } from 'ng-zorro-antd/card';
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
   imports: [
-    CommonModule, NzAvatarModule, NzIconModule
+    CommonModule, NzAvatarModule, NzIconModule, NzCardModule
   ],
   template: `
     <div class="card">
+      <!--
       <nz-avatar
         [nzSrc]="profilePictureSrc"
         nzIcon="user"
         [nzSize]='48'>
       </nz-avatar>
       {{user?.staffName}}
+-->
+      <nz-card [nzBordered]="false">
+        <nz-card-meta
+          [nzAvatar]="avatarTemplate"
+          [nzTitle]="titleTemplate"
+          [nzDescription]="descTemplate">
+        </nz-card-meta>
+      </nz-card>
+      <ng-template #avatarTemplate>
+        <nz-avatar class="avatar" [nzShape]="'square'" [nzSize]='48' [nzSrc]="profilePictureSrc"></nz-avatar>
+      </ng-template>
+
+      <ng-template #titleTemplate>
+        {{profile?.staffName + '(' + profile?.userId + ')'}}
+      </ng-template>
+
+      <ng-template #descTemplate>
+        {{profile?.deptName}}
+      </ng-template>
     </div>
   `,
   styles: [`
@@ -41,7 +62,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 export class UserProfileComponent implements OnInit {
 
   profilePictureSrc: any;
-  user?: SystemUserProfile;
+  profile?: SystemUserProfile;
 
   private sessionService = inject(UserSessionService);
 
@@ -56,7 +77,7 @@ export class UserProfileComponent implements OnInit {
         .subscribe(
             (model: ResponseObject<SystemUserProfile>) => {
               if ( model.total > 0 ) {
-                this.user = model.data;
+                this.profile = model.data;
               }
             }
         );
