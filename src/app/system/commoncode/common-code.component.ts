@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, inject, AfterViewInit } from '@angular/core';
-import { Location } from '@angular/common';
+import { NzResizableModule, NzResizeEvent, NzResizeHandleOption } from 'ng-zorro-antd/resizable';
 
 import { AppBase } from 'src/app/core/app/app-base';
 import { ResponseList } from 'src/app/core/model/response-list';
@@ -60,6 +60,22 @@ export class CommonCodeComponent extends AppBase implements OnInit, AfterViewIni
   }];
 
   private commonCodeService = inject(CommonCodeService);
+
+  col = 8;
+  id = -1;
+  directions: NzResizeHandleOption[] = [
+    {
+      direction: 'right',
+      cursorType: 'grid'
+    }
+  ];
+
+  onResize({ col }: NzResizeEvent): void {
+    cancelAnimationFrame(this.id);
+    this.id = requestAnimationFrame(() => {
+      this.col = col!;
+    });
+  }
 
   ngOnInit(): void {
 

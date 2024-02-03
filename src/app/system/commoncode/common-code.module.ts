@@ -19,6 +19,7 @@ import { CommonCodeTreeComponent } from './common-code-tree.component';
 import { NzButtonsComponent } from 'src/app/shared-component/nz-buttons/nz-buttons.component';
 import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-header-custom/nz-page-header-custom.component';
 import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/nz-search-area.component';
+import { NzResizableModule } from 'ng-zorro-antd/resizable';
 
 @NgModule({
   imports: [
@@ -28,6 +29,7 @@ import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/n
     HttpClientModule,
     HttpClientXsrfModule.withOptions({cookieName: 'XSRF-TOKEN'}),
     NzFormModule,
+    NzResizableModule,
     NzSelectModule,
     NzInputModule,
     NzButtonsComponent,
