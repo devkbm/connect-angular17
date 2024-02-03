@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { UserModule } from './user/user.module';
-import { RoleModule } from './role/role.module';
 import { WebResourceModule } from './webresource/web-resource.module';
 import { MenuModule } from './menu/menu.module';
 import { HolidayModule } from './holiday/holiday.module';
@@ -17,7 +16,6 @@ import { SystemManagementRoutingModule } from './system-management-routing.modul
     CommonModule,
     SystemManagementRoutingModule,
     UserModule,
-    RoleModule,
     WebResourceModule,
     MenuModule,
     HolidayModule,

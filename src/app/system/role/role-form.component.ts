@@ -13,6 +13,7 @@ import { RoleService } from './role.service';
 import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
 import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
+import { RoleGridComponent } from './role-grid.component';
 
 
 @Component({
