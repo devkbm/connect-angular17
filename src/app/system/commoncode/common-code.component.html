@@ -44,7 +44,7 @@
 </app-nz-search-area>
 
 <h3 class="pgm-title">공통코드 목록</h3>
-<!--
+
 <div class="grid-wrapper">
   <app-common-code-tree #commonCodeTree
     [searchValue]="queryValue"
@@ -56,28 +56,5 @@
     (formDeleted)="getCommonCodeTree()">
   </app-common-code-form>
 </div>
--->
-<div nz-row>
-  <div nz-col
-    nz-resizable
-    (nzResize)="onResize($event)"
-    [nzMinColumn]="3"
-    [nzMaxColumn]="20"
-    [nzGridColumnCount]="24"
-    [nzSpan]="col">
-    <app-common-code-tree #commonCodeTree
-      [searchValue]="queryValue"
-      (itemSelected)="selectedItem($event)">
-    </app-common-code-tree>
-    <nz-resize-handles [nzDirections]="directions"></nz-resize-handles>
-  </div>
 
-  <div nz-col>
-    <app-common-code-form #commonCodeForm
-      (formSaved)="getCommonCodeTree()"
-      (formDeleted)="getCommonCodeTree()">
-    </app-common-code-form>
-  </div>
-
-</div>
 
