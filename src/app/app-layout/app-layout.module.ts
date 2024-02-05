@@ -19,7 +19,6 @@ import { AppLayoutComponent } from './app-layout.component';
 
 import { UserPopupComponent } from 'src/app/system/user/user-popup.component';
 import { UserProfileComponent } from 'src/app/system/user/user-profile.component';
-import { UserModule } from 'src/app/system/user/user.module';
 import { SideMenuComponent } from './side-menu.component';
 
 
@@ -28,7 +27,6 @@ import { SideMenuComponent } from './side-menu.component';
     CommonModule,
     FormsModule,
     RouterModule,
-    UserModule,
     /* NG-ZORRO */
     NzLayoutModule,
     NzMenuModule,
@@ -41,16 +39,8 @@ import { SideMenuComponent } from './side-menu.component';
   ],
   declarations: [
   ],
-  /*
-  entryComponents: [
-    UserPopupComponent,
-    UserProfileComponent
-  ],
-  */
   providers: [
     AppLayoutService
-    //AppAlarmService,
-    //AuthGuardService
   ],
   exports: [
   ]
