@@ -163,6 +163,7 @@ export class CommonCodeComponent extends AppBase implements OnInit, AfterViewIni
 
   private commonCodeService = inject(CommonCodeService);
 
+  /*
   col = 8;
   id = -1;
   directions: NzResizeHandleOption[] = [
@@ -178,7 +179,7 @@ export class CommonCodeComponent extends AppBase implements OnInit, AfterViewIni
       this.col = col!;
     });
   }
-
+*/
   ngOnInit(): void {
 
   }

@@ -1,13 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AfterViewInit, Component, ViewChild, inject } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
 
 import { AppBase } from 'src/app/core/app/app-base';
 import { ResponseObject } from 'src/app/core/model/response-object';
 
-import { RoleFormComponent } from './role-form.component';
 import { RoleGridComponent } from './role-grid.component';
 import { RoleService } from './role.service';
 import { Role } from './role.model';
