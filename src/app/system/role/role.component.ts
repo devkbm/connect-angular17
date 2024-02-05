@@ -1,9 +1,13 @@
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { AfterViewInit, Component, ViewChild, inject } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 
 import { AppBase } from 'src/app/core/app/app-base';
 import { ResponseObject } from 'src/app/core/model/response-object';
 
+import { RoleFormComponent } from './role-form.component';
 import { RoleGridComponent } from './role-grid.component';
 import { RoleService } from './role.service';
 import { Role } from './role.model';
@@ -176,7 +180,7 @@ export class RoleComponent extends AppBase implements AfterViewInit {
 
   selectedItem(data: any): void {
     if (data) {
-      this.drawerRole.initLoadId = data.authorityCode;
+      this.drawerRole.initLoadId = data.roleCode;
     } else {
       this.drawerRole.initLoadId = null;
     }
@@ -203,7 +207,7 @@ export class RoleComponent extends AppBase implements AfterViewInit {
   }
 
   delete(): void {
-    const id = this.grid.getSelectedRows()[0].authorityCode;
+    const id = this.grid.getSelectedRows()[0].roleCode;
 
     this.service
         .deleteRole(id)

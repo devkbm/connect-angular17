@@ -163,6 +163,22 @@ export class CommonCodeComponent extends AppBase implements OnInit, AfterViewIni
 
   private commonCodeService = inject(CommonCodeService);
 
+  col = 8;
+  id = -1;
+  directions: NzResizeHandleOption[] = [
+    {
+      direction: 'right',
+      cursorType: 'grid'
+    }
+  ];
+
+  onResize({ col }: NzResizeEvent): void {
+    cancelAnimationFrame(this.id);
+    this.id = requestAnimationFrame(() => {
+      this.col = col!;
+    });
+  }
+
   ngOnInit(): void {
 
   }
