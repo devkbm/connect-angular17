@@ -39,7 +39,7 @@ import { BizCodeTypeFormComponent } from './biz-code-type-form.component';
 <app-nz-page-header-custom title="업무코드 등록" subtitle="This is a subtitle"></app-nz-page-header-custom>
 
 <div nz-row class="btn-group">
-  <div nz-col [nzSpan]="24" style="text-align: right;">
+  <div nz-col [nzSpan]="24" class="text-align-right">
     <button nz-button (click)="selectBizCodeTypeList()">
       <span nz-icon nzType="search" nzTheme="outline"></span>조회
     </button>
@@ -54,15 +54,15 @@ import { BizCodeTypeFormComponent } from './biz-code-type-form.component';
   </div>
 </div>
 
-<div class="content">
-  <h3 class="pgm-title">업무코드분류</h3>
+<div class="grid-2row-2col">
+  <h3 class="header1">업무코드분류</h3>
   <app-biz-type-grid
     (rowClickedEvent)="codeTypeGridRowClicked($event)"
     (editButtonClickedEvent)="editCodeType($event)"
     (rowDoubleClickedEvent)="editCodeType($event)">
   </app-biz-type-grid>
 
-  <h3 class="pgm-title">업무코드</h3>
+  <h3 class="header2">업무코드</h3>
   <app-biz-code-grid
     (rowClickedEvent)="codeGridRowClicked($event)"
     (editButtonClickedEvent)="editCode($event)"
@@ -99,13 +99,8 @@ import { BizCodeTypeFormComponent } from './biz-code-type-form.component';
         (formClosed)="drawerCode.visible = false">
     </app-biz-code-form>
 </nz-drawer>
-
   `,
   styles: `
-.pgm-title {
-  padding-left: 5px;
-  border-left: 5px solid green;
-}
 
 .btn-group {
   padding: 6px;
@@ -116,11 +111,39 @@ import { BizCodeTypeFormComponent } from './biz-code-type-form.component';
   padding-right: 5;
 }
 
-.content {
-  height: calc(100% - 144px);
+.text-align-right {
+  text-align: right;
+}
+
+.grid-2row-2col {
   display: grid;
-  grid-template-rows: 34px 1fr 34px 1fr;
-  grid-template-columns: 1fr;
+  height: calc(100% - 144px);
+  grid-template-rows: 34px 1fr;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 12px;
+  grid-template-areas:
+    "header1 header2"
+    "grid1   grid2";
+}
+
+.header1 {
+  grid-area: header1;
+  padding-left: 5px;
+  border-left: 5px solid green;
+}
+
+.header2 {
+  grid-area: header2;
+  padding-left: 5px;
+  border-left: 5px solid green;
+}
+
+.grid1 {
+  grid-area: grid1;
+}
+
+.grid2 {
+  grid-area: grid2;
 }
 
 .footer {

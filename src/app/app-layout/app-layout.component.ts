@@ -49,13 +49,13 @@ export class AppLayoutComponent implements OnInit  {
 
   sideMenu : {menuGroupCode: string, url: string, isCollapsed: boolean} = {menuGroupCode: '', url: '', isCollapsed: false};
 
-  //private appAlarmService = inject(AppAlarmService);
+  private appAlarmService = inject(AppAlarmService);
   private sessionService = inject(UserSessionService);
   private service = inject(AppLayoutService);
   private router = inject(Router);
 
   ngOnInit(): void {
-    //this.appAlarmService.currentMessage.subscribe(message => this.footerMessage = message);
+    this.appAlarmService.currentMessage.subscribe(message => this.footerMessage = message);
 
     this.setInitMenuGroup();
     this.setAvatar();

@@ -67,8 +67,8 @@ import { HrmCodeTypeFormComponent } from './hrm-code-type-form.component';
   </div>
 </div>
 
-<div class="content">
-    <h3 class="pgm-title">코드 분류 목록 {{drawerCodeType | json}}</h3>
+<div class="grid-2row-2col">
+    <h3 class="header1">코드 분류 목록 {{drawerCodeType | json}}</h3>
     <app-hrm-code-type-grid #gridHrmType
       [list]="gridHrmCodeTypeList"
       (rowSelected)="rowClickHrmCodeType($event)"
@@ -76,7 +76,7 @@ import { HrmCodeTypeFormComponent } from './hrm-code-type-form.component';
       (editButtonClicked)="editHrmCodeType($event)">
     </app-hrm-code-type-grid>
 
-    <h3 class="pgm-title">코드 목록 {{drawerCode | json}}</h3>
+    <h3 class="header2">코드 목록 {{drawerCode | json}}</h3>
     <app-hrm-code-grid #gridHrmTypeCode
       [list]="gridHrmCodeList"
       (rowSelected)="rowClickHrmCode($event)"
@@ -118,11 +118,6 @@ import { HrmCodeTypeFormComponent } from './hrm-code-type-form.component';
 </nz-drawer>
   `,
   styles: `
-.pgm-title {
-  padding-left: 5px;
-  border-left: 5px solid green;
-}
-
 .btn-group {
   padding: 6px;
   /*background: #fbfbfb;*/
@@ -132,11 +127,35 @@ import { HrmCodeTypeFormComponent } from './hrm-code-type-form.component';
   padding-right: 5;
 }
 
-.content {
-  height: calc(100% - 124px);
+.grid-2row-2col {
   display: grid;
-  grid-template-rows: 34px 1fr 34px 1fr;
-  grid-template-columns: 1fr;
+  height: calc(100% - 144px);
+  grid-template-rows: 34px 1fr;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 12px;
+  grid-template-areas:
+    "header1 header2"
+    "grid1   grid2";
+}
+
+.header1 {
+  grid-area: header1;
+  padding-left: 5px;
+  border-left: 5px solid green;
+}
+
+.header2 {
+  grid-area: header2;
+  padding-left: 5px;
+  border-left: 5px solid green;
+}
+
+.grid1 {
+  grid-area: grid1;
+}
+
+.grid2 {
+  grid-area: grid2;
 }
 
 .footer {
