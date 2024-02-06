@@ -8,11 +8,134 @@ import { NewDateSelectedArgs, WorkCalendarViewComponent } from './calendar-view/
 import { NewFormValue, WorkCalendarEventFormComponent } from './event/work-calendar-event-form.component';
 import { MyWorkCalendarGridComponent } from './calendar/my-work-calendar-grid.component';
 import { WorkCalendarFormComponent } from './calendar/work-calendar-form.component';
+import { CommonModule } from '@angular/common';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { CalendarModule } from 'src/app/shared-component/calendar/calendar.module';
+import { MyWorkCalendarListComponent } from './calendar/my-work-calendar-list.component';
 
 @Component({
   selector: 'app-work-calendar',
-  templateUrl: './work-calendar.component.html',
-  styleUrls: ['./work-calendar.component.css']
+  standalone: true,
+  imports: [
+    CommonModule,
+    NzDrawerModule,
+    NzButtonModule,
+    NzIconModule,
+    CalendarModule,
+    MyWorkCalendarListComponent,
+    MyWorkCalendarGridComponent,
+    WorkCalendarFormComponent,
+    WorkCalendarViewComponent,
+    WorkCalendarEventFormComponent
+  ],
+  template: `
+<button nz-button (click)="getMyWorkGroupList()">
+  <span nz-icon nzType="search" nzTheme="outline"></span>
+  조회
+</button>
+
+<button nz-button (click)="newWorkGroup()">
+  <span nz-icon nzType="form" nzTheme="outline"></span>
+  신규 CALENDAR
+</button>
+
+<button nz-button (click)="newSchedule()">
+  <span nz-icon nzType="form" nzTheme="outline"></span>
+  신규 일정
+</button>
+
+<div class="grid-wrapper">
+  <app-daypilot-calendar-navigator #navigator
+    class="navi"
+    [events]="this.eventData"
+    (selectChanged)="navigatorSelectChanged($event)">
+  </app-daypilot-calendar-navigator>
+
+  <app-my-work-calendar-grid class="title"
+      #myWorkGroupGrid
+      (rowSelected)="workGroupSelect($event)"
+      (rowDoubleClicked)="modifyWorkGroup($event)">
+  </app-my-work-calendar-grid>
+
+  <!--
+  <app-my-work-calendar-list class="title"
+    (rowSelected)="workGroupSelect($event)"
+    (rowDoubleClicked)="modifyWorkGroup($event)">
+  </app-my-work-calendar-list>
+  -->
+
+  <app-work-calendar-view
+      #workCalendar class="calendar"
+      [fkWorkCalendar]="workGroup.selectedWorkGroupId"
+      (itemSelected)="editSchedule($event)"
+      (newDateSelected)="newScheduleByDateSelect($event)"
+      (eventDataChanged)="eventDateChanged($event)"
+      (visibleRangeChanged)="calendarVisibleRangeChanged($event)"
+      (modeChanged)="modeChanged($event)">
+  </app-work-calendar-view>
+</div>
+
+<nz-drawer
+    [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
+    [nzMaskClosable]="true"
+    [nzWidth]="720"
+    [nzVisible]="schedule.visible"
+    nzTitle="일정 등록"
+    (nzOnClose)="closeScheduleDrawer()">
+
+    <app-work-calendar-event-form *nzDrawerContent
+        #workScheduleForm
+        [initLoadId]="this.schedule.selectedScheduleId"
+        [newFormValue]="this.newScheduleArgs"
+        (formSaved)="getScheduleList()"
+        (formDeleted)="getScheduleList()"
+        (formClosed)="closeScheduleDrawer()">
+    </app-work-calendar-event-form>
+</nz-drawer>
+
+<nz-drawer
+    [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
+    [nzMaskClosable]="true"
+    [nzWidth]="720"
+    [nzVisible]="workGroup.visible"
+    nzTitle="CALENDAR 등록"
+    (nzOnClose)="closeWorkGroupDrawer()">
+
+    <app-work-calendar-form *nzDrawerContent
+        #workGroupForm
+        (formSaved)="getMyWorkGroupList()"
+        (formDeleted)="getMyWorkGroupList()"
+        (formClosed)="closeWorkGroupDrawer()">
+    </app-work-calendar-form>
+</nz-drawer>
+
+  `,
+  styles: `
+.grid-wrapper {
+  height: calc(100% - 32px);
+  display: grid;
+
+  grid-template-rows: 220px 1fr;
+  grid-template-columns: 200px 1fr;
+  grid-template-areas:
+    "navi calendar"
+    "title calendar";
+}
+
+.navi {
+  grid-area: navi;
+  padding-top: 10px
+}
+.title {
+  grid-area: title;
+}
+.calendar {
+  grid-area: calendar;
+}
+
+  `
 })
 export class WorkCalendarComponent implements OnInit {
 

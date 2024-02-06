@@ -3,6 +3,20 @@ import { ArticleGridComponent } from './component/article-grid.component';
 import { BoardTreeComponent } from './component/board-tree.component';
 import { Article } from './component/article.model';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { NzTreeModule } from 'ng-zorro-antd/tree';
+import { BoardFormComponent } from './board-management/board-form.component';
+import { BoardManagementComponent } from './board-management/board-management.component';
+import { ArticleFormComponent } from './component/article-form.component';
+import { ArticleViewComponent } from './component/article-view.component';
 
 export interface TabArticle {
   tabName: string;
@@ -12,8 +26,141 @@ export interface TabArticle {
 
 @Component({
   selector: 'app-board',
-  templateUrl: './board.component.html',
-  styleUrls: ['./board.component.css']
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+
+    NzButtonModule,
+    NzDrawerModule,
+    NzTabsModule,
+    NzInputModule,
+    NzGridModule,
+    NzTreeModule,
+    NzDividerModule,
+    NzIconModule,
+
+    ArticleGridComponent,
+    BoardTreeComponent,
+    ArticleViewComponent,
+    ArticleFormComponent,
+    BoardFormComponent,
+    BoardManagementComponent
+  ],
+  template: `
+<div nz-row>
+  <div nz-col [nzXs]="12" [nzSm]="12">
+
+  </div>
+  <div nz-col style="text-align: right" [nzXs]="12" [nzSm]="12">
+    <button nz-button (click)="getBoardTree()">
+      <span nz-icon nzType="search" nzTheme="outline"></span>조회
+    </button>
+    <button nz-button (click)="newArticle()">
+      <span nz-icon nzType="form" nzTheme="outline"></span>게시글 등록
+    </button>
+  </div>
+</div>
+
+<div class="tree">
+  <h3 class="pgm-title">게시판 목록</h3>
+  <nz-input-group nzSearch [nzSuffix]="suffixIconSearch">
+    <input type="text" [(ngModel)]="queryValue" nz-input placeholder="input search text">
+  </nz-input-group>
+  <ng-template #suffixIconSearch>
+    <span nz-icon nzType="search"></span>
+  </ng-template>
+  <app-board-tree id="boardTree" #boardTree
+    [searchValue]="queryValue"
+    (itemSelected)="setBoardSelect($event)">
+  </app-board-tree>
+</div>
+
+
+<nz-tabset [(nzSelectedIndex)]="tabIndex" nzType="editable-card" nzHideAdd (nzClose)="closeTab($event)">
+  <nz-tab [nzTitle]="tabTitle">
+    <div id="grid-wrapper" class="grid">
+      <app-article-grid id="articleGrid" #articleGrid
+        (rowClicked)="selectArticle($event)"
+        (rowDoubleClicked)="addTabArticleView()"
+        (editButtonClicked)="editArticleByButton($event)">
+      </app-article-grid>
+    </div>
+  </nz-tab>
+  @for (tab of tabs; track tab.articleId) {
+  <nz-tab [nzClosable]="$index >= 0" [nzTitle]="tab.tabName">
+    <app-article-view [article]="tab.article">
+    </app-article-view>
+  </nz-tab>
+  }
+</nz-tabset>
+
+<nz-drawer
+    [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
+    [nzMaskClosable]="true"
+    [nzWidth]="'80%'"
+    [nzVisible]="drawerArticle.visible"
+    nzTitle="게시글 등록"
+    (nzOnClose)="drawerArticle.visible = false">
+    <app-article-form #articleForm *nzDrawerContent
+      [boardId]="drawerBoard.initLoadId"
+      [initLoadId]="this.drawerArticle.initLoadId"
+      (formSaved)="getArticleGridData()"
+      (formDeleted)="getArticleGridData()"
+      (formClosed)="drawerArticle.visible = false">
+    </app-article-form>
+</nz-drawer>
+
+<nz-drawer
+    [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
+    [nzMaskClosable]="true"
+    [nzWidth]="800"
+    [nzVisible]="drawerArticleView.visible"
+    nzTitle="게시글 조회"
+    (nzOnClose)="drawerArticleView.visible = false">
+    <app-article-view [article]="drawerArticleView.article" *nzDrawerContent>
+    </app-article-view>
+</nz-drawer>
+
+
+  `,
+  styles: `
+.content {
+  height: calc(100vh - 140px);
+  display: grid;
+  grid-template-rows: 24px 1fr;
+  grid-template-columns: 200px 1fr;
+}
+
+.grid {
+  height: calc(100vh - 200px);
+}
+
+.tree {
+  width: 200px;
+  height: calc(100vh - 140px);
+  float: left;
+  /*background-color:burlywood*/
+}
+
+:host ::ng-deep .ck-editor__editable {
+  min-height: 700px !important;
+}
+
+.pgm-title {
+  padding-left: 5px;
+  border-left: 5px solid green;
+}
+
+.ime {
+  -webkit-ime-mode:active;
+  -moz-ime-mode:active;
+  -ms-ime-mode:active;
+  ime-mode:active;
+}
+
+  `
 })
 export class BoardComponent implements AfterViewInit {
 
