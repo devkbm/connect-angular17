@@ -54,8 +54,8 @@ export class HrmCodeTypeGridComponent extends AggridFunction implements OnInit {
         width: 70,
         cellStyle: {'text-align': 'center'}
       },
-      { headerName: '분류ID',       field: 'typeId',          width: 150 },
-      { headerName: '분류명',       field: 'typeName',        width: 200 },
+      { headerName: '구분ID',       field: 'typeId',          width: 150 },
+      { headerName: '구분명',       field: 'typeName',        width: 200 },
       { headerName: '설명',         field: 'comment',         width: 200 },
       { headerName: '순번',         field: 'sequence',        width: 80 }
     ];
