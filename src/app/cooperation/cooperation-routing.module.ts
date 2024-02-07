@@ -20,7 +20,6 @@ const routes: Routes = [
       {path: 'team',          component: TeamComponent},
       {path: 'board',         component: BoardComponent},
       {path: 'boardm',        component: BoardManagementComponent},
-      {path: 'boarda',        component: ArticleFormComponent},
       {path: 'todo',          component: TodosComponent},
       {path: 'workcalendar',  component: WorkCalendarComponent},
     ]
