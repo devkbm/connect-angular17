@@ -2,7 +2,7 @@ import { ArticleRead } from './article-read.model';
 
 export interface Article {
   articleId: number;
-  boardId: number;
+  boardId: string;
   articleParentId: number;
   title: string;
   contents: string;

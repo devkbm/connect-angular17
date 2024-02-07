@@ -17,6 +17,7 @@ import { NzUploadChangeParam, NzUploadComponent, NzUploadFile } from 'ng-zorro-a
 import { GlobalProperty } from 'src/app/core/global-property';
 // import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { Article } from './article.model';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -154,7 +155,7 @@ export class ArticleFormComponent extends FormBase implements OnInit, AfterViewI
   textData: any;
   article!: Article;
 
-  @Input() boardId!: number;
+  @Input() boardId!: string;
 
   @ViewChild('upload', { static: true }) upload!: NzUploadComponent;
   @ViewChild('ckEditor', { static: true }) ckEditor!: CKEditorComponent;
@@ -163,8 +164,10 @@ export class ArticleFormComponent extends FormBase implements OnInit, AfterViewI
   private fb = inject(FormBuilder);
   private boardService= inject(BoardService);
 
+  private activatedRoute = inject(ActivatedRoute);
+
   override fg = this.fb.group({
-    boardId         : new FormControl<number | null>(null, { validators: [Validators.required] }),
+    boardId         : new FormControl<string | null>(null, { validators: [Validators.required] }),
     articleId       : new FormControl<number | null>(null, { validators: [Validators.required] }),
     articleParentId : new FormControl<number | null>(null),
     title           : new FormControl<string | null>(null, { validators: [Validators.required] }),
@@ -186,6 +189,10 @@ export class ArticleFormComponent extends FormBase implements OnInit, AfterViewI
 
   ngOnInit(): void {
 
+    if (this.activatedRoute.snapshot.params['boardId']) {
+      this.boardId = this.activatedRoute.snapshot.params['boardId'];
+    }
+
     if (this.initLoadId) {
       this.get(this.initLoadId);
     } else {
@@ -197,7 +204,6 @@ export class ArticleFormComponent extends FormBase implements OnInit, AfterViewI
       Authorization: sessionStorage.getItem('token')
       /*'Content-Type': 'multipart/form-data'*/
     };
-
   }
 
   ngAfterViewInit(): void {
@@ -207,7 +213,7 @@ export class ArticleFormComponent extends FormBase implements OnInit, AfterViewI
   newForm(boardId: any): void {
     this.formType = FormType.NEW;
     this.fg.reset();
-    this.fg.get('boardId')?.setValue(boardId);
+    this.fg.controls.boardId.setValue(boardId);
     this.fileList = [];
     this.textData = null;
     // console.log(this.ckEditor.editorInstance);
@@ -249,8 +255,12 @@ export class ArticleFormComponent extends FormBase implements OnInit, AfterViewI
         .saveArticleJson(this.fg.getRawValue())
         .subscribe(
           (model: ResponseObject<Article>) => {
-            console.log(model);
+            //console.log(model);
             this.formSaved.emit(this.fg.getRawValue());
+            console.log(window.opener);
+
+            window.opener.postMessage(this.boardId);
+            window.close();
           }
         );
   }

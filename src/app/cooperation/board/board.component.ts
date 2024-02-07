@@ -17,6 +17,8 @@ import { BoardFormComponent } from './board-management/board-form.component';
 import { BoardManagementComponent } from './board-management/board-management.component';
 import { ArticleFormComponent } from './component/article-form.component';
 import { ArticleViewComponent } from './component/article-view.component';
+import { WindowRef } from 'src/app/core/window-ref';
+import { Router } from '@angular/router';
 
 export interface TabArticle {
   tabName: string;
@@ -193,9 +195,26 @@ export class BoardComponent implements AfterViewInit {
 
   private message = inject(NzMessageService);
   public viewContainerRef = inject(ViewContainerRef);
+  private winRef = inject(WindowRef);
+  private router = inject(Router);
 
   ngAfterViewInit(): void {
     this.getBoardTree();
+
+    window.addEventListener('message', (event) => {
+      // 팝업에서 온 메시지가 아니라면 아무 작업도 하지 않는다.
+      //if (event.origin !== 'http://example.com') {
+      //  return;
+      //}
+
+      //console.log(event);
+      console.log(this.drawerBoard.initLoadId);
+      console.log(event.data);
+      // BoardId가 저장한 게시글의 boardId가 일치하면 재조회
+      if (this.drawerBoard.initLoadId == event.data) {
+        this.getArticleGridData();
+      }
+    }, false);
   }
 
   setBoardSelect(item: any): void {
@@ -228,8 +247,18 @@ export class BoardComponent implements AfterViewInit {
     this.tabs.push(componentRef);
     */
 
-    this.drawerArticle.initLoadId = null;
-    this.drawerArticle.visible = true;
+    // 게시글 등록 폼 팝업으로 오픈(아직 안됨)
+    const url = this.router.serializeUrl(
+      this.router.createUrlTree([`/boarda`, this.drawerBoard.initLoadId])  // /grw/boarda
+    );
+    const popOption = 'scrollbars=yes, menubar=no, resizable=no, top=0, left=0, width=800, height=800';
+    var windowObjectReference = this.winRef.nativeWindow.open(url, '_blank', popOption);
+    windowObjectReference.focus();
+
+    //this.router.navigate([url]);
+
+    //this.drawerArticle.initLoadId = null;
+    //this.drawerArticle.visible = true;
   }
 
   selectArticle(item: any) {

@@ -132,6 +132,7 @@ import { StaffSchoolCareerFormComponent } from './staff-school-career/staff-scho
         <button nz-button nzType="primary" (click)="newAppoint()">
           <span nz-icon nzType="save" nzTheme="outline"></span>발령등록
         </button>
+        @defer {
         <div class="tab-grid">
           <app-staff-appointment-record-grid
             [staffNo]="selectedStaff?.staffNo"
@@ -139,12 +140,14 @@ import { StaffSchoolCareerFormComponent } from './staff-school-career/staff-scho
             (rowDoubleClicked)="editAppointment($event)">
           </app-staff-appointment-record-grid>
         </div>
+        }
       </nz-tab>
 
       <nz-tab nzTitle="가족">
         <button nz-button nzType="primary" (click)="newFamily()">
           <span nz-icon nzType="save" nzTheme="outline"></span>가족등록
         </button>
+        @defer {
         <div class="tab-grid">
           <app-staff-family-grid
             [staffId]="selectedStaff?.staffNo"
@@ -152,12 +155,14 @@ import { StaffSchoolCareerFormComponent } from './staff-school-career/staff-scho
             (rowDoubleClicked)="editFamily($event)">
           </app-staff-family-grid>
         </div>
+        }
       </nz-tab>
 
       <nz-tab nzTitle="학력">
         <button nz-button nzType="primary" (click)="newSchoolCareer()">
           <span nz-icon nzType="save" nzTheme="outline"></span>학력등록
         </button>
+        @defer {
         <div class="tab-grid">
           <app-staff-school-career-grid
             [staffId]="selectedStaff?.staffNo"
@@ -165,12 +170,14 @@ import { StaffSchoolCareerFormComponent } from './staff-school-career/staff-scho
             (rowDoubleClicked)="editSchoolCareer($event)">
           </app-staff-school-career-grid>
         </div>
+        }
       </nz-tab>
 
       <nz-tab nzTitle="자격면허">
         <button nz-button nzType="primary" (click)="newLicense()">
           <span nz-icon nzType="save" nzTheme="outline"></span>자격면허등록
         </button>
+        @defer {
         <div class="tab-grid">
           <app-staff-license-grid
             [staffId]="selectedStaff?.staffNo"
@@ -178,13 +185,16 @@ import { StaffSchoolCareerFormComponent } from './staff-school-career/staff-scho
             (rowDoubleClicked)="editLicense($event)">
           </app-staff-license-grid>
         </div>
+        }
       </nz-tab>
 
       <nz-tab nzTitle="카드명단">
+      @defer {
         <div class="tab-grid">
           <app-staff-card-list>
           </app-staff-card-list>
         </div>
+      }
       </nz-tab>
 
     </nz-tabset>

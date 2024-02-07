@@ -77,7 +77,8 @@ export const AuthGuardChildFunction: CanActivateChildFn = (
     return loginService.getAuthToken()
                 .subscribe((model: UserToken) => {
                   const session_token = sessionStorage.getItem('token') as string;
-
+                  console.log('session_token:'+ session_token);
+                  console.log('model.sessionId:'+ model.sessionId);
                   if (session_token === model.sessionId) {
                     e.next(true);
                   } else {
