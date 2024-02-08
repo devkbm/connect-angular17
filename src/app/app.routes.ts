@@ -5,6 +5,7 @@ import { LoginComponent } from 'src/app/login/login.component';
 import { Login2Component } from 'src/app/login/login2.component';
 import { Login3Component } from 'src/app/login/login3.component';
 import { ArticleFormComponent } from './cooperation/board/component/article-form.component';
+import { ArticleViewComponent } from './cooperation/board/component/article-view.component';
 
 export const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -18,6 +19,7 @@ export const routes: Routes = [
   {path: 'system', loadChildren: () => import('src/app/system/system-management.module').then(m => m.SystemManagementModule)},
   {path: 'hrm', loadChildren: () => import('src/app/hrm/hrm.module').then(m => m.HrmModule)},
   {path: 'grw', loadChildren: () => import('src/app/cooperation/cooperation.module').then(m => m.CooperationModule)},
-  {path: 'boarda/:boardId', component: ArticleFormComponent}
+  {path: 'boarda/:boardId', component: ArticleFormComponent},
+  {path: 'boardv', component: ArticleViewComponent}
 
 ];

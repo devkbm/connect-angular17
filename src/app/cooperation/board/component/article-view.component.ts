@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
+import { Component, OnInit, Input, inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzFileUploadComponent } from 'src/app/shared-component/nz-file-upload/nz-file-upload.component';
 
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { Article } from './article.model';
 
 @Component({
@@ -34,10 +36,16 @@ import { Article } from './article.model';
 export class ArticleViewComponent implements OnInit {
 
   @Input() article?: Article;
-
   fileList: any = [];
 
+  private activatedRoute = inject(ActivatedRoute);
+
   ngOnInit() {
+
+    if (this.activatedRoute.snapshot.params['article']) {
+      this.article = JSON.parse(this.activatedRoute.snapshot.params['article']);
+    }
+
     this.fileList = this.article?.fileList ?? [];
   }
 

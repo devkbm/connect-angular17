@@ -85,7 +85,7 @@ export interface TabArticle {
     <div id="grid-wrapper" class="grid">
       <app-article-grid id="articleGrid" #articleGrid
         (rowClicked)="selectArticle($event)"
-        (rowDoubleClicked)="addTabArticleView()"
+        (rowDoubleClicked)="showAriticle()"
         (editButtonClicked)="editArticleByButton($event)">
       </app-article-grid>
     </div>
@@ -169,17 +169,19 @@ export class BoardComponent implements AfterViewInit {
   @ViewChild(BoardTreeComponent) boardTree!: BoardTreeComponent;
   @ViewChild(ArticleGridComponent) articleGrid!: ArticleGridComponent;
 
-  drawerBoard: { visible: boolean, initLoadId: any } = {
+  drawerBoard: {visible: boolean, initLoadId: any} = {
     visible: false,
     initLoadId: null
   }
 
-  drawerArticle: { visible: boolean, initLoadId: any } = {
+  drawerArticle: {use: boolean, visible: boolean, initLoadId: any} = {
+    use: false,
     visible: false,
     initLoadId: null
   }
 
-  drawerArticleView: { visible: boolean, article: any} = {
+  drawerArticleView: {use: boolean, visible: boolean, article: any} = {
+    use: false,
     visible: false,
     article: null
   }
@@ -242,23 +244,23 @@ export class BoardComponent implements AfterViewInit {
       return;
     }
 
-    /*
-    const componentRef = this.viewContainerRef.createComponent(ArticleFormComponent);
-    this.tabs.push(componentRef);
-    */
+    if (this.drawerArticle.use) {
+      this.drawerArticle.initLoadId = null;
+      this.drawerArticle.visible = true;
+    } else {
+      this.popupNewArticle();
+    }
 
-    // 게시글 등록 폼 팝업으로 오픈(아직 안됨)
+  }
+
+  popupNewArticle() {
+    // 게시글 등록 폼 팝업으로 오픈
     const url = this.router.serializeUrl(
       this.router.createUrlTree([`/boarda`, this.drawerBoard.initLoadId])  // /grw/boarda
     );
     const popOption = 'scrollbars=yes, menubar=no, resizable=no, top=0, left=0, width=800, height=800';
     var windowObjectReference = this.winRef.nativeWindow.open(url, '_blank', popOption);
     windowObjectReference.focus();
-
-    //this.router.navigate([url]);
-
-    //this.drawerArticle.initLoadId = null;
-    //this.drawerArticle.visible = true;
   }
 
   selectArticle(item: any) {
@@ -274,6 +276,23 @@ export class BoardComponent implements AfterViewInit {
     }
 
     this.drawerArticle.visible = true;
+  }
+
+  showAriticle() {
+    if (this.drawerArticleView.use) {
+      this.addTabArticleView();
+    } else {
+      this.popupArticleView();
+    }
+  }
+
+  popupArticleView() {
+    const url = this.router.serializeUrl(
+      this.router.createUrlTree([`/boardv`, {article: JSON.stringify(this.drawerArticleView.article)}])  // /grw/boarda
+    );
+    const popOption = 'scrollbars=yes, menubar=no, resizable=no, top=0, left=0, width=800, height=800';
+    var windowObjectReference = this.winRef.nativeWindow.open(url, '_blank', popOption);
+    windowObjectReference.focus();
   }
 
   addTabArticleView(): void {
