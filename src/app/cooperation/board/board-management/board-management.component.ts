@@ -6,7 +6,7 @@ import { NzTreeNodeOptions } from 'ng-zorro-antd/tree';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 
 import { BoardFormComponent } from './board-form.component';
-import { BoardTreeComponent } from '../component/board-tree.component';
+import { BoardTreeComponent } from '../board-hierarcy/board-tree.component';
 
 
 @Component({

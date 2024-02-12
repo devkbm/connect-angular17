@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ViewChild, ViewContainerRef, inject } from '@angular/core';
-import { ArticleGridComponent } from './component/article-grid.component';
-import { BoardTreeComponent } from './component/board-tree.component';
-import { Article } from './component/article.model';
+import { ArticleGridComponent } from './article/article-grid.component';
+import { BoardTreeComponent } from './board-hierarcy/board-tree.component';
+import { Article } from './article/article.model';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -15,8 +15,8 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzTreeModule } from 'ng-zorro-antd/tree';
 import { BoardFormComponent } from './board-management/board-form.component';
 import { BoardManagementComponent } from './board-management/board-management.component';
-import { ArticleFormComponent } from './component/article-form.component';
-import { ArticleViewComponent } from './component/article-view.component';
+import { ArticleFormComponent } from './article/article-form.component';
+import { ArticleViewComponent } from './article/article-view.component';
 import { WindowRef } from 'src/app/core/window-ref';
 import { Router } from '@angular/router';
 

@@ -4,8 +4,8 @@ import { AuthGuardChildFunction } from 'src/app/core/service/auth-guard.service'
 import { LoginComponent } from 'src/app/login/login.component';
 import { Login2Component } from 'src/app/login/login2.component';
 import { Login3Component } from 'src/app/login/login3.component';
-import { ArticleFormComponent } from './cooperation/board/component/article-form.component';
-import { ArticleViewComponent } from './cooperation/board/component/article-view.component';
+import { ArticleFormComponent } from './cooperation/board/article/article-form.component';
+import { ArticleViewComponent } from './cooperation/board/article/article-view.component';
 
 export const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},

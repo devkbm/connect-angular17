@@ -9,7 +9,7 @@ import { ResponseList } from 'src/app/core/model/response-list';
 
 import { FirstDataRenderedEvent, GridSizeChangedEvent, RowClickedEvent, RowDoubleClickedEvent, SelectionChangedEvent } from 'ag-grid-community';
 
-import { BoardService } from './board.service';
+import { ArticleService } from './article.service';
 import { Article } from './article.model';
 import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-renderer.component';
 
@@ -50,7 +50,7 @@ export class ArticleGridComponent extends AggridFunction implements OnInit {
   editButtonClicked = new EventEmitter();
 
   private appAlarmService = inject(AppAlarmService);
-  private boardService = inject(BoardService);
+  private boardService = inject(ArticleService);
 
   ngOnInit() {
     this.columnDefs = [

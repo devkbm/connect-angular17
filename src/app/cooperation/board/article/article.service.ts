@@ -8,30 +8,16 @@ import { ResponseList } from '../../../core/model/response-list';
 
 import { Board } from './board.model';
 import { Article } from './article.model';
-import { BoardHierarchy } from './board-hierarchy.model';
 import { GlobalProperty } from 'src/app/core/global-property';
+
 
 @Injectable({
   providedIn: 'root'
 })
-export class BoardService extends DataService {
+export class ArticleService extends DataService {
 
   constructor() {
       super('/api/grw');
-  }
-
-  getBoardTypeList(): Observable<ResponseList<any>> {
-    const url = `${this.API_URL}/board/boardType`;
-    const options = {
-      headers: this.getAuthorizedHttpHeaders(),
-      withCredentials: true
-    };
-
-    return this.http
-      .get<ResponseList<any>>(url, options)
-      .pipe(
-      //catchError((err) => Observable.throw(err))
-      );
   }
 
   getBoardList(): Observable<ResponseList<Board>> {
@@ -48,62 +34,6 @@ export class BoardService extends DataService {
       );
   }
 
-  getBoard(id: string): Observable<ResponseObject<Board>> {
-    const url = `${this.API_URL}/board/${id}`;
-    const options = {
-        headers: this.getAuthorizedHttpHeaders(),
-        withCredentials: true
-      };
-
-    return this.http
-      .get<ResponseObject<Board>>(url, options)
-      .pipe(
-          //catchError((err) => Observable.throw(err))
-      );
-  }
-
-  getBoardHierarchy(): Observable<ResponseList<BoardHierarchy>> {
-    const url = `${this.API_URL}/boardHierarchy`;
-    const options = {
-      headers: this.getAuthorizedHttpHeaders(),
-      withCredentials: true
-    };
-
-    return this.http
-      .get<ResponseList<BoardHierarchy>>(url, options)
-      .pipe(
-        //catchError((err) => Observable.throw(err))
-      );
-  }
-
-  saveBoard(board: Board): Observable<ResponseObject<Board>> {
-    const url = `${this.API_URL}/board`;
-    const options = {
-      headers: this.getAuthorizedHttpHeaders(),
-      withCredentials: true
-    };
-
-    return this.http
-    .post<ResponseObject<Board>>(url, board, options)
-    .pipe(
-//      catchError((err) => Observable.throw(err))
-    );
-
-  }
-
-  deleteBoard(board: Board): Observable<ResponseObject<Board>> {
-    const url = `${this.API_URL}/board/${board.boardId}`;
-    const options = {
-      headers: this.getAuthorizedHttpHeaders(),
-      withCredentials: true
-    };
-
-    return this.http
-      .delete<ResponseObject<Board>>(url, options)
-      .pipe(
-  //      catchError((err) => Observable.throw(err))
-      );
-  }
 
   getArticleList(boardId: string, title?: string, contents?: string): Observable<ResponseList<Article>> {
     let url = `${this.API_URL}/board/article?boardId=${boardId}`;

@@ -13,13 +13,14 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { AfterViewInit, Component, OnChanges, OnInit, SimpleChanges, ViewChild, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { BoardService } from '../component/board.service';
+import { BoardManagementService } from './board-management.service';
 
 import { ResponseObject } from 'src/app/core/model/response-object';
-import { Board } from '../component/board.model';
-import { BoardHierarchy } from '../component/board-hierarchy.model';
+import { BoardManagement } from './board-management.model';
+import { BoardHierarchy } from '../board-hierarcy/board-hierarchy.model';
 import { ResponseList } from 'src/app/core/model/response-list';
 import { FormBase, FormType } from 'src/app/core/form/form-base';
+
 
 @Component({
   selector: 'app-board-form',
@@ -167,7 +168,7 @@ export class BoardFormComponent extends FormBase implements OnInit, OnChanges, A
   boardTypeList: any;
 
   private fb = inject(FormBuilder);
-  private service = inject(BoardService);
+  private service = inject(BoardManagementService);
 
   override fg = this.fb.group({
     boardId         : new FormControl<string | null>(null),
@@ -209,7 +210,7 @@ export class BoardFormComponent extends FormBase implements OnInit, OnChanges, A
     this.boardName.focus();
   }
 
-  modifyForm(formData: Board): void {
+  modifyForm(formData: BoardManagement): void {
     this.formType = FormType.MODIFY;
 
     this.fg.controls.boardId.disable();
@@ -224,7 +225,7 @@ export class BoardFormComponent extends FormBase implements OnInit, OnChanges, A
   get(id: string): void {
     this.service.getBoard(id)
         .subscribe(
-          (model: ResponseObject<Board>) => {
+          (model: ResponseObject<BoardManagement>) => {
             if (model.data) {
               this.modifyForm(model.data);
             } else {
@@ -238,7 +239,7 @@ export class BoardFormComponent extends FormBase implements OnInit, OnChanges, A
     this.service
         .saveBoard(this.fg.getRawValue())
         .subscribe(
-          (model: ResponseObject<Board>) => {
+          (model: ResponseObject<BoardManagement>) => {
             this.formSaved.emit(this.fg.getRawValue());
           }
         );
@@ -248,7 +249,7 @@ export class BoardFormComponent extends FormBase implements OnInit, OnChanges, A
     this.service
         .deleteBoard(this.fg.getRawValue())
         .subscribe(
-          (model: ResponseObject<Board>) => {
+          (model: ResponseObject<BoardManagement>) => {
             console.log(model);
             this.formDeleted.emit(this.fg.getRawValue());
           }

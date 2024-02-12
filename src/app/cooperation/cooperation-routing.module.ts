@@ -10,7 +10,7 @@ import { TeamComponent } from './team/team.component';
 import { BoardComponent } from './board/board.component';
 import { TodosComponent } from './todo/todos.component';
 import { WorkCalendarComponent } from './work-calendar/work-calendar.component';
-import { ArticleFormComponent } from './board/component/article-form.component';
+import { ArticleFormComponent } from './board/article/article-form.component';
 
 const routes: Routes = [
   {

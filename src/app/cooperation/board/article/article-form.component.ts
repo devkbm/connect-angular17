@@ -9,7 +9,7 @@ import { NzFileUploadComponent } from 'src/app/shared-component/nz-file-upload/n
 import { AfterViewInit, Component, HostListener, Input, OnInit, ViewChild, inject } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ChangeEvent, CKEditorComponent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
-import { BoardService } from './board.service';
+import { ArticleService } from './article.service';
 
 import { ResponseObject } from '../../../core/model/response-object';
 import { FormBase, FormType } from 'src/app/core/form/form-base';
@@ -162,7 +162,7 @@ export class ArticleFormComponent extends FormBase implements OnInit, AfterViewI
   @ViewChild('title', { static: true }) title!: NzInputTextComponent;
 
   private fb = inject(FormBuilder);
-  private boardService= inject(BoardService);
+  private boardService= inject(ArticleService);
 
   private activatedRoute = inject(ActivatedRoute);
 
