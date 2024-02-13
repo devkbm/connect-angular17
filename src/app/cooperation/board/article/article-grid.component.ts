@@ -33,7 +33,7 @@ import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-rende
       (gridSizeChanged)="onGridSizeChanged($event)"
       (rowClicked)="rowClickedEvent($event)"
       (rowDoubleClicked)="rowDbClicked($event)">
-  </ag-grid-angular>
+    </ag-grid-angular>
   `
 })
 export class ArticleGridComponent extends AggridFunction implements OnInit {

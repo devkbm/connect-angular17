@@ -19,6 +19,7 @@ import { ArticleFormComponent } from './article/article-form.component';
 import { ArticleViewComponent } from './article/article-view.component';
 import { WindowRef } from 'src/app/core/window-ref';
 import { Router } from '@angular/router';
+import { ArticleListComponent } from './article/article-list.component';
 
 export interface TabArticle {
   tabName: string;
@@ -48,7 +49,8 @@ export interface TabArticle {
     ArticleViewComponent,
     ArticleFormComponent,
     BoardFormComponent,
-    BoardManagementComponent
+    BoardManagementComponent,
+    ArticleListComponent
   ],
   template: `
 <div nz-row>
@@ -83,11 +85,16 @@ export interface TabArticle {
 <nz-tabset [(nzSelectedIndex)]="tabIndex" nzType="editable-card" nzHideAdd (nzClose)="closeTab($event)">
   <nz-tab [nzTitle]="tabTitle">
     <div id="grid-wrapper" class="grid">
+<!--
       <app-article-grid id="articleGrid" #articleGrid
         (rowClicked)="selectArticle($event)"
         (rowDoubleClicked)="showAriticle()"
         (editButtonClicked)="editArticleByButton($event)">
       </app-article-grid>
+-->
+      <app-article-list [boardId]="drawerBoard.initLoadId">
+
+      </app-article-list>
     </div>
   </nz-tab>
   @for (tab of tabs; track tab.articleId) {
