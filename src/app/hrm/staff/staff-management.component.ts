@@ -132,7 +132,7 @@ import { StaffSchoolCareerFormComponent } from './staff-school-career/staff-scho
         <button nz-button nzType="primary" (click)="newAppoint()">
           <span nz-icon nzType="save" nzTheme="outline"></span>발령등록
         </button>
-        @defer {
+        @defer (on idle) {
         <div class="tab-grid">
           <app-staff-appointment-record-grid
             [staffNo]="selectedStaff?.staffNo"
@@ -162,7 +162,7 @@ import { StaffSchoolCareerFormComponent } from './staff-school-career/staff-scho
         <button nz-button nzType="primary" (click)="newSchoolCareer()">
           <span nz-icon nzType="save" nzTheme="outline"></span>학력등록
         </button>
-        @defer {
+        @defer (on idle) {
         <div class="tab-grid">
           <app-staff-school-career-grid
             [staffId]="selectedStaff?.staffNo"
@@ -177,7 +177,7 @@ import { StaffSchoolCareerFormComponent } from './staff-school-career/staff-scho
         <button nz-button nzType="primary" (click)="newLicense()">
           <span nz-icon nzType="save" nzTheme="outline"></span>자격면허등록
         </button>
-        @defer {
+        @defer (on idle) {
         <div class="tab-grid">
           <app-staff-license-grid
             [staffId]="selectedStaff?.staffNo"
@@ -189,7 +189,7 @@ import { StaffSchoolCareerFormComponent } from './staff-school-career/staff-scho
       </nz-tab>
 
       <nz-tab nzTitle="카드명단">
-      @defer {
+      @defer (on idle) {
         <div class="tab-grid">
           <app-staff-card-list>
           </app-staff-card-list>
