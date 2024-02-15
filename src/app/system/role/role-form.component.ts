@@ -17,7 +17,7 @@ import { RoleGridComponent } from './role-grid.component';
 
 
 @Component({
-  selector: 'app-authority-form',
+  selector: 'app-role-form',
   standalone: true,
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule,

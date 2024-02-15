@@ -31,7 +31,7 @@
 }
 
 .header {
-  height: var(--header-height);
+  height: var(--app-header-height);
   padding: 0;
   margin: 0;
   align-content: center;
@@ -60,13 +60,13 @@
 }
 
 .main-content {
-  margin-top: var(--content-margin-height);
+  margin-top: var(--app-content-margin-height);
   margin-right: 12px;
   margin-bottom: 0px;
   margin-left: 12px;
   background-color: black;
   /* 헤더, 본문 margin, 푸터를 제외한 높이로 설정 */
-  height: calc(100vh - (var(--header-height) + var(--content-margin-height) + var(--footer-height)));
+  height: calc(100vh - (var(--app-header-height) + var(--app-content-margin-height) + var(--app-footer-height)));
   width: auto;
   overflow-y: auto;
 }
@@ -74,7 +74,7 @@
 .footer {
   position: sticky;
   margin: 0px;
-  height: var(--footer-height);
+  height: var(--app-footer-height);
   text-align: center;
   vertical-align: middle;
   background-color: black;

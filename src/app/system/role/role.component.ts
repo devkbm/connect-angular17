@@ -46,38 +46,43 @@ import { RoleFormComponent } from './role-form.component';
     RoleFormComponent
   ],
   template: `
-<app-nz-page-header-custom title="롤 등록" subtitle="This is a subtitle"></app-nz-page-header-custom>
+<div class="page-header">
+  <app-nz-page-header-custom class="page-header" title="롤 등록" subtitle="This is a subtitle"></app-nz-page-header-custom>
+</div>
 
-<app-nz-search-area>
-  <div nz-col [nzSpan]="12">
-    <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate" [nzSuffix]="suffixIconSearch">
-      <input type="text" [(ngModel)]="queryValue" nz-input placeholder="input search text" (keyup.enter)="getRoleList()">
-    </nz-input-group>
-    <ng-template #addOnBeforeTemplate>
-      <nz-select [(ngModel)]="queryKey">
-        @for (option of queryOptionList; track option.value) {
-        <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
-        }
-      </nz-select>
-    </ng-template>
-    <ng-template #suffixIconSearch>
-      <span nz-icon nzType="search"></span>
-    </ng-template>
-  </div>
+<div class="page-search">
+  <app-nz-search-area>
+    <div nz-col [nzSpan]="12">
+      <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate" [nzSuffix]="suffixIconSearch">
+        <input type="text" [(ngModel)]="queryValue" nz-input placeholder="input search text" (keyup.enter)="getRoleList()">
+      </nz-input-group>
+      <ng-template #addOnBeforeTemplate>
+        <nz-select [(ngModel)]="queryKey">
+          @for (option of queryOptionList; track option.value) {
+          <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+          }
+        </nz-select>
+      </ng-template>
+      <ng-template #suffixIconSearch>
+        <span nz-icon nzType="search"></span>
+      </ng-template>
+    </div>
 
-  <div nz-col [nzSpan]="12" style="text-align: right;">
-    <app-nz-buttons [buttons]="buttons"></app-nz-buttons>
-  </div>
-</app-nz-search-area>
+    <div nz-col [nzSpan]="12" style="text-align: right;">
+      <app-nz-buttons [buttons]="buttons"></app-nz-buttons>
+    </div>
+  </app-nz-search-area>
+</div>
+
 
 <h3 class="grid-title">롤 목록</h3>
 
-<div class="grid-wrapper">
-  <app-authority-grid #authGrid
+<div class="grid-div">
+  <app-role-grid #authGrid
     (rowClicked)="selectedItem($event)"
     (editButtonClicked)="editDrawOpen($event)"
     (rowDoubleClicked)="editDrawOpen($event)">
-  </app-authority-grid>
+  </app-role-grid>
 </div>
 
 
@@ -88,19 +93,31 @@ import { RoleFormComponent } from './role-form.component';
   [nzVisible]="drawerRole.visible"
   nzTitle="롤 등록"
   (nzOnClose)="closeDrawer()">
-    <app-authority-form #form *nzDrawerContent
+    <app-role-form #form *nzDrawerContent
       [initLoadId]="drawerRole.initLoadId"
       (formSaved)="getRoleList()"
       (formDeleted)="getRoleList()"
       (formClosed)="closeDrawer()">
-    </app-authority-form>
+    </app-role-form>
 </nz-drawer>
-
-
   `,
   styles: `
+:host {
+  --page-header-height: 98px;
+  --page-search-height: 46px;
+  --page-grid-title-height: 16px;
+}
+
+.page-header {
+  height: var(--page-header-height);
+}
+
+.page-search {
+  height: var(--page-search-height);
+}
+
 .grid-title {
-  height: 16px;
+  height: var(--page-grid-title-height);
   margin-top: 6px;
   margin-left: 6px;
   padding-left: 6px;
@@ -109,8 +126,13 @@ import { RoleFormComponent } from './role-form.component';
 }
 
 /* 페이지 헤더 98px, 조회조건 46px, 그리드 제목 26px, 푸터 24px 제외 */
-.grid-wrapper {
-  height: calc(100% - 194px)
+.grid-div {
+  height: calc(100vh - (var(--app-header-height) +
+                        var(--app-footer-height) +
+                        var(--page-header-height) +
+                        var(--page-search-height) +
+                        var(--page-grid-title-height) * 2)
+              )
 }
 
 [nz-button] {

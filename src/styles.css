@@ -6,9 +6,9 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 
 :root {
-  --header-height: 64px;
-  --footer-height: 24px;
-  --content-margin-height: 0px;
+  --app-header-height: 64px;
+  --app-footer-height: 24px;
+  --app-content-margin-height: 0px;
 
   --color: black;
   --ck-color-base-foreground: black;

@@ -13,7 +13,7 @@ import { Role } from './role.model';
 import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-renderer.component';
 
 @Component({
-  selector: 'app-authority-grid',
+  selector: 'app-role-grid',
   standalone: true,
   imports: [ CommonModule, AgGridModule, NzSpinModule ],
   template: `
@@ -22,7 +22,7 @@ import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-rende
         [ngStyle]="style"
         class="ag-theme-balham-dark"
         rowSelection="single"
-        [rowData]="authorityList"
+        [rowData]="roleList"
         [columnDefs]="columnDefs"
         [defaultColDef]="defaultColDef"
         [getRowId]="getRowId"
@@ -55,7 +55,7 @@ import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-rende
 export class RoleGridComponent extends AggridFunction implements OnInit {
 
   isLoading: boolean = false;
-  authorityList: Role[] = [];
+  roleList: Role[] = [];
 
   @Output() rowClicked = new EventEmitter();
   @Output() rowDoubleClicked = new EventEmitter();
@@ -117,10 +117,10 @@ export class RoleGridComponent extends AggridFunction implements OnInit {
         .subscribe(
           (model: ResponseList<Role>) => {
             if (model.total > 0) {
-              this.authorityList = model.data;
+              this.roleList = model.data;
               this.sizeToFit();
             } else {
-              this.authorityList = [];
+              this.roleList = [];
             }
             this.isLoading = false;
             this.appAlarmService.changeMessage(model.message);
