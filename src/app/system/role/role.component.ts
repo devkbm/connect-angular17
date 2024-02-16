@@ -74,17 +74,17 @@ import { RoleFormComponent } from './role-form.component';
   </app-nz-search-area>
 </div>
 
+<div class="page-content-title">
+  <h3 class="grid-title">롤 목록</h3>
+</div>
 
-<h3 class="grid-title">롤 목록</h3>
-
-<div class="grid-div">
+<div class="page-content">
   <app-role-grid #authGrid
     (rowClicked)="selectedItem($event)"
     (editButtonClicked)="editDrawOpen($event)"
     (rowDoubleClicked)="editDrawOpen($event)">
   </app-role-grid>
 </div>
-
 
 <nz-drawer #drawer
   [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px'}"
@@ -105,7 +105,9 @@ import { RoleFormComponent } from './role-form.component';
 :host {
   --page-header-height: 98px;
   --page-search-height: 46px;
-  --page-grid-title-height: 16px;
+  --page-content-title-height: 26px;
+  --page-content-title-margin-height: 6px;
+  --page-content-margin-height: 6px;
 }
 
 .page-header {
@@ -116,23 +118,31 @@ import { RoleFormComponent } from './role-form.component';
   height: var(--page-search-height);
 }
 
+.page-content-title {
+  height: var(--page-content-title-height);
+}
+
 .grid-title {
-  height: var(--page-grid-title-height);
-  margin-top: 6px;
+  margin-top: var(--page-content-title-margin-height);
   margin-left: 6px;
-  padding-left: 6px;
   border-left: 6px solid green;
+  padding-left: 6px;
   vertical-align: text-top;
 }
 
-/* 페이지 헤더 98px, 조회조건 46px, 그리드 제목 26px, 푸터 24px 제외 */
-.grid-div {
-  height: calc(100vh - (var(--app-header-height) +
+.page-content {
+  --margin-height: 6px;
+  margin-top: var(--page-content-margin-height);
+  height: calc(100vh - (
+                        var(--app-header-height) +
                         var(--app-footer-height) +
                         var(--page-header-height) +
                         var(--page-search-height) +
-                        var(--page-grid-title-height) * 2)
-              )
+                        var(--page-content-title-height) +
+                        var(--page-content-title-margin-height) +
+                        var(--page-content-margin-height)
+                       )
+              );
 }
 
 [nz-button] {
@@ -182,22 +192,18 @@ export class RoleComponent extends AppBase implements AfterViewInit {
     }
   }];
 
-
-  ngOnInit(): void {
-  }
-
   ngAfterViewInit(): void {
   }
 
-  openDrawer(): void {
+  openDrawer() {
     this.drawerRole.visible = true;
   }
 
-  closeDrawer(): void {
+  closeDrawer() {
     this.drawerRole.visible = false;
   }
 
-  selectedItem(data: any): void {
+  selectedItem(data: any) {
     if (data) {
       this.drawerRole.initLoadId = data.roleCode;
     } else {
@@ -205,17 +211,17 @@ export class RoleComponent extends AppBase implements AfterViewInit {
     }
   }
 
-  initForm(): void {
+  initForm() {
     this.drawerRole.initLoadId = null;
 
     this.openDrawer();
   }
 
-  editDrawOpen(item: any): void {
+  editDrawOpen(item: any) {
     this.openDrawer();
   }
 
-  getRoleList(): void {
+  getRoleList() {
     let params: any = new Object();
     if ( this.queryValue !== '') {
       params[this.queryKey] = this.queryValue;
@@ -225,7 +231,7 @@ export class RoleComponent extends AppBase implements AfterViewInit {
     this.grid?.getList(params);
   }
 
-  delete(): void {
+  delete() {
     const id = this.grid.getSelectedRows()[0].roleCode;
 
     this.service
