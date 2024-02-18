@@ -34,10 +34,12 @@ import { DeptSelectComponent } from './dept-select.component';
     DeptFormComponent
   ],
   template: `
-<app-nz-page-header-custom title="부서코드 등록" subtitle="This is a subtitle"></app-nz-page-header-custom>
+<div class="page-header">
+  <app-nz-page-header-custom title="부서코드 등록" subtitle="This is a subtitle"></app-nz-page-header-custom>
+</div>
 
-<!--조회 조건-->
-<div nz-row class="btn-group">
+
+<div nz-row class="page-search">
   <div nz-col [nzSpan]="12">
     <nz-input-group nzSearch [nzSuffix]="suffixIconSearch">
       <input type="text" [(ngModel)]="queryValue" nz-input placeholder="input search text">
@@ -73,8 +75,9 @@ import { DeptSelectComponent } from './dept-select.component';
   </div>
 </div>
 
-<!-- -->
-<h3 class="pgm-title">부서코드 목록</h3>
+<div class="page-content-title">
+  <h3 class="grid-title">부서코드 목록</h3>
+</div>
 
 <div class="grid-wrapper">
   <app-dept-tree
@@ -90,6 +93,49 @@ import { DeptSelectComponent } from './dept-select.component';
 
   `,
   styles: `
+:host {
+  --page-header-height: 98px;
+  --page-search-height: 46px;
+  --page-content-title-height: 26px;
+  --page-content-title-margin-height: 6px;
+  --page-content-margin-height: 6px;
+}
+
+.page-header {
+  height: var(--page-header-height);
+}
+
+.page-search {
+  height: var(--page-search-height);
+}
+
+.page-content-title {
+  height: var(--page-content-title-height);
+}
+
+.grid-title {
+  margin-top: var(--page-content-title-margin-height);
+  margin-left: 6px;
+  border-left: 6px solid green;
+  padding-left: 6px;
+  vertical-align: text-top;
+}
+
+.page-content {
+  --margin-height: 6px;
+  margin-top: var(--page-content-margin-height);
+  height: calc(100vh - (
+                        var(--app-header-height) +
+                        var(--app-footer-height) +
+                        var(--page-header-height) +
+                        var(--page-search-height) +
+                        var(--page-content-title-height) +
+                        var(--page-content-title-margin-height) +
+                        var(--page-content-margin-height)
+                       )
+              );
+}
+
 .pgm-title {
   padding-left: 5px;
   border-left: 5px solid green;
