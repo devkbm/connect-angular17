@@ -48,48 +48,55 @@ import { UserProfileComponent } from './user-profile.component';
     UserProfileComponent
   ],
   template: `
-<app-nz-page-header-custom title="사용자 등록" subtitle="This is a subtitle"></app-nz-page-header-custom>
+<div class="page-header">
+  <app-nz-page-header-custom title="사용자 등록" subtitle="This is a subtitle"></app-nz-page-header-custom>
+</div>
 
-<app-nz-search-area>
-  <div nz-col [nzSpan]="12">
-    <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate" [nzSuffix]="suffixIconSearch">
-        <input type="text" [(ngModel)]="query.value" nz-input placeholder="input search text" (keyup.enter)="getUserList()">
-    </nz-input-group>
-    <ng-template #addOnBeforeTemplate>
-      <nz-select [(ngModel)]="query.key">
-        @for (option of query.list; track option.value) {
-        <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
-        }
-      </nz-select>
-    </ng-template>
-    <ng-template #suffixIconSearch>
-        <span nz-icon nzType="search"></span>
-    </ng-template>
-  </div>
-  <div nz-col [nzSpan]="12" style="text-align: right;">
-    <!--<app-nz-buttons [buttons]="buttons"></app-nz-buttons>-->
+<div class="page-search">
+  <app-nz-search-area>
+    <div nz-col [nzSpan]="12">
+      <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate" [nzSuffix]="suffixIconSearch">
+          <input type="text" [(ngModel)]="query.value" nz-input placeholder="input search text" (keyup.enter)="getUserList()">
+      </nz-input-group>
+      <ng-template #addOnBeforeTemplate>
+        <nz-select [(ngModel)]="query.key">
+          @for (option of query.list; track option.value) {
+          <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+          }
+        </nz-select>
+      </ng-template>
+      <ng-template #suffixIconSearch>
+          <span nz-icon nzType="search"></span>
+      </ng-template>
+    </div>
+    <div nz-col [nzSpan]="12" style="text-align: right;">
+      <!--<app-nz-buttons [buttons]="buttons"></app-nz-buttons>-->
 
-    <button nz-button (click)="test()">
-      <span nz-icon nzType="search"></span>구글 로그인
-    </button>
-    <button nz-button (click)="getUserList()">
-      <span nz-icon nzType="search"></span>조회
-    </button>
-    <nz-divider nzType="vertical"></nz-divider>
-    <button nz-button (click)="newForm()">
-      <span nz-icon nzType="form" nzTheme="outline"></span>신규
-    </button>
-    <nz-divider nzType="vertical"></nz-divider>
-    <button nz-button nzDanger="true"
-      nz-popconfirm nzPopconfirmTitle="삭제하시겠습니까?"
-      (nzOnConfirm)="deleteUser()" (nzOnCancel)="false">
-        <span nz-icon nzType="delete" nzTheme="outline"></span>삭제
-    </button>
-  </div>
-</app-nz-search-area>
+      <button nz-button (click)="test()">
+        <span nz-icon nzType="search"></span>구글 로그인
+      </button>
+      <button nz-button (click)="getUserList()">
+        <span nz-icon nzType="search"></span>조회
+      </button>
+      <nz-divider nzType="vertical"></nz-divider>
+      <button nz-button (click)="newForm()">
+        <span nz-icon nzType="form" nzTheme="outline"></span>신규
+      </button>
+      <nz-divider nzType="vertical"></nz-divider>
+      <button nz-button nzDanger="true"
+        nz-popconfirm nzPopconfirmTitle="삭제하시겠습니까?"
+        (nzOnConfirm)="deleteUser()" (nzOnCancel)="false">
+          <span nz-icon nzType="delete" nzTheme="outline"></span>삭제
+      </button>
+    </div>
+  </app-nz-search-area>
+</div>
 
-<h3 class="grid-title">사용자 목록</h3>
-<div class="grid-wrapper">
+<div class="page-content-title">
+  <h3 class="grid-title">사용자 목록</h3>
+</div>
+
+<div class="page-content">
   <app-user-grid #userGrid
     (rowClicked)="userGridSelected($event)"
     (editButtonClicked)="editForm($event)"
@@ -115,19 +122,47 @@ import { UserProfileComponent } from './user-profile.component';
 
   `,
   styles: `
+:host {
+  --page-header-height: 98px;
+  --page-search-height: 46px;
+  --page-content-title-height: 26px;
+  --page-content-title-margin-height: 6px;
+  --page-content-margin-height: 6px;
+}
+
+.page-header {
+  height: var(--page-header-height);
+}
+
+.page-search {
+  height: var(--page-search-height);
+}
+
+.page-content-title {
+  height: var(--page-content-title-height);
+}
+
 .grid-title {
-  height: 26px;
-  margin-top: 6px;
+  margin-top: var(--page-content-title-margin-height);
   margin-left: 6px;
-  padding-left: 6px;
   border-left: 6px solid green;
+  padding-left: 6px;
   vertical-align: text-top;
 }
 
-/* 페이지 헤더 98px, 조회조건 46px, 그리드 제목 26px, 푸터 24px 제외 */
-.grid-wrapper {
-  /*height: calc(100% - 194px)*/
-  height: calc(100% - 194px)
+.page-content {
+  --margin-height: 6px;
+  margin-top: var(--page-content-margin-height);
+  height: calc(100vh - (
+                        var(--app-header-height) +
+                        var(--app-footer-height) +
+                        var(--page-header-height) +
+                        var(--page-search-height) +
+                        var(--page-content-title-height) +
+                        var(--page-content-title-margin-height) +
+                        var(--page-content-margin-height)
+                       )
+              );
 }
 
 [nz-button] {
