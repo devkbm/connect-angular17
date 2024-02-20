@@ -49,75 +49,81 @@ import { WordFormComponent } from './word-form.component';
     WordGridComponent
   ],
   template: `
-<app-nz-page-header-custom title="용어사전 등록" subtitle="This is a subtitle"></app-nz-page-header-custom>
+<div class="page-header">
+  <app-nz-page-header-custom title="용어사전 등록" subtitle="This is a subtitle"></app-nz-page-header-custom>
+</div>
 
-<app-nz-search-area>
-  <div nz-col [nzSpan]="12">
-    <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate" [nzSuffix]="suffixIconSearch">
-      <input type="text" [(ngModel)]="query.value" nz-input placeholder="input search text" (keyup.enter)="getTermList()">
-    </nz-input-group>
-    <ng-template #addOnBeforeTemplate>
-      <nz-select [(ngModel)]="query.key">
-        @for (option of query.list; track option.value) {
-        <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
-        }
-      </nz-select>
-    </ng-template>
-    <ng-template #suffixIconSearch>
-      <span nz-icon nzType="search"></span>
-    </ng-template>
-  </div>
-  <div nz-col [nzSpan]="12" style="text-align: right;">
-    <button nz-button (click)="getTermList()">
-      <span nz-icon nzType="search"></span>조회
-    </button>
-    <nz-divider nzType="vertical"></nz-divider>
-    <button nz-button (click)="newTerm()">
-      <span nz-icon nzType="form" nzTheme="outline"></span>신규 용어
-    </button>
-    <nz-divider nzType="vertical"></nz-divider>
-    <button nz-button (click)="newWord()">
-      <span nz-icon nzType="form" nzTheme="outline"></span>신규 단어
-    </button>
-    <nz-divider nzType="vertical"></nz-divider>
-    <button nz-button (click)="newDomain()">
-      <span nz-icon nzType="form" nzTheme="outline"></span>신규 도메인
-    </button>
-  </div>
-</app-nz-search-area>
-
-<nz-tabset [nzSelectedIndex]="tabIndex">
-  <nz-tab nzTitle="용어사전">
-    <!--<h3>용어사전 목록</h3>-->
-    <div class="grid-wrapper">
-      <app-term-grid #termGrid
-        (rowClickedEvent)="termGridSelected($event)"
-        (editButtonClickedEvent)="editTerm($event)"
-        (rowDoubleClickedEvent)="editTerm($event)">
-      </app-term-grid>
+<div class="page-search">
+  <app-nz-search-area>
+    <div nz-col [nzSpan]="12">
+      <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate" [nzSuffix]="suffixIconSearch">
+        <input type="text" [(ngModel)]="query.value" nz-input placeholder="input search text" (keyup.enter)="getTermList()">
+      </nz-input-group>
+      <ng-template #addOnBeforeTemplate>
+        <nz-select [(ngModel)]="query.key">
+          @for (option of query.list; track option.value) {
+          <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+          }
+        </nz-select>
+      </ng-template>
+      <ng-template #suffixIconSearch>
+        <span nz-icon nzType="search"></span>
+      </ng-template>
     </div>
-  </nz-tab>
-
-  <nz-tab nzTitle="단어사전">
-    <div class="grid-wrapper">
-      <app-word-grid #wordGrid
-      (rowClickedEvent)="wordGridSelected($event)"
-      (editButtonClickedEvent)="editWord($event)"
-      (rowDoubleClickedEvent)="editWord($event)">
-      </app-word-grid>
+    <div nz-col [nzSpan]="12" style="text-align: right;">
+      <button nz-button (click)="getTermList()">
+        <span nz-icon nzType="search"></span>조회
+      </button>
+      <nz-divider nzType="vertical"></nz-divider>
+      <button nz-button (click)="newTerm()">
+        <span nz-icon nzType="form" nzTheme="outline"></span>신규 용어
+      </button>
+      <nz-divider nzType="vertical"></nz-divider>
+      <button nz-button (click)="newWord()">
+        <span nz-icon nzType="form" nzTheme="outline"></span>신규 단어
+      </button>
+      <nz-divider nzType="vertical"></nz-divider>
+      <button nz-button (click)="newDomain()">
+        <span nz-icon nzType="form" nzTheme="outline"></span>신규 도메인
+      </button>
     </div>
-  </nz-tab>
+  </app-nz-search-area>
+</div>
 
-  <nz-tab nzTitle="도메인">
-    <div class="grid-wrapper">
-      <app-data-domain-grid #domainGrid
-        (rowClickedEvent)="domainGridSelected($event)"
-        (editButtonClickedEvent)="this.domainDrawer.visible = true"
-        (rowDoubleClickedEvent)="this.domainDrawer.visible = true">
-      </app-data-domain-grid>
-    </div>
-  </nz-tab>
-</nz-tabset>
+<div class="page-content">
+  <nz-tabset [nzSelectedIndex]="tabIndex">
+    <nz-tab nzTitle="용어사전">
+      <!--<h3>용어사전 목록</h3>-->
+      <div class="grid-wrapper">
+        <app-term-grid #termGrid
+          (rowClickedEvent)="termGridSelected($event)"
+          (editButtonClickedEvent)="editTerm($event)"
+          (rowDoubleClickedEvent)="editTerm($event)">
+        </app-term-grid>
+      </div>
+    </nz-tab>
+
+    <nz-tab nzTitle="단어사전">
+      <div class="grid-wrapper">
+        <app-word-grid #wordGrid
+        (rowClickedEvent)="wordGridSelected($event)"
+        (editButtonClickedEvent)="editWord($event)"
+        (rowDoubleClickedEvent)="editWord($event)">
+        </app-word-grid>
+      </div>
+    </nz-tab>
+
+    <nz-tab nzTitle="도메인">
+      <div class="grid-wrapper">
+        <app-data-domain-grid #domainGrid
+          (rowClickedEvent)="domainGridSelected($event)"
+          (editButtonClickedEvent)="this.domainDrawer.visible = true"
+          (rowDoubleClickedEvent)="this.domainDrawer.visible = true">
+        </app-data-domain-grid>
+      </div>
+    </nz-tab>
+  </nz-tabset>
+</div>
 
 <nz-drawer
   [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
@@ -167,22 +173,50 @@ import { WordFormComponent } from './word-form.component';
 
   `,
   styles: `
-.pgm-title {
-  padding-left: 5px;
-  border-left: 5px solid green;
+:host {
+  --page-header-height: 98px;
+  --page-search-height: 46px;
+  --page-content-title-height: 26px;
+  --page-content-title-margin-height: 6px;
+  --page-content-margin-height: 6px;
 }
 
-.btn-group {
-  padding: 6px;
-  /*background: #fbfbfb;*/
-  border: 1px solid #d9d9d9;
-  border-radius: 6px;
-  padding-left: auto;
-  padding-right: 5;
+.page-header {
+  height: var(--page-header-height);
+}
+
+.page-search {
+  height: var(--page-search-height);
+}
+
+.page-content-title {
+  height: var(--page-content-title-height);
+}
+
+.grid-title {
+  margin-top: var(--page-content-title-margin-height);
+  margin-left: 6px;
+  border-left: 6px solid green;
+  padding-left: 6px;
+  vertical-align: text-top;
+}
+
+.page-content {
+  margin-top: var(--page-content-margin-height);
+  height: calc(100vh - (
+                        var(--app-header-height) +
+                        var(--app-footer-height) +
+                        var(--page-header-height) +
+                        var(--page-search-height) +
+                        var(--page-content-title-height) +
+                        var(--page-content-title-margin-height) +
+                        var(--page-content-margin-height)
+                       )
+              );
 }
 
 .grid-wrapper {
-  height: calc(100vh - 300px);
+  height: calc(100vh - 304px);
   margin: 0;
   padding: 0;
 }

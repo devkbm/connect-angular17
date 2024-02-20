@@ -17,6 +17,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-header-custom/nz-page-header-custom.component';
 import { HolidayFormComponent } from './holiday-form.component';
+import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/nz-search-area.component';
 
 
 @Component({
@@ -33,38 +34,44 @@ import { HolidayFormComponent } from './holiday-form.component';
     NzDatePickerModule,
     NzDividerModule,
     NzPageHeaderCustomComponent,
+    NzSearchAreaComponent,
     HolidayGridComponent,
     HolidayFormComponent
   ],
   template: `
-<app-nz-page-header-custom title="공휴일 등록" subtitle="This is a subtitle"></app-nz-page-header-custom>
-
-<div nz-row class="btn-group">
-
-  <div nz-col [nzSpan]="1" style="text-align: left;">
-    <nz-date-picker nzMode="year" [(ngModel)]="query.year" nzAllowClear="false" style="width: 80px;"></nz-date-picker>
-  </div>
-
-  <div nz-col [nzSpan]="23" style="text-align: right;">
-    <button nz-button (click)="getHolidayList()">
-      <span nz-icon nzType="search"></span>조회
-    </button>
-    <nz-divider nzType="vertical"></nz-divider>
-    <button nz-button (click)="newHoliday()">
-      <span nz-icon nzType="form" nzTheme="outline"></span>신규
-    </button>
-    <nz-divider nzType="vertical"></nz-divider>
-    <button nz-button nzDanger
-      nz-popconfirm nzPopconfirmTitle="삭제하시겠습니까?"
-      (nzOnConfirm)="deleteHoliday()" (nzOnCancel)="false">
-      <span nz-icon nzType="delete" nzTheme="outline"></span>삭제
-    </button>
-  </div>
+<div class="page-header">
+  <app-nz-page-header-custom title="공휴일 등록" subtitle="This is a subtitle"></app-nz-page-header-custom>
 </div>
 
-<h3 class="app-title">공휴일 목록</h3>
+<div class="page-search">
+  <app-nz-search-area>
+    <div nz-col [nzSpan]="1" style="text-align: left;">
+      <nz-date-picker nzMode="year" [(ngModel)]="query.year" nzAllowClear="false" style="width: 80px;"></nz-date-picker>
+    </div>
 
-<div class="grid-wrapper">
+    <div nz-col [nzSpan]="23" style="text-align: right;">
+      <button nz-button (click)="getHolidayList()">
+        <span nz-icon nzType="search"></span>조회
+      </button>
+      <nz-divider nzType="vertical"></nz-divider>
+      <button nz-button (click)="newHoliday()">
+        <span nz-icon nzType="form" nzTheme="outline"></span>신규
+      </button>
+      <nz-divider nzType="vertical"></nz-divider>
+      <button nz-button nzDanger
+        nz-popconfirm nzPopconfirmTitle="삭제하시겠습니까?"
+        (nzOnConfirm)="deleteHoliday()" (nzOnCancel)="false">
+        <span nz-icon nzType="delete" nzTheme="outline"></span>삭제
+      </button>
+    </div>
+  </app-nz-search-area>
+</div>
+
+<div class="page-content-title">
+  <h3 class="grid-title">공휴일 목록</h3>
+</div>
+
+<div class="page-content">
   <app-holiday-grid
       #holidayGrid
       (rowSelected)="holidayGridRowClicked($event)"
@@ -90,22 +97,46 @@ import { HolidayFormComponent } from './holiday-form.component';
 
   `,
   styles: `
-.app-title {
-  padding-left: 5px;
-  border-left: 5px solid green;
+:host {
+  --page-header-height: 98px;
+  --page-search-height: 46px;
+  --page-content-title-height: 26px;
+  --page-content-title-margin-height: 6px;
+  --page-content-margin-height: 6px;
 }
 
-.btn-group {
-  padding: 6px;
-  /*background: #fbfbfb;*/
-  border: 1px solid #d9d9d9;
-  border-radius: 6px;
-  padding-left: auto;
-  padding-right: 5;
+.page-header {
+  height: var(--page-header-height);
 }
 
-.grid-wrapper {
-  height: calc(100% - 180px)
+.page-search {
+  height: var(--page-search-height);
+}
+
+.page-content-title {
+  height: var(--page-content-title-height);
+}
+
+.grid-title {
+  margin-top: var(--page-content-title-margin-height);
+  margin-left: 6px;
+  border-left: 6px solid green;
+  padding-left: 6px;
+  vertical-align: text-top;
+}
+
+.page-content {
+  margin-top: var(--page-content-margin-height);
+  height: calc(100vh - (
+                        var(--app-header-height) +
+                        var(--app-footer-height) +
+                        var(--page-header-height) +
+                        var(--page-search-height) +
+                        var(--page-content-title-height) +
+                        var(--page-content-title-margin-height) +
+                        var(--page-content-margin-height)
+                       )
+              );
 }
 
 [nz-button] {
