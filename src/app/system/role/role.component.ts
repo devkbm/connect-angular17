@@ -131,7 +131,6 @@ import { RoleFormComponent } from './role-form.component';
 }
 
 .page-content {
-  --margin-height: 6px;
   margin-top: var(--page-content-margin-height);
   height: calc(100vh - (
                         var(--app-header-height) +
