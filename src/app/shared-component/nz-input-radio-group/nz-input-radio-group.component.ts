@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Self, Optional, Component, Input, TemplateRef, ViewChild, OnInit } from '@angular/core';
+import { Self, Optional, Component, Input, TemplateRef, ViewChild, OnInit, viewChild } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NgModel, NgControl, FormsModule } from '@angular/forms';
 import { NzFormControlComponent, NzFormModule } from 'ng-zorro-antd/form';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
@@ -31,7 +31,8 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 })
 export class NzInputRadioGroupComponent implements ControlValueAccessor, OnInit {
 
-  @ViewChild(NzFormControlComponent) control!: NzFormControlComponent;
+  //@ViewChild(NzFormControlComponent) control!: NzFormControlComponent;
+  control = viewChild.required(NzFormControlComponent);
 
   @Input() itemId: string = '';
   @Input() required: boolean = false;

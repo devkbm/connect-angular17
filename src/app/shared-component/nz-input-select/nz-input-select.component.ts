@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Self, Optional, Component, Input, TemplateRef, ViewChild, OnInit, AfterViewInit } from '@angular/core';
+import { Self, Optional, Component, Input, TemplateRef, ViewChild, OnInit, AfterViewInit, viewChild } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NgModel, NgControl, FormsModule } from '@angular/forms';
 import { NzFormControlComponent, NzFormModule } from 'ng-zorro-antd/form';
 import { NzSelectModeType, NzSelectModule } from 'ng-zorro-antd/select';
@@ -38,7 +38,8 @@ import { NzSelectModeType, NzSelectModule } from 'ng-zorro-antd/select';
 })
 export class NzInputSelectComponent implements ControlValueAccessor, OnInit, AfterViewInit {
 
-  @ViewChild(NzFormControlComponent) control!: NzFormControlComponent;
+  //@ViewChild(NzFormControlComponent) control!: NzFormControlComponent;
+  control = viewChild.required(NzFormControlComponent);
 
   @Input() itemId: string = '';
   @Input() required: boolean = false;
@@ -68,8 +69,8 @@ export class NzInputSelectComponent implements ControlValueAccessor, OnInit, Aft
   }
 
   ngAfterViewInit(): void {
-    if (this.control) {
-      this.control.nzValidateStatus = this.ngControl.control as AbstractControl;
+    if (this.control()) {
+      this.control().nzValidateStatus = this.ngControl.control as AbstractControl;
     }
   }
 

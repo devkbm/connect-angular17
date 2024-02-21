@@ -1,4 +1,4 @@
-import { Self, Optional, Component, ElementRef, Input, TemplateRef, ViewChild, OnInit, AfterViewInit } from '@angular/core';
+import { Self, Optional, Component, ElementRef, Input, TemplateRef, ViewChild, OnInit, AfterViewInit, viewChild } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NgModel, NgControl, FormsModule } from '@angular/forms';
 import { NzFormModule, NzFormControlComponent } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -40,8 +40,10 @@ export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
 })
 export class NzInputMobileComponent implements ControlValueAccessor, OnInit, AfterViewInit {
 
-  @ViewChild(NzFormControlComponent) control!: NzFormControlComponent;
-  @ViewChild('inputElement') element?: ElementRef<HTMLInputElement>;
+  //@ViewChild(NzFormControlComponent) control!: NzFormControlComponent;
+  //@ViewChild('inputElement') element?: ElementRef<HTMLInputElement>;
+  control = viewChild.required(NzFormControlComponent);
+  element = viewChild.required<ElementRef<HTMLInputElement>>('inputControl');
 
   @Input() itemId: string = '';
   @Input() required: boolean = false;
@@ -66,8 +68,8 @@ export class NzInputMobileComponent implements ControlValueAccessor, OnInit, Aft
   }
 
   ngAfterViewInit(): void {
-    if (this.control) {
-      this.control.nzValidateStatus = this.ngControl.control as AbstractControl;
+    if (this.control()) {
+      this.control().nzValidateStatus = this.ngControl.control as AbstractControl;
     }
   }
 
@@ -88,7 +90,7 @@ export class NzInputMobileComponent implements ControlValueAccessor, OnInit, Aft
   }
 
   focus(): void {
-    this.element?.nativeElement.focus();
+    this.element()?.nativeElement.focus();
   }
 
   valueChange(val: any) {

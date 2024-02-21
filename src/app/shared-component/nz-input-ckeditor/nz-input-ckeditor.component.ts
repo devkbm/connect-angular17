@@ -1,4 +1,4 @@
-import { Self, Optional, Component, Input, TemplateRef, ViewChild, OnInit, HostBinding, AfterViewInit } from '@angular/core';
+import { Self, Optional, Component, Input, TemplateRef, ViewChild, OnInit, HostBinding, AfterViewInit, viewChild } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NgModel, NgControl, FormsModule } from '@angular/forms';
 import { NzFormControlComponent, NzFormModule } from 'ng-zorro-antd/form';
 
@@ -48,10 +48,14 @@ import { MyUploadAdapter } from './my-upload-adapter';
 })
 export class NzInputCkeditorComponent implements ControlValueAccessor, OnInit, AfterViewInit {
 
+  /*
   @ViewChild(NzFormControlComponent, {static: true})
   control!: NzFormControlComponent;
   @ViewChild('ckEditor', { static: true })
   ckEditor!: CKEditorComponent;
+  */
+  control = viewChild.required(NzFormControlComponent);
+  ckEditor = viewChild.required(CKEditorComponent);
 
   @Input() itemId: string = '';
   @Input() required: boolean = false;
@@ -112,7 +116,7 @@ export class NzInputCkeditorComponent implements ControlValueAccessor, OnInit, A
   }
 
   ngOnInit(): void {
-    this.control.nzValidateStatus = this.ngControl.control as AbstractControl;
+    this.control().nzValidateStatus = this.ngControl.control as AbstractControl;
   }
 
   ngAfterViewInit(): void {

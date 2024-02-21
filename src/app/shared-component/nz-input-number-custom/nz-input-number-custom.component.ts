@@ -1,4 +1,4 @@
-import { Self, Optional, Component, Input, TemplateRef, ViewChild, OnInit } from '@angular/core';
+import { Self, Optional, Component, Input, TemplateRef, ViewChild, OnInit, viewChild } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NgModel, NgControl, FormsModule } from '@angular/forms';
 import { NzFormControlComponent, NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
@@ -30,8 +30,10 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 })
 export class NzInputNumberCustomComponent implements ControlValueAccessor, OnInit {
 
-  @ViewChild(NzFormControlComponent, {static: true})
-  control!: NzFormControlComponent;
+  //@ViewChild(NzFormControlComponent, {static: true})
+  //control!: NzFormControlComponent;
+
+  control = viewChild.required(NzFormControlComponent);
 
   @Input() itemId: string = '';
   @Input() required: boolean = false;
@@ -52,7 +54,7 @@ export class NzInputNumberCustomComponent implements ControlValueAccessor, OnIni
   }
 
   ngOnInit(): void {
-    this.control.nzValidateStatus = this.ngControl.control as AbstractControl;
+    this.control().nzValidateStatus = this.ngControl.control as AbstractControl;
   }
 
   writeValue(obj: any): void {

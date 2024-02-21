@@ -1,4 +1,4 @@
-import { Self, Optional, Component, Input, TemplateRef, ViewChild, OnInit, AfterViewInit } from '@angular/core';
+import { Self, Optional, Component, Input, TemplateRef, ViewChild, OnInit, AfterViewInit, viewChild } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NgModel, NgControl, FormsModule } from '@angular/forms';
 import { NzFormControlComponent, NzFormModule } from 'ng-zorro-antd/form';
 import { NzDatePickerComponent, NzDatePickerModule } from 'ng-zorro-antd/date-picker';
@@ -56,9 +56,13 @@ export enum TimeFormat {
 })
 export class NzInputDateTimeComponent implements ControlValueAccessor, OnInit, AfterViewInit {
 
-  @ViewChild(NzFormControlComponent) control!: NzFormControlComponent;
-  @ViewChild('date') dateElement?: NzDatePickerComponent;
-  @ViewChild('time') timeElement?: NzTimePickerComponent;
+  //@ViewChild(NzFormControlComponent) control!: NzFormControlComponent;
+  //@ViewChild('date') dateElement?: NzDatePickerComponent;
+  //@ViewChild('time') timeElement?: NzTimePickerComponent;
+
+  control = viewChild.required(NzFormControlComponent);
+  dateElement = viewChild.required(NzDatePickerComponent);
+  timeElement = viewChild.required(NzTimePickerComponent);
 
   @Input() itemId: string = '';
   @Input() required: boolean = false;
@@ -85,8 +89,8 @@ export class NzInputDateTimeComponent implements ControlValueAccessor, OnInit, A
   }
 
   ngAfterViewInit(): void {
-    if (this.control) {
-      this.control.nzValidateStatus = this.ngControl.control as AbstractControl;
+    if (this.control()) {
+      this.control().nzValidateStatus = this.ngControl.control as AbstractControl;
     }
   }
 
@@ -107,12 +111,12 @@ export class NzInputDateTimeComponent implements ControlValueAccessor, OnInit, A
   }
 
   focus(): void {
-    this.dateElement?.focus();
+    this.dateElement()?.focus();
   }
 
   dateValueChange(val: Date) {
     this._value = val;
-    const nativeValue = this.dateElement?.pickerInput?.nativeElement.value as string;
+    const nativeValue = this.dateElement()?.pickerInput?.nativeElement.value as string;
     // keyboard로 8자리 숫자입력 받을 경우 Date로 변환 처리
     if (nativeValue.length === 8) {
       this._value = this.convertDate(nativeValue);
@@ -128,7 +132,7 @@ export class NzInputDateTimeComponent implements ControlValueAccessor, OnInit, A
 
   timeValueChange(val: any) {
     this._value = val;
-    const nativeValue = this.timeElement?.inputRef.nativeElement.value as string;
+    const nativeValue = this.timeElement()?.inputRef.nativeElement.value as string;
     console.log(nativeValue);
 
     if (this._value !== null) {

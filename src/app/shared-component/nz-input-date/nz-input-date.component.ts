@@ -1,4 +1,4 @@
-import { Self, Optional, Component, Input, TemplateRef, ViewChild, OnInit, AfterViewInit } from '@angular/core';
+import { Self, Optional, Component, Input, TemplateRef, ViewChild, OnInit, AfterViewInit, viewChild } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NgModel, NgControl, FormsModule } from '@angular/forms';
 import { NzFormControlComponent, NzFormModule } from 'ng-zorro-antd/form';
 import { NzDatePickerComponent, NzDatePickerModule } from 'ng-zorro-antd/date-picker';
@@ -38,8 +38,10 @@ import * as dateFns from "date-fns";
 })
 export class NzInputDateComponent implements ControlValueAccessor, OnInit, AfterViewInit {
 
-  @ViewChild(NzFormControlComponent) control!: NzFormControlComponent;
-  @ViewChild('inputControl') element?: NzDatePickerComponent;
+  //@ViewChild(NzFormControlComponent) control!: NzFormControlComponent;
+  //@ViewChild('inputControl') element?: NzDatePickerComponent;
+  control = viewChild.required(NzFormControlComponent);
+  element = viewChild.required<NzDatePickerComponent>('inputControl');
 
   @Input() itemId: string = '';
   @Input() required: boolean = false;
@@ -64,8 +66,8 @@ export class NzInputDateComponent implements ControlValueAccessor, OnInit, After
   }
 
   ngAfterViewInit(): void {
-    if (this.control) {
-      this.control.nzValidateStatus = this.ngControl.control as AbstractControl;
+    if (this.control()) {
+      this.control().nzValidateStatus = this.ngControl.control as AbstractControl;
     }
   }
 
@@ -86,12 +88,12 @@ export class NzInputDateComponent implements ControlValueAccessor, OnInit, After
   }
 
   focus(): void {
-    this.element?.focus();
+    this.element()?.focus();
   }
 
   valueChange(val: Date) {
     this._value = val;
-    const nativeValue = this.element?.pickerInput?.nativeElement.value as string;
+    const nativeValue = this.element()?.pickerInput?.nativeElement.value as string;
     // keyboard로 8자리 숫자입력 받을 경우 Date로 변환 처리
     if (nativeValue.length === 8) {
       this._value = this.convert(nativeValue);

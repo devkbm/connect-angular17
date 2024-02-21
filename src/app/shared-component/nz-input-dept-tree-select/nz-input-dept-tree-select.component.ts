@@ -1,4 +1,4 @@
-import { Self, Optional, Component, Input, TemplateRef, ViewChild, OnInit, AfterViewInit } from '@angular/core';
+import { Self, Optional, Component, Input, TemplateRef, ViewChild, OnInit, AfterViewInit, viewChild } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NgModel, NgControl, FormsModule } from '@angular/forms';
 import { NzFormControlComponent, NzFormModule } from 'ng-zorro-antd/form';
 import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
@@ -29,7 +29,8 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 })
 export class NzInputDeptTreeSelectComponent implements ControlValueAccessor, OnInit, AfterViewInit {
 
-  @ViewChild(NzFormControlComponent) control!: NzFormControlComponent;
+  //@ViewChild(NzFormControlComponent) control!: NzFormControlComponent;
+  control = viewChild.required(NzFormControlComponent);
 
   @Input() itemId: string = '';
   @Input() required: boolean = false;
@@ -54,8 +55,8 @@ export class NzInputDeptTreeSelectComponent implements ControlValueAccessor, OnI
   }
 
   ngAfterViewInit(): void {
-    if (this.control) {
-      this.control.nzValidateStatus = this.ngControl.control as AbstractControl;
+    if (this.control()) {
+      this.control().nzValidateStatus = this.ngControl.control as AbstractControl;
     }
   }
 

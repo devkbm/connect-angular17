@@ -1,4 +1,4 @@
-import { Self, Optional, Component, Input, TemplateRef, ViewChild, OnInit } from '@angular/core';
+import { Self, Optional, Component, Input, TemplateRef, ViewChild, OnInit, viewChild } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, FormGroup, NgModel, NgControl, FormsModule } from '@angular/forms';
 import { NzFormControlComponent, NzFormModule } from 'ng-zorro-antd/form';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
@@ -28,7 +28,8 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
 })
 export class NzInputSwitchComponent implements ControlValueAccessor, OnInit {
 
-  @ViewChild(NzFormControlComponent) control!: NzFormControlComponent;
+  //@ViewChild(NzFormControlComponent) control!: NzFormControlComponent;
+  control = viewChild.required(NzFormControlComponent);
 
   @Input() parentFormGroup?: FormGroup;
   @Input() itemId: string = '';
