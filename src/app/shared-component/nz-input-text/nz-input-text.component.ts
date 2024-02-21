@@ -1,4 +1,4 @@
-import { Self, Optional, Component, ElementRef, Input, TemplateRef, OnInit, AfterViewInit, viewChild } from '@angular/core';
+import { Self, Optional, Component, ElementRef, Input, TemplateRef, OnInit, AfterViewInit, viewChild, input, model, effect } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NgModel, NgControl, FormsModule } from '@angular/forms';
 import { NzFormControlComponent, NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -23,17 +23,17 @@ import { NzInputModule } from 'ng-zorro-antd/input';
   imports: [FormsModule, NzFormModule, NzInputModule],
   template: `
     <nz-form-item>
-      <nz-form-label [nzFor]="itemId" [nzRequired]="required">
+      <nz-form-label [nzFor]="itemId()" [nzRequired]="required()">
         <ng-content></ng-content>
       </nz-form-label>
-      <nz-form-control nzHasFeedback [nzErrorTip]="nzErrorTip">
+      <nz-form-control nzHasFeedback [nzErrorTip]="nzErrorTip()">
         <input #inputControl nz-input
-              [required]="required"
-              [disabled]="disabled"
-              [id]="itemId"
-              [placeholder]="placeholder"
-              [(ngModel)]="_value"
-              [readonly]="readonly"
+              [required]="required()"
+              [disabled]="_disabled"
+              [id]="itemId()"
+              [placeholder]="placeholder()"
+              [readonly]="readonly()"
+              [ngModel]="_value()"
               (ngModelChange)="onChange($event)"
               (ngModelChange)="valueChange($event)"
               (blur)="onTouched()"/>
@@ -41,44 +41,39 @@ import { NzInputModule } from 'ng-zorro-antd/input';
     </nz-form-item>
   `
 })
-export class NzInputTextComponent implements ControlValueAccessor, OnInit, AfterViewInit {
-
-  //@ViewChild(NzFormControlComponent) control!: NzFormControlComponent;
-  //@ViewChild('inputControl') element?: ElementRef<HTMLInputElement>;
+export class NzInputTextComponent implements ControlValueAccessor {
 
   control = viewChild.required(NzFormControlComponent);
   element = viewChild.required<ElementRef<HTMLInputElement>>('inputControl');
 
-  @Input() itemId: string = '';
-  @Input() required: boolean = false;
-  @Input() disabled: boolean = false;
-  @Input() placeholder: string = '';
-  @Input() readonly: boolean = false;
+  itemId = input<string>('');
+  required = input<boolean>(false);
+  disabled = input<boolean>(false);
+  placeholder = input<string>('');
+  readonly = input<boolean>(false);
 
-  @Input() nzErrorTip?: string | TemplateRef<{$implicit: AbstractControl | NgModel;}>;
+  nzErrorTip = input<string | TemplateRef<{$implicit: AbstractControl | NgModel;}>>();
 
-  _value: any;
+  _disabled = false;
+  _value = model();
 
-  onChange!: (value: string) => void;
+  onChange!: (value: any) => void;
   onTouched!: () => void;
 
   constructor(@Self()  @Optional() private ngControl: NgControl) {
     if (this.ngControl) {
       this.ngControl.valueAccessor = this;
     }
-  }
 
-  ngOnInit(): void {
-  }
-
-  ngAfterViewInit(): void {
-    if (this.control()) {
-      this.control().nzValidateStatus = this.ngControl.control as AbstractControl;
-    }
+    effect(() => {
+      if (this.control()) {
+        this.control().nzValidateStatus = this.ngControl.control as AbstractControl;
+      }
+    })
   }
 
   writeValue(obj: any): void {
-    this._value = obj;
+    this._value.set(obj);
   }
 
   registerOnChange(fn: any): void {
@@ -90,7 +85,7 @@ export class NzInputTextComponent implements ControlValueAccessor, OnInit, After
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this.disabled = isDisabled;
+    this._disabled = isDisabled;
   }
 
   focus(): void {
