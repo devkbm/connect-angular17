@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, inject, viewChild } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { AppBase } from 'src/app/core/app/app-base';
 import { HrmCodeTypeGridComponent } from './hrm-code-type-grid.component';
@@ -68,7 +68,7 @@ import { HrmCodeTypeFormComponent } from './hrm-code-type-form.component';
 </div>
 
 <div class="grid-2row-2col">
-    <h3 class="header1">코드 분류 목록 {{drawerCodeType | json}}</h3>
+    <h3 class="header1">코드 분류 목록 {{drawer.codeType | json}}</h3>
     <app-hrm-code-type-grid #gridHrmType
       [list]="gridHrmCodeTypeList"
       (rowSelected)="rowClickHrmCodeType($event)"
@@ -76,7 +76,7 @@ import { HrmCodeTypeFormComponent } from './hrm-code-type-form.component';
       (editButtonClicked)="editHrmCodeType($event)">
     </app-hrm-code-type-grid>
 
-    <h3 class="header2">코드 목록 {{drawerCode | json}}</h3>
+    <h3 class="header2">코드 목록 {{drawer.code | json}}</h3>
     <app-hrm-code-grid #gridHrmTypeCode
       [list]="gridHrmCodeList"
       (rowSelected)="rowClickHrmCode($event)"
@@ -90,14 +90,14 @@ import { HrmCodeTypeFormComponent } from './hrm-code-type-form.component';
     [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
     [nzMaskClosable]="true"
     [nzWidth]="800"
-    [nzVisible]="drawerCodeType.visible"
+    [nzVisible]="drawer.codeType.visible"
     nzTitle="코드분류 등록"
-    (nzOnClose)="drawerCodeType.visible = false">
+    (nzOnClose)="drawer.codeType.visible = false">
     <app-hrm-code-type-form #formHrmType *nzDrawerContent
-      [initLoadId]="drawerCodeType.initLoadId"
+      [initLoadId]="drawer.codeType.initLoadId"
       (formSaved)="getGridHrmCodeType()"
       (formDeleted)="getGridHrmCodeType()"
-      (formClosed)="drawerCodeType.visible = false">
+      (formClosed)="drawer.codeType.visible = false">
     </app-hrm-code-type-form>
 </nz-drawer>
 
@@ -105,15 +105,15 @@ import { HrmCodeTypeFormComponent } from './hrm-code-type-form.component';
     [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
     [nzMaskClosable]="true"
     [nzWidth]="800"
-    [nzVisible]="drawerCode.visible"
+    [nzVisible]="drawer.code.visible"
     nzTitle="코드 등록"
-    (nzOnClose)="drawerCode.visible = false">
+    (nzOnClose)="drawer.code.visible = false">
 
     <app-hrm-code-form #formHrmTypeCode *nzDrawerContent
-      [initLoadId]="drawerCode.initLoadId"
+      [initLoadId]="drawer.code.initLoadId"
       (formSaved)="getGridHrmCode()"
       (formDeleted)="getGridHrmCode()"
-      (formClosed)="drawerCode.visible = false">
+      (formClosed)="drawer.code.visible = false">
     </app-hrm-code-form>
 </nz-drawer>
   `,
@@ -177,69 +177,67 @@ import { HrmCodeTypeFormComponent } from './hrm-code-type-form.component';
 })
 export class HrmCodeComponent extends AppBase implements OnInit {
 
-  @ViewChild(HrmCodeTypeGridComponent) gridHrmCodeType!: HrmCodeTypeGridComponent;
-  @ViewChild(HrmCodeGridComponent) gridHrmCode!: HrmCodeGridComponent;
+  private appAlarmService = inject(AppAlarmService);
+  private hrmCodeService = inject(HrmCodeService);
+  private hrmCodeTypeService = inject(HrmCodeTypeService);
+
+  gridHrmCodeType = viewChild.required(HrmCodeTypeGridComponent);
+  gridHrmCode = viewChild.required(HrmCodeGridComponent);
 
   gridHrmCodeTypeList: HrmType[] = [];
   gridHrmCodeList: HrmCode[] = [];
 
-  drawerCodeType: { visible: boolean, initLoadId: any } = {
-    visible: false,
-    initLoadId: null
+  drawer: {
+    codeType: { visible: boolean, initLoadId: any },
+    code: { visible: boolean, initLoadId: {typeId: any, code: any} | null }
+  } = {
+    codeType: { visible: false, initLoadId: null },
+    code: { visible: false, initLoadId: null }
   }
-
-  drawerCode: { visible: boolean, initLoadId: {typeId: any, code: any} | null } = {
-    visible: false,
-    initLoadId: null
-  }
-
-  private appAlarmService = inject(AppAlarmService);
-  private hrmCodeService = inject(HrmCodeService);
-  private hrmCodeTypeService = inject(HrmCodeTypeService);
 
   ngOnInit() {
     this.getGridHrmCodeType();
   }
 
   getGridHrmCodeType(): void {
-    this.drawerCodeType.visible = false;
+    this.drawer.codeType.visible = false;
     this.getGridHrmCodeTypeList('');
   }
 
   rowClickHrmCodeType(row: any): void {
-    this.drawerCodeType.initLoadId = row.typeId;
-    this.drawerCode.initLoadId = {typeId: row.typeId, code: ''};
+    this.drawer.codeType.initLoadId = row.typeId;
+    this.drawer.code.initLoadId = {typeId: row.typeId, code: ''};
 
     this.gridHrmCodeGridList(row.typeId);
   }
 
   newHrmCodeType(): void {
-    this.drawerCodeType.initLoadId = null;
-    this.drawerCodeType.visible = true;
+    this.drawer.codeType.initLoadId = null;
+    this.drawer.codeType.visible = true;
   }
 
   editHrmCodeType(row: any): void {
-    this.drawerCodeType.initLoadId = row.typeId;
-    this.drawerCodeType.visible = true;
+    this.drawer.codeType.initLoadId = row.typeId;
+    this.drawer.codeType.visible = true;
   }
 
   rowClickHrmCode(row: any): void {
-    this.drawerCode.initLoadId = {typeId: row.typeId, code: row.code};
+    this.drawer.code.initLoadId = {typeId: row.typeId, code: row.code};
   }
 
   getGridHrmCode(): void {
-    this.drawerCode.visible = false;
-    this.gridHrmCodeGridList(this.drawerCodeType.initLoadId);
+    this.drawer.code.visible = false;
+    this.gridHrmCodeGridList(this.drawer.codeType.initLoadId);
   }
 
   newHrmCode(): void {
-    this.drawerCode.initLoadId = {typeId: this.drawerCodeType.initLoadId, code: null};
-    this.drawerCode.visible = true;
+    this.drawer.code.initLoadId = {typeId: this.drawer.codeType.initLoadId, code: null};
+    this.drawer.code.visible = true;
   }
 
   editHrmCode(row: any): void {
-    this.drawerCode.initLoadId = {typeId: row.typeId, code: row.code};
-    this.drawerCode.visible = true;
+    this.drawer.code.initLoadId = {typeId: row.typeId, code: row.code};
+    this.drawer.code.visible = true;
   }
 
   public gridHrmCodeGridList(typeId: string): void {

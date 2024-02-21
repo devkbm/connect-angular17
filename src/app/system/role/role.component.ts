@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 
-import { AfterViewInit, Component, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, Component, inject, viewChild } from '@angular/core';
 
 import { AppBase } from 'src/app/core/app/app-base';
 import { ResponseObject } from 'src/app/core/model/response-object';
@@ -54,11 +54,11 @@ import { RoleFormComponent } from './role-form.component';
   <app-nz-search-area>
     <div nz-col [nzSpan]="12">
       <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate" [nzSuffix]="suffixIconSearch">
-        <input type="text" [(ngModel)]="queryValue" nz-input placeholder="input search text" (keyup.enter)="getRoleList()">
+        <input type="text" [(ngModel)]="query.role.value" nz-input placeholder="input search text" (keyup.enter)="getRoleList()">
       </nz-input-group>
       <ng-template #addOnBeforeTemplate>
-        <nz-select [(ngModel)]="queryKey">
-          @for (option of queryOptionList; track option.value) {
+        <nz-select [(ngModel)]="query.role.key">
+          @for (option of query.role.list; track option.value) {
           <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
           }
         </nz-select>
@@ -86,15 +86,15 @@ import { RoleFormComponent } from './role-form.component';
   </app-role-grid>
 </div>
 
-<nz-drawer #drawer
+<nz-drawer
   [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px'}"
   [nzMaskClosable]="true"
   [nzWidth]="720"
-  [nzVisible]="drawerRole.visible"
+  [nzVisible]="drawer.role.visible"
   nzTitle="롤 등록"
   (nzOnClose)="closeDrawer()">
     <app-role-form #form *nzDrawerContent
-      [initLoadId]="drawerRole.initLoadId"
+      [initLoadId]="drawer.role.initLoadId"
       (formSaved)="getRoleList()"
       (formDeleted)="getRoleList()"
       (formClosed)="closeDrawer()">
@@ -153,18 +153,25 @@ export class RoleComponent extends AppBase implements AfterViewInit {
 
   private service = inject(RoleService);
 
-  @ViewChild(RoleGridComponent) grid!: RoleGridComponent;
+  grid = viewChild.required(RoleGridComponent);
 
-  queryOptionList = [
-    {label: '롤', value: 'roleCode'},
-    {label: '설명', value: 'description'}
-  ];
-  queryKey = 'authorityCode';
-  queryValue = '';
+  query: {
+    role : { key: string, value: string, list: {label: string, value: string}[] }
+  } = {
+    role : {
+      key: 'roleCode',
+      value: '',
+      list: [
+        {label: '롤', value: 'roleCode'},
+        {label: '설명', value: 'description'}
+      ]
+    }
+  }
 
-  drawerRole: { visible: boolean, initLoadId: any } = {
-    visible: false,
-    initLoadId: null
+  drawer: {
+    role: { visible: boolean, initLoadId: any }
+  } = {
+    role: { visible: false, initLoadId: null }
   }
 
   buttons: ButtonTemplate[] = [{
@@ -195,23 +202,23 @@ export class RoleComponent extends AppBase implements AfterViewInit {
   }
 
   openDrawer() {
-    this.drawerRole.visible = true;
+    this.drawer.role.visible = true;
   }
 
   closeDrawer() {
-    this.drawerRole.visible = false;
+    this.drawer.role.visible = false;
   }
 
   selectedItem(data: any) {
     if (data) {
-      this.drawerRole.initLoadId = data.roleCode;
+      this.drawer.role.initLoadId = data.roleCode;
     } else {
-      this.drawerRole.initLoadId = null;
+      this.drawer.role.initLoadId = null;
     }
   }
 
   initForm() {
-    this.drawerRole.initLoadId = null;
+    this.drawer.role.initLoadId = null;
 
     this.openDrawer();
   }
@@ -222,16 +229,16 @@ export class RoleComponent extends AppBase implements AfterViewInit {
 
   getRoleList() {
     let params: any = new Object();
-    if ( this.queryValue !== '') {
-      params[this.queryKey] = this.queryValue;
+    if ( this.query.role.value !== '') {
+      params[this.query.role.key] = this.query.role.value;
     }
 
     this.closeDrawer();
-    this.grid?.getList(params);
+    this.grid().getList(params);
   }
 
   delete() {
-    const id = this.grid.getSelectedRows()[0].roleCode;
+    const id = this.grid().getSelectedRows()[0].roleCode;
 
     this.service
         .deleteRole(id)

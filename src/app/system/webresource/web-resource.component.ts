@@ -1,5 +1,4 @@
-import { map } from 'rxjs/operators';
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, inject, viewChild } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 
 import { AppBase } from 'src/app/core/app/app-base';
@@ -45,18 +44,18 @@ import { WebResourceFormComponent } from './web-resource-form.component';
 <app-nz-search-area>
   <div nz-col [nzSpan]="12">
     <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate" [nzSuffix]="suffixIconSearch">
-      <input type="text" [(ngModel)]="query.value" nz-input placeholder="input search text" (keyup.enter)="getList()">
+      <ng-template #addOnBeforeTemplate>
+        <nz-select [(ngModel)]="query.resource.key">
+          @for (option of query.resource.list; track option.value) {
+            <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+          }
+        </nz-select>
+      </ng-template>
+      <input type="text" [(ngModel)]="query.resource.value" nz-input placeholder="input search text" (keyup.enter)="getList()">
+      <ng-template #suffixIconSearch>
+        <span nz-icon nzType="search"></span>
+      </ng-template>
     </nz-input-group>
-    <ng-template #addOnBeforeTemplate>
-      <nz-select [(ngModel)]="query.key">
-        @for (option of query.list; track option.value) {
-          <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
-        }
-      </nz-select>
-    </ng-template>
-    <ng-template #suffixIconSearch>
-      <span nz-icon nzType="search"></span>
-    </ng-template>
   </div>
   <div nz-col [nzSpan]="12" style="text-align: right;">
     <app-nz-buttons [buttons]="buttons"></app-nz-buttons>
@@ -92,14 +91,14 @@ import { WebResourceFormComponent } from './web-resource-form.component';
   [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
   [nzMaskClosable]="true"
   nzWidth="80%"
-  [nzVisible]="drawerResource.visible"
+  [nzVisible]="drawer.resource.visible"
   nzTitle="리소스 등록"
-  (nzOnClose)="drawerResource.visible = false">
+  (nzOnClose)="drawer.resource.visible = false">
     <app-web-resource-form #form *nzDrawerContent
-      [initLoadId]="drawerResource.initLoadId"
+      [initLoadId]="drawer.resource.initLoadId"
       (formSaved)="getList()"
       (formDeleted)="getList()"
-      (formClosed)="drawerResource.visible = false">
+      (formClosed)="drawer.resource.visible = false">
     </app-web-resource-form>
 </nz-drawer>
 
@@ -122,17 +121,23 @@ import { WebResourceFormComponent } from './web-resource-form.component';
 })
 export class WebResourceComponent extends AppBase  implements OnInit {
 
-  @ViewChild(WebResourceGridComponent) grid!: WebResourceGridComponent;
+  private service = inject(WebResourceService);
 
-  query: { key: string, value: string, list: {label: string, value: string}[] } = {
-    key: 'resourceCode',
-    value: '',
-    list: [
-      {label: '리소스코드', value: 'resourceCode'},
-      {label: '리소스명', value: 'resourceName'},
-      {label: 'URL', value: 'url'},
-      {label: '설명', value: 'description'}
-    ]
+  grid = viewChild.required(WebResourceGridComponent);
+
+  query: {
+    resource : { key: string, value: string, list: {label: string, value: string}[] }
+  } = {
+    resource : {
+      key: 'resourceCode',
+      value: '',
+      list: [
+        {label: '리소스코드', value: 'resourceCode'},
+        {label: '리소스명', value: 'resourceName'},
+        {label: 'URL', value: 'url'},
+        {label: '설명', value: 'description'}
+      ]
+    }
   }
 
   buttons: ButtonTemplate[] = [{
@@ -159,38 +164,37 @@ export class WebResourceComponent extends AppBase  implements OnInit {
     }
   }];
 
-  drawerResource: { visible: boolean, initLoadId: any } = {
-    visible: false,
-    initLoadId: null
+  drawer: {
+    resource: { visible: boolean, initLoadId: any }
+  } = {
+    resource: { visible: false, initLoadId: null }
   }
-
-  private service = inject(WebResourceService);
 
   ngOnInit(): void {
   }
 
   getList(): void {
     let params: any = new Object();
-    if ( this.query.value !== '') {
-      params[this.query.key] = this.query.value;
+    if ( this.query.resource.value !== '') {
+      params[this.query.resource.key] = this.query.resource.value;
     }
 
-    this.drawerResource.visible = false;
-    this.grid.getList(params);
+    this.drawer.resource.visible = false;
+    this.grid().getList(params);
   }
 
   newResource(): void {
-    this.drawerResource.initLoadId = null;
-    this.drawerResource.visible = true;
+    this.drawer.resource.initLoadId = null;
+    this.drawer.resource.visible = true;
   }
 
   editResource(item: any): void {
-    this.drawerResource.initLoadId = item.resourceId;
-    this.drawerResource.visible = true;
+    this.drawer.resource.initLoadId = item.resourceId;
+    this.drawer.resource.visible = true;
   }
 
   delete(): void {
-    const id = this.grid.getSelectedRows()[0].resourceId;
+    const id = this.grid().getSelectedRows()[0].resourceId;
 
     this.service
         .delete(id)
@@ -202,7 +206,7 @@ export class WebResourceComponent extends AppBase  implements OnInit {
   }
 
   resourceGridRowClicked(item: any): void {
-    this.drawerResource.initLoadId = item.resourceId;
+    this.drawer.resource.initLoadId = item.resourceId;
   }
 
 }

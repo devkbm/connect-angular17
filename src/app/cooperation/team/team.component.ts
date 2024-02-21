@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, inject, viewChild } from '@angular/core';
 
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { ResponseList } from 'src/app/core/model/response-list';
@@ -54,15 +54,15 @@ import { TeamFormComponent } from './team-form.component';
     [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
     [nzMaskClosable]="true"
     [nzWidth]="800"
-    [nzVisible]="drawerTeamForm.visible"
+    [nzVisible]="drawer.team.visible"
     nzTitle="코드분류 등록"
-    (nzOnClose)="drawerTeamForm.visible = false">
+    (nzOnClose)="drawer.team.visible = false">
 
     <app-team-form *nzDrawerContent
-      [initLoadId]="drawerTeamForm.initLoadId"
+      [initLoadId]="drawer.team.initLoadId"
       (formSaved)="getGridList('d')"
       (formDeleted)="getGridList('d')"
-      (formClosed)="drawerTeamForm.visible = false">
+      (formClosed)="drawer.team.visible = false">
     </app-team-form>
     <!--
     <app-hrm-code-type-form #formHrmType *nzDrawerContent
@@ -112,34 +112,35 @@ import { TeamFormComponent } from './team-form.component';
 })
 export class TeamComponent implements OnInit {
 
-  @ViewChild(TeamGridComponent) grid!: TeamGridComponent;
+  private appAlarmService = inject(AppAlarmService);
+  private service = inject(TeamService);
 
-  drawerTeamForm: { visible: boolean, initLoadId: number | null } = {
-    visible: false,
-    initLoadId: null
+  grid = viewChild.required(TeamGridComponent);
+
+  drawer: {
+    team: { visible: boolean, initLoadId: number | null },
+  } = {
+    team: { visible: false, initLoadId: null }
   }
 
   gridList: TeamModel[] = [];
-
-  private appAlarmService = inject(AppAlarmService);
-  private service = inject(TeamService);
 
   ngOnInit() {
     this.getGridList('');
   }
 
   newTeam() {
-    this.drawerTeamForm.initLoadId = null;
-    this.drawerTeamForm.visible = true;
+    this.drawer.team.initLoadId = null;
+    this.drawer.team.visible = true;
   }
 
   editTeam(team: Team) {
-    this.drawerTeamForm.initLoadId = team.teamId;
-    this.drawerTeamForm.visible = true;
+    this.drawer.team.initLoadId = team.teamId;
+    this.drawer.team.visible = true;
   }
 
   getGridList(typeId: string): void {
-    this.drawerTeamForm.visible = false;
+    this.drawer.team.visible = false;
 
     const params = {
     //  typeId : typeId

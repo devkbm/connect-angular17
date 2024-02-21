@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, viewChild } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 
 import { AppBase } from 'src/app/core/app/app-base';
@@ -160,8 +160,9 @@ import { DeptSelectComponent } from './dept-select.component';
 })
 export class DeptComponent extends AppBase implements OnInit, AfterViewInit {
 
-  @ViewChild(DeptTreeComponent) tree!: DeptTreeComponent;
-  @ViewChild(DeptFormComponent) form!: DeptFormComponent;
+  tree = viewChild.required(DeptTreeComponent);
+  form = viewChild.required(DeptFormComponent);
+
 
   queryValue = '';
 
@@ -173,23 +174,23 @@ export class DeptComponent extends AppBase implements OnInit, AfterViewInit {
   }
 
   getDeptTree(): void {
-    this.tree.getDeptHierarchy();
+    this.tree().getDeptHierarchy();
   }
 
   initForm(): void {
-    this.form.newForm();
+    this.form().newForm();
   }
 
   saveDept(): void {
-    this.form.save();
+    this.form().save();
   }
 
   deleteDept(): void {
-    this.form.remove();
+    this.form().remove();
   }
 
   selectedItem(item: any): void {
-    this.form.get(item.deptCode);
+    this.form().get(item.deptCode);
   }
 
 }

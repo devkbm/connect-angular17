@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, inject, AfterViewInit } from '@angular/core';
+import { Component, OnInit, inject, AfterViewInit, viewChild } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 
 import { AppBase } from 'src/app/core/app/app-base';
@@ -119,8 +119,8 @@ import { CommonCodeGridComponent } from './common-code-grid.component';
 })
 export class CommonCodeComponent extends AppBase implements OnInit, AfterViewInit {
 
-  @ViewChild(CommonCodeTreeComponent) tree!: CommonCodeTreeComponent;
-  @ViewChild(CommonCodeFormComponent) form!: CommonCodeFormComponent;
+  tree = viewChild.required(CommonCodeTreeComponent);
+  form = viewChild.required(CommonCodeFormComponent);
 
   systemTypeCodeList: SystemTypeEnum[] = [];
 
@@ -190,26 +190,26 @@ export class CommonCodeComponent extends AppBase implements OnInit, AfterViewIni
   }
 
   getCommonCodeTree(): void {
-    this.tree.getCommonCodeHierarchy(this.systeTypeCode);
-    this.form.getCommonCodeHierarchy(this.systeTypeCode);
+    this.tree().getCommonCodeHierarchy(this.systeTypeCode);
+    this.form().getCommonCodeHierarchy(this.systeTypeCode);
     this.selectedCode = '';
   }
 
   newForm(): void {
-    this.form.newForm(this.systeTypeCode, this.selectedCode);
+    this.form().newForm(this.systeTypeCode, this.selectedCode);
   }
 
   saveCommonCode(): void {
-    this.form.save();
+    this.form().save();
   }
 
   deleteCommonCode(): void {
-    this.form.remove();
+    this.form().remove();
   }
 
   selectedItem(item: any): void {
     this.selectedCode = item.id;
-    this.form.get(item.systemTypeCode, item.id);
+    this.form().get(item.systemTypeCode, item.id);
   }
 
   getSystemTypeCode(): void {

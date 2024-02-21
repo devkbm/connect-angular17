@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild, ViewContainerRef, inject } from '@angular/core';
+import { AfterViewInit, Component, ViewContainerRef, inject, viewChild } from '@angular/core';
 import { ArticleGridComponent } from './article/article-grid.component';
 import { BoardTreeComponent } from './board-hierarcy/board-tree.component';
 import { Article } from './article/article.model';
@@ -92,7 +92,7 @@ export interface TabArticle {
         (editButtonClicked)="editArticleByButton($event)">
       </app-article-grid>
 -->
-      <app-article-list [boardId]="drawerBoard.initLoadId">
+      <app-article-list [boardId]="drawer.board.initLoadId">
 
       </app-article-list>
     </div>
@@ -109,15 +109,15 @@ export interface TabArticle {
     [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
     [nzMaskClosable]="true"
     [nzWidth]="'80%'"
-    [nzVisible]="drawerArticle.visible"
+    [nzVisible]="drawer.article.visible"
     nzTitle="게시글 등록"
-    (nzOnClose)="drawerArticle.visible = false">
+    (nzOnClose)="drawer.article.visible = false">
     <app-article-form #articleForm *nzDrawerContent
-      [boardId]="drawerBoard.initLoadId"
-      [initLoadId]="this.drawerArticle.initLoadId"
+      [boardId]="drawer.board.initLoadId"
+      [initLoadId]="this.drawer.article.initLoadId"
       (formSaved)="getArticleGridData()"
       (formDeleted)="getArticleGridData()"
-      (formClosed)="drawerArticle.visible = false">
+      (formClosed)="drawer.article.visible = false">
     </app-article-form>
 </nz-drawer>
 
@@ -125,10 +125,10 @@ export interface TabArticle {
     [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
     [nzMaskClosable]="true"
     [nzWidth]="800"
-    [nzVisible]="drawerArticleView.visible"
+    [nzVisible]="drawer.articleView.visible"
     nzTitle="게시글 조회"
-    (nzOnClose)="drawerArticleView.visible = false">
-    <app-article-view [article]="drawerArticleView.article" *nzDrawerContent>
+    (nzOnClose)="drawer.articleView.visible = false">
+    <app-article-view [article]="drawer.articleView.article" *nzDrawerContent>
     </app-article-view>
 </nz-drawer>
 
@@ -173,24 +173,17 @@ export interface TabArticle {
 })
 export class BoardComponent implements AfterViewInit {
 
-  @ViewChild(BoardTreeComponent) boardTree!: BoardTreeComponent;
-  @ViewChild(ArticleGridComponent) articleGrid!: ArticleGridComponent;
+  boardTree = viewChild.required(BoardTreeComponent);
+  articleGrid = viewChild.required(ArticleGridComponent);
 
-  drawerBoard: {visible: boolean, initLoadId: any} = {
-    visible: false,
-    initLoadId: null
-  }
-
-  drawerArticle: {use: boolean, visible: boolean, initLoadId: any} = {
-    use: false,
-    visible: false,
-    initLoadId: null
-  }
-
-  drawerArticleView: {use: boolean, visible: boolean, article: any} = {
-    use: false,
-    visible: false,
-    article: null
+  drawer: {
+    board: { visible: boolean, initLoadId: any },
+    article: { use: boolean, visible: boolean, initLoadId: any },
+    articleView: { use: boolean, visible: boolean, article: any },
+  } = {
+    board: { visible: false, initLoadId: null },
+    article: { use: false, visible: false, initLoadId: null },
+    articleView: { use: false, visible: false, article: null },
   }
 
   tabIndex: number = 0;
@@ -217,10 +210,10 @@ export class BoardComponent implements AfterViewInit {
       //}
 
       //console.log(event);
-      console.log(this.drawerBoard.initLoadId);
+      console.log(this.drawer.board.initLoadId);
       console.log(event.data);
       // BoardId가 저장한 게시글의 boardId가 일치하면 재조회
-      if (this.drawerBoard.initLoadId == event.data) {
+      if (this.drawer.board.initLoadId == event.data) {
         this.getArticleGridData();
       }
     }, false);
@@ -228,32 +221,32 @@ export class BoardComponent implements AfterViewInit {
 
   setBoardSelect(item: any): void {
     this.tabTitle = item.title;
-    this.drawerBoard.initLoadId = item.key;
+    this.drawer.board.initLoadId = item.key;
 
     this.getArticleGridData();
   }
 
   getArticleGridData(): void {
-    this.drawerArticle.visible = false;
-    this.drawerArticleView.visible = false;
+    this.drawer.article.visible = false;
+    this.drawer.articleView.visible = false;
 
-    this.articleGrid.getArticleList(this.drawerBoard.initLoadId);
+    this.articleGrid().getArticleList(this.drawer.board.initLoadId);
   }
 
   getBoardTree(): void {
-    this.drawerBoard.visible = false;
-    this.boardTree.getboardHierarchy();
+    this.drawer.board.visible = false;
+    this.boardTree().getboardHierarchy();
   }
 
   newArticle(): void {
-    if (this.drawerBoard.initLoadId === null || this.drawerBoard.initLoadId === undefined)  {
+    if (this.drawer.board.initLoadId === null || this.drawer.board.initLoadId === undefined)  {
       this.message.create('error', '게시판을 선택해주세요.');
       return;
     }
 
-    if (this.drawerArticle.use) {
-      this.drawerArticle.initLoadId = null;
-      this.drawerArticle.visible = true;
+    if (this.drawer.article.use) {
+      this.drawer.article.initLoadId = null;
+      this.drawer.article.visible = true;
     } else {
       this.popupNewArticle();
     }
@@ -263,7 +256,7 @@ export class BoardComponent implements AfterViewInit {
   popupNewArticle() {
     // 게시글 등록 폼 팝업으로 오픈
     const url = this.router.serializeUrl(
-      this.router.createUrlTree([`/boarda`, this.drawerBoard.initLoadId])  // /grw/boarda
+      this.router.createUrlTree([`/boarda`, this.drawer.board.initLoadId])  // /grw/boarda
     );
     const popOption = 'scrollbars=yes, menubar=no, resizable=no, top=0, left=0, width=800, height=800';
     var windowObjectReference = this.winRef.nativeWindow.open(url, '_blank', popOption);
@@ -271,22 +264,22 @@ export class BoardComponent implements AfterViewInit {
   }
 
   selectArticle(item: any) {
-    this.drawerArticleView.article = item;
-    this.drawerArticle.initLoadId = item.articleId;
+    this.drawer.articleView.article = item;
+    this.drawer.article.initLoadId = item.articleId;
   }
 
   editArticleByButton(item: any) {
-    this.drawerArticle.initLoadId = item.articleId;
-    if (this.drawerArticle.initLoadId === null || this.drawerArticle.initLoadId === undefined) {
+    this.drawer.article.initLoadId = item.articleId;
+    if (this.drawer.article.initLoadId === null || this.drawer.article.initLoadId === undefined) {
       this.message.create('error', '게시글을 선택해주세요.');
       return;
     }
 
-    this.drawerArticle.visible = true;
+    this.drawer.article.visible = true;
   }
 
   showAriticle() {
-    if (this.drawerArticleView.use) {
+    if (this.drawer.articleView.use) {
       this.addTabArticleView();
     } else {
       this.popupArticleView();
@@ -295,7 +288,7 @@ export class BoardComponent implements AfterViewInit {
 
   popupArticleView() {
     const url = this.router.serializeUrl(
-      this.router.createUrlTree([`/boardv`, {article: JSON.stringify(this.drawerArticleView.article)}])  // /grw/boarda
+      this.router.createUrlTree([`/boardv`, {article: JSON.stringify(this.drawer.articleView.article)}])  // /grw/boarda
     );
     const popOption = 'scrollbars=yes, menubar=no, resizable=no, top=0, left=0, width=800, height=800';
     var windowObjectReference = this.winRef.nativeWindow.open(url, '_blank', popOption);
@@ -304,15 +297,15 @@ export class BoardComponent implements AfterViewInit {
 
   addTabArticleView(): void {
     let title: string | null = '';
-    const title_lentgh = this.drawerArticleView.article?.title.length as number;
+    const title_lentgh = this.drawer.articleView.article?.title.length as number;
     if (title_lentgh > 8) {
-      title = this.drawerArticleView.article?.title.substring(0, 8) + '...';
+      title = this.drawer.articleView.article?.title.substring(0, 8) + '...';
     } else {
-      title = this.drawerArticleView.article?.title as string;
+      title = this.drawer.articleView.article?.title as string;
     }
 
-    const articleId = this.drawerArticleView.article?.articleId as number;
-    const article = this.drawerArticleView.article as Article;
+    const articleId = this.drawer.articleView.article?.articleId as number;
+    const article = this.drawer.articleView.article as Article;
     const newTab: TabArticle = {
       tabName: title,
       articleId: articleId,
@@ -321,7 +314,7 @@ export class BoardComponent implements AfterViewInit {
 
     let tabIndex = null;
     for (const index in this.tabs) {
-      if (this.tabs[index].articleId === this.drawerArticleView.article?.articleId) {
+      if (this.tabs[index].articleId === this.drawer.articleView.article?.articleId) {
         tabIndex = index;
       }
     }

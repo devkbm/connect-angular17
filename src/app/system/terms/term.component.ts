@@ -1,4 +1,4 @@
-import { AfterContentInit, AfterViewInit, Component, ContentChild, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, ContentChild, OnInit, viewChild } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 
 import { AppBase } from 'src/app/core/app/app-base';
@@ -57,11 +57,11 @@ import { WordFormComponent } from './word-form.component';
   <app-nz-search-area>
     <div nz-col [nzSpan]="12">
       <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate" [nzSuffix]="suffixIconSearch">
-        <input type="text" [(ngModel)]="query.value" nz-input placeholder="input search text" (keyup.enter)="getTermList()">
+        <input type="text" [(ngModel)]="query.term.value" nz-input placeholder="input search text" (keyup.enter)="getTermList()">
       </nz-input-group>
       <ng-template #addOnBeforeTemplate>
-        <nz-select [(ngModel)]="query.key">
-          @for (option of query.list; track option.value) {
+        <nz-select [(ngModel)]="query.term.key">
+          @for (option of query.term.list; track option.value) {
           <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
           }
         </nz-select>
@@ -117,8 +117,8 @@ import { WordFormComponent } from './word-form.component';
       <div class="grid-wrapper">
         <app-data-domain-grid #domainGrid
           (rowClickedEvent)="domainGridSelected($event)"
-          (editButtonClickedEvent)="this.domainDrawer.visible = true"
-          (rowDoubleClickedEvent)="this.domainDrawer.visible = true">
+          (editButtonClickedEvent)="this.drawer.domain.visible = true"
+          (rowDoubleClickedEvent)="this.drawer.domain.visible = true">
         </app-data-domain-grid>
       </div>
     </nz-tab>
@@ -129,15 +129,15 @@ import { WordFormComponent } from './word-form.component';
   [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
   [nzMaskClosable]="true"
   nzWidth="80%"
-  [nzVisible]="termDrawer.visible"
+  [nzVisible]="drawer.term.visible"
   nzTitle="용어 등록"
-  (nzOnClose)="this.termDrawer.visible = false">
+  (nzOnClose)="this.drawer.term.visible = false">
     <app-term-form *nzDrawerContent
       #termForm
-      [initLoadId]="termDrawer.initLoadId"
+      [initLoadId]="drawer.term.initLoadId"
       (formSaved)="getTermList()"
       (formDeleted)="getTermList()"
-      (formClosed)="this.termDrawer.visible = false">
+      (formClosed)="this.drawer.term.visible = false">
     </app-term-form>
 </nz-drawer>
 
@@ -145,14 +145,14 @@ import { WordFormComponent } from './word-form.component';
   [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
   [nzMaskClosable]="true"
   nzWidth="80%"
-  [nzVisible]="wordDrawer.visible"
+  [nzVisible]="drawer.word.visible"
   nzTitle="단어 등록"
-  (nzOnClose)="this.wordDrawer.visible = false">
+  (nzOnClose)="this.drawer.word.visible = false">
     <app-word-form *nzDrawerContent #wordForm
-      [initLoadId]="wordDrawer.initLoadId"
+      [initLoadId]="drawer.word.initLoadId"
       (formSaved)="getWordList()"
       (formDeleted)="getWordList()"
-      (formClosed)="wordDrawer.visible = false">
+      (formClosed)="drawer.word.visible = false">
     </app-word-form>
 </nz-drawer>
 
@@ -160,14 +160,14 @@ import { WordFormComponent } from './word-form.component';
   [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
   [nzMaskClosable]="true"
   nzWidth="80%"
-  [nzVisible]="domainDrawer.visible"
+  [nzVisible]="drawer.domain.visible"
   nzTitle="도메인 등록"
-  (nzOnClose)="domainDrawer.visible = false">
+  (nzOnClose)="drawer.domain.visible = false">
     <app-data-domain-form *nzDrawerContent #doaminForm
-      [initLoadId]="domainDrawer.initLoadId"
+      [initLoadId]="drawer.domain.initLoadId"
       (formSaved)="getDomainList()"
       (formDeleted)="getDomainList()"
-      (formClosed)="domainDrawer.visible = false">
+      (formClosed)="drawer.domain.visible = false">
     </app-data-domain-form>
 </nz-drawer>
 
@@ -224,35 +224,34 @@ import { WordFormComponent } from './word-form.component';
 })
 export class TermComponent extends AppBase implements OnInit {
 
-  @ViewChild('termGrid') termGrid!: TermGridComponent;
-  @ViewChild('wordGrid') wordGrid!: WordGridComponent;
-  @ViewChild('domainGrid') domainGrid!: DataDomainGridComponent;
+  termGrid = viewChild.required(TermGridComponent);
+  wordGrid = viewChild.required(WordGridComponent);
+  domainGrid = viewChild.required(DataDomainGridComponent);
 
-  query: { key: string, value: string, list: {label: string, value: string}[] } = {
-    key: 'term',
-    value: '',
-    list: [
-      {label: '용어', value: 'term'},
-      {label: '업무영역', value: 'domain'}
-    ]
+  query: {
+    term : { key: string, value: string, list: {label: string, value: string}[] }
+  } = {
+    term : {
+      key: 'term',
+      value: '',
+      list: [
+        {label: '용어', value: 'term'},
+        {label: '업무영역', value: 'domain'}
+      ]
+    }
+  }
+
+  drawer: {
+    term: { visible: boolean, initLoadId: any },
+    word: { visible: boolean, initLoadId: any },
+    domain: { visible: boolean, initLoadId: any }
+  } = {
+    term: { visible: false, initLoadId: null },
+    word: { visible: false, initLoadId: null },
+    domain: { visible: false, initLoadId: null },
   }
 
   tabIndex: number = 0;
-
-  termDrawer: { visible: boolean, initLoadId: any } = {
-    visible: false,
-    initLoadId: null
-  }
-
-  wordDrawer: { visible: boolean, initLoadId: any } = {
-    visible: false,
-    initLoadId: null
-  }
-
-  domainDrawer: { visible: boolean, initLoadId: any } = {
-    visible: false,
-    initLoadId: null
-  }
 
   ngOnInit(): void {
   }
@@ -270,63 +269,63 @@ export class TermComponent extends AppBase implements OnInit {
   //#region 용어사전
   getTermList() {
     let params: any = new Object();
-    if ( this.query.value !== '') {
-      params[this.query.key] = this.query.value;
+    if ( this.query.term.value !== '') {
+      params[this.query.term.key] = this.query.term.value;
     }
 
-    this.termDrawer.visible = false;
-    this.termGrid.getList(params);
+    this.drawer.term.visible = false;
+    this.termGrid().getList(params);
   }
 
   newTerm() {
-    this.termDrawer.initLoadId = null;
-    this.termDrawer.visible = true;
+    this.drawer.term.initLoadId = null;
+    this.drawer.term.visible = true;
   }
 
   editTerm(item: any) {
-    this.termDrawer.initLoadId = item.termId;
-    this.termDrawer.visible = true;
+    this.drawer.term.initLoadId = item.termId;
+    this.drawer.term.visible = true;
   }
 
   termGridSelected(item: any) {
-    this.termDrawer.initLoadId = item.termId;
+    this.drawer.term.initLoadId = item.termId;
   }
   //#endregion 용어사전
 
   //#region 단어사전
   getWordList() {
-    this.wordDrawer.visible = false;
-    this.wordGrid.getList();
+    this.drawer.word.visible = false;
+    this.wordGrid().getList();
   }
 
   newWord() {
-    this.wordDrawer.initLoadId = null;
-    this.wordDrawer.visible = true;
+    this.drawer.word.initLoadId = null;
+    this.drawer.word.visible = true;
   }
 
   editWord(item: any) {
-    this.wordDrawer.initLoadId = item.logicalName;
-    this.wordDrawer.visible = true;
+    this.drawer.word.initLoadId = item.logicalName;
+    this.drawer.word.visible = true;
   }
 
   wordGridSelected(item: any) {
-    this.wordDrawer.initLoadId = item.logicalName;
+    this.drawer.word.initLoadId = item.logicalName;
   }
   //#endregion 단어사전
 
   //#region 도메인
   getDomainList() {
-    this.domainDrawer.visible = false;
-    this.domainGrid.getList();
+    this.drawer.domain.visible = false;
+    this.domainGrid().getList();
   }
 
   newDomain() {
-    this.domainDrawer.initLoadId = null;
-    this.domainDrawer.visible = true;
+    this.drawer.domain.initLoadId = null;
+    this.drawer.domain.visible = true;
   }
 
   domainGridSelected(item: any) {
-    this.domainDrawer.initLoadId = item.domainId;
+    this.drawer.domain.initLoadId = item.domainId;
   }
   //#endregion 도메인
 

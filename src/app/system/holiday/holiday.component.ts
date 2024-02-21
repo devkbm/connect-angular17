@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, Component, OnInit, inject, viewChild } from '@angular/core';
 import { CommonModule, formatDate, Location } from '@angular/common';
 
 import { AppBase } from 'src/app/core/app/app-base';
@@ -46,7 +46,7 @@ import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/n
 <div class="page-search">
   <app-nz-search-area>
     <div nz-col [nzSpan]="1" style="text-align: left;">
-      <nz-date-picker nzMode="year" [(ngModel)]="query.year" nzAllowClear="false" style="width: 80px;"></nz-date-picker>
+      <nz-date-picker nzMode="year" [(ngModel)]="query.holiday.year" nzAllowClear="false" style="width: 80px;"></nz-date-picker>
     </div>
 
     <div nz-col [nzSpan]="23" style="text-align: right;">
@@ -84,11 +84,11 @@ import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/n
     [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
     [nzMaskClosable]="true"
     [nzWidth]="720"
-    [nzVisible]="drawerHoliday.visible"
+    [nzVisible]="drawer.holiday.visible"
     nzTitle="휴일 등록"
     (nzOnClose)="closeDrawer()">
     <app-holiday-form #holidayForm *nzDrawerContent
-      [initLoadId]="drawerHoliday.initLoadId"
+      [initLoadId]="drawer.holiday.initLoadId"
       (formSaved)="getHolidayList()"
       (formDeleted)="getHolidayList()"
       (formClosed)="closeDrawer()">
@@ -147,25 +147,30 @@ import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/n
 })
 export class HolidayComponent extends AppBase implements OnInit, AfterViewInit {
 
-  @ViewChild(HolidayGridComponent) grid!: HolidayGridComponent;
-
-  query: { key: string, value: string, list: {label: string, value: string}[], year: Date } = {
-    key: 'resourceCode',
-    value: '',
-    list: [
-      {label: '휴일명', value: 'resourceCode'},
-      {label: '비고', value: 'description'}
-    ],
-    year: new Date()
-  }
-
-  drawerHoliday: { visible: boolean, initLoadId: any } = {
-    visible: false,
-    initLoadId: null
-  }
-
   private service = inject(HolidayService);
   private appAlarmService = inject(AppAlarmService);
+
+  grid = viewChild.required(HolidayGridComponent);
+
+  query: {
+    holiday : { key: string, value: string, list: {label: string, value: string}[], year: Date },
+  } = {
+    holiday : {
+      key: 'resourceCode',
+      value: '',
+      list: [
+        {label: '휴일명', value: 'resourceCode'},
+        {label: '비고', value: 'description'}
+      ],
+      year: new Date()
+    }
+  }
+
+  drawer: {
+    holiday: { visible: boolean, initLoadId: any }
+  } = {
+    holiday: { visible: false, initLoadId: null }
+  }
 
   ngAfterViewInit(): void {
     this.getHolidayList();
@@ -175,32 +180,32 @@ export class HolidayComponent extends AppBase implements OnInit, AfterViewInit {
   }
 
   openDrawer(): void {
-    this.drawerHoliday.visible = true;
+    this.drawer.holiday.visible = true;
   }
 
   closeDrawer(): void {
-    this.drawerHoliday.visible = false;
+    this.drawer.holiday.visible = false;
   }
 
   getHolidayList(): void {
     let params: any = new Object();
-    if ( this.query.value !== '') {
-      params[this.query.key] = this.query.value;
+    if ( this.query.holiday.value !== '') {
+      params[this.query.holiday.key] = this.query.holiday.value;
     }
 
-    const date: Date = this.query.year;
+    const date: Date = this.query.holiday.year;
 
     this.closeDrawer();
-    this.grid.getGridList(date.getFullYear()+'0101', date.getFullYear()+'1231');
+    this.grid().getGridList(date.getFullYear()+'0101', date.getFullYear()+'1231');
   }
 
   newHoliday(): void {
-    this.drawerHoliday.initLoadId = null;
+    this.drawer.holiday.initLoadId = null;
     this.openDrawer();
   }
 
   deleteHoliday(): void {
-    const date = this.grid.getSelectedRows()[0].date;
+    const date = this.grid().getSelectedRows()[0].date;
     this.delete(date);
   }
 
@@ -219,11 +224,11 @@ export class HolidayComponent extends AppBase implements OnInit, AfterViewInit {
   }
 
   holidayGridRowClicked(item: any): void {
-    this.drawerHoliday.initLoadId = item.date;
+    this.drawer.holiday.initLoadId = item.date;
   }
 
   edit(item: any): void {
-    this.drawerHoliday.initLoadId = item.date;
+    this.drawer.holiday.initLoadId = item.date;
     this.openDrawer();
   }
 }

@@ -1,7 +1,7 @@
 import { CommonModule, Location } from '@angular/common';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, viewChild } from '@angular/core';
 
 import { AppBase } from 'src/app/core/app/app-base';
 import { StaffRegistFormComponent } from './staff-regist-form.component';
@@ -123,7 +123,7 @@ import { StaffSchoolCareerFormComponent } from './staff-school-career/staff-scho
             [staff]="selectedStaff"
             (formSaved)="selectGridAppointment()"
             (formDeleted)="selectGridAppointment()"
-            (formClosed)="drawerContact.visible = false">
+            (formClosed)="drawer.contact.visible = false">
           </app-staff-contact-form>
         </div>
       </nz-tab>
@@ -207,15 +207,15 @@ import { StaffSchoolCareerFormComponent } from './staff-school-career/staff-scho
   [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
   [nzMaskClosable]="true"
   nzWidth="80%"
-  [nzVisible]="drawerNewStaff.visible"
+  [nzVisible]="drawer.newStaff.visible"
   nzTitle="직원 등록"
-  (nzOnClose)="drawerNewStaff.visible = false">
+  (nzOnClose)="drawer.newStaff.visible = false">
     <!-- (formSaved)="getForm(newStaff.selectedRowId)" -->
     <app-new-staff-form *nzDrawerContent
-      [initLoadId]="drawerNewStaff.initLoadId"
+      [initLoadId]="drawer.newStaff.initLoadId"
       (formSaved)="selectGridStaff()"
       (formDeleted)="selectGridStaff()"
-      (formClosed)="drawerNewStaff.visible = false">
+      (formClosed)="drawer.newStaff.visible = false">
     </app-new-staff-form>
 </nz-drawer>
 
@@ -224,15 +224,15 @@ import { StaffSchoolCareerFormComponent } from './staff-school-career/staff-scho
   [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
   [nzMaskClosable]="true"
   nzWidth="80%"
-  [nzVisible]="drawerAppointment.visible"
+  [nzVisible]="drawer.appointment.visible"
   nzTitle="발령 등록"
-  (nzOnClose)="drawerAppointment.visible = false">
+  (nzOnClose)="drawer.appointment.visible = false">
     <app-staff-appointment-record-form *nzDrawerContent
       [staff]="selectedStaff"
-      [initLoadId]="drawerAppointment.initLoadId"
+      [initLoadId]="drawer.appointment.initLoadId"
       (formSaved)="selectGridAppointment()"
       (formDeleted)="selectGridAppointment()"
-      (formClosed)="drawerAppointment.visible = false">
+      (formClosed)="drawer.appointment.visible = false">
     </app-staff-appointment-record-form>
 </nz-drawer>
 
@@ -240,15 +240,15 @@ import { StaffSchoolCareerFormComponent } from './staff-school-career/staff-scho
   [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
   [nzMaskClosable]="true"
   nzWidth="80%"
-  [nzVisible]="drawerDutyResponsibility.visible"
+  [nzVisible]="drawer.dutyResponsibility.visible"
   nzTitle="직책 등록"
-  (nzOnClose)="drawerDutyResponsibility.visible = false">
+  (nzOnClose)="drawer.dutyResponsibility.visible = false">
   <!--(formSaved)="selectGridAppointment()"
       (formDeleted)="selectGridAppointment()"-->
     <app-staff-duty-responsibility-form *nzDrawerContent
       [staff]="selectedStaff"
-      [initLoadId]="drawerDutyResponsibility.initLoadId"
-      (formClosed)="drawerDutyResponsibility.visible = false">
+      [initLoadId]="drawer.dutyResponsibility.initLoadId"
+      (formClosed)="drawer.dutyResponsibility.visible = false">
     </app-staff-duty-responsibility-form>
 </nz-drawer>
 
@@ -257,15 +257,15 @@ import { StaffSchoolCareerFormComponent } from './staff-school-career/staff-scho
   [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
   [nzMaskClosable]="true"
   nzWidth="80%"
-  [nzVisible]="drawerContact.visible"
+  [nzVisible]="drawer.contact.visible"
   nzTitle="연락처 등록"
-  (nzOnClose)="drawerContact.visible = false">
+  (nzOnClose)="drawer.contact.visible = false">
     <app-staff-contact-form *nzDrawerContent
-      [initLoadId]="drawerContact.initLoadId"
+      [initLoadId]="drawer.contact.initLoadId"
       [staff]="selectedStaff"
       (formSaved)="selectGridAppointment()"
       (formDeleted)="selectGridAppointment()"
-      (formClosed)="drawerContact.visible = false">
+      (formClosed)="drawer.contact.visible = false">
     </app-staff-contact-form>
 </nz-drawer>
 
@@ -273,15 +273,15 @@ import { StaffSchoolCareerFormComponent } from './staff-school-career/staff-scho
   [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
   [nzMaskClosable]="true"
   nzWidth="80%"
-  [nzVisible]="drawerFamily.visible"
+  [nzVisible]="drawer.family.visible"
   nzTitle="가족 등록"
-  (nzOnClose)="drawerFamily.visible = false">
+  (nzOnClose)="drawer.family.visible = false">
     <app-staff-family-form *nzDrawerContent
-      [initLoadId]="drawerFamily.initLoadId"
+      [initLoadId]="drawer.family.initLoadId"
       [staff]="selectedStaff"
       (formSaved)="selectGridFaimly()"
       (formDeleted)="selectGridFaimly()"
-      (formClosed)="drawerFamily.visible = false">
+      (formClosed)="drawer.family.visible = false">
     </app-staff-family-form>
 </nz-drawer>
 
@@ -289,15 +289,15 @@ import { StaffSchoolCareerFormComponent } from './staff-school-career/staff-scho
   [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
   [nzMaskClosable]="true"
   nzWidth="80%"
-  [nzVisible]="drawerSchoolCareer.visible"
+  [nzVisible]="drawer.schoolCareer.visible"
   nzTitle="학력 등록"
-  (nzOnClose)="drawerSchoolCareer.visible = false">
+  (nzOnClose)="drawer.schoolCareer.visible = false">
     <app-staff-school-career-form *nzDrawerContent
-      [initLoadId]="drawerSchoolCareer.initLoadId"
+      [initLoadId]="drawer.schoolCareer.initLoadId"
       [staff]="selectedStaff"
       (formSaved)="selectGridSchoolCareer()"
       (formDeleted)="selectGridSchoolCareer()"
-      (formClosed)="drawerSchoolCareer.visible = false">
+      (formClosed)="drawer.schoolCareer.visible = false">
     </app-staff-school-career-form>
 </nz-drawer>
 
@@ -305,27 +305,29 @@ import { StaffSchoolCareerFormComponent } from './staff-school-career/staff-scho
   [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
   [nzMaskClosable]="true"
   nzWidth="80%"
-  [nzVisible]="drawerLicense.visible"
+  [nzVisible]="drawer.license.visible"
   nzTitle="자격면허 등록"
-  (nzOnClose)="drawerLicense.visible = false">
+  (nzOnClose)="drawer.license.visible = false">
     <app-staff-license-form *nzDrawerContent
-      [initLoadId]="drawerLicense.initLoadId"
+      [initLoadId]="drawer.license.initLoadId"
       [staff]="selectedStaff"
       (formSaved)="selectGridLicense()"
       (formDeleted)="selectGridLicense()"
-      (formClosed)="drawerLicense.visible = false">
+      (formClosed)="drawer.license.visible = false">
     </app-staff-license-form>
 </nz-drawer>
 
   `,
   styles: `
 .app-grid {
+  height: calc(100vh - 336px);
   display: grid;
   /*grid-auto-flow: column;*/
   grid-template-rows: 1fr;
   grid-template-columns: 200px 400px 1fr;
   column-gap: 10px;
   margin-top: 10px;
+
 }
 
 .btn-group {
@@ -349,49 +351,32 @@ import { StaffSchoolCareerFormComponent } from './staff-school-career/staff-scho
 })
 export class StaffManagementComponent extends AppBase implements OnInit {
 
-  @ViewChild(StaffGridComponent) gridStaff!: StaffGridComponent;
-  @ViewChild(StaffRegistFormComponent) formStaff!: StaffRegistFormComponent;
-  @ViewChild(StaffCurrentAppointmentDescriptionComponent) staffDesc!: StaffCurrentAppointmentDescriptionComponent;
-  @ViewChild(StaffAppointmentRecordGridComponent) gridAppointment!: StaffAppointmentRecordGridComponent;
-  @ViewChild(StaffFamilyGridComponent) gridFamily!: StaffFamilyGridComponent;
-  @ViewChild(StaffLicenseGridComponent) gridLicense!: StaffLicenseGridComponent;
-  @ViewChild(StaffSchoolCareerGridComponent) gridSchoolcareer!: StaffSchoolCareerGridComponent;
+  gridStaff = viewChild.required(StaffGridComponent);
+  formStaff = viewChild.required(StaffRegistFormComponent);
+  staffDesc = viewChild.required(StaffCurrentAppointmentDescriptionComponent);
+  gridAppointment = viewChild.required(StaffAppointmentRecordGridComponent);
+  gridFamily = viewChild.required(StaffFamilyGridComponent);
+  gridLicense = viewChild.required(StaffLicenseGridComponent);
+  gridSchoolcareer = viewChild.required(StaffSchoolCareerGridComponent);
 
   selectedStaff?: {companyCode: string, staffNo: string, staffName: string};
 
-  drawerNewStaff: { visible: boolean, initLoadId: any } = {
-    visible: false,
-    initLoadId: null
-  }
-
-  drawerAppointment: { visible: boolean, initLoadId: any } = {
-    visible: false,
-    initLoadId: null
-  }
-
-  drawerDutyResponsibility: { visible: boolean, initLoadId: any } = {
-    visible: false,
-    initLoadId: null
-  }
-
-  drawerContact: { visible: boolean, initLoadId: any } = {
-    visible: false,
-    initLoadId: null
-  }
-
-  drawerFamily: { visible: boolean, initLoadId: any } = {
-    visible: false,
-    initLoadId: null
-  }
-
-  drawerSchoolCareer: { visible: boolean, initLoadId: any } = {
-    visible: false,
-    initLoadId: null
-  }
-
-  drawerLicense: { visible: boolean, initLoadId: any } = {
-    visible: false,
-    initLoadId: null
+  drawer: {
+    newStaff: { visible: boolean, initLoadId: any },
+    appointment: { visible: boolean, initLoadId: any },
+    dutyResponsibility: { visible: boolean, initLoadId: any },
+    contact: { visible: boolean, initLoadId: any },
+    family: { visible: boolean, initLoadId: any },
+    schoolCareer: { visible: boolean, initLoadId: any },
+    license: { visible: boolean, initLoadId: any }
+  } = {
+    newStaff: { visible: false, initLoadId: null },
+    appointment: { visible: false, initLoadId: null },
+    dutyResponsibility: { visible: false, initLoadId: null },
+    contact: { visible: false, initLoadId: null },
+    family: { visible: false, initLoadId: null },
+    schoolCareer: { visible: false, initLoadId: null },
+    license: { visible: false, initLoadId: null }
   }
 
   constructor() {
@@ -404,82 +389,82 @@ export class StaffManagementComponent extends AppBase implements OnInit {
   staffGridRowClicked(params: any) {
     console.log(params);
     this.selectedStaff = {companyCode: params.companyCode, staffNo: params.staffNo, staffName: params.name};
-    this.formStaff.get(params.staffNo);
+    this.formStaff().get(params.staffNo);
   }
 
   selectGridStaff() {
-    this.drawerNewStaff.visible = false;
+    this.drawer.newStaff.visible = false;
 
-    this.gridStaff.getList();
+    this.gridStaff().getList();
   }
 
   newStaff() {
-    this.drawerNewStaff.visible = true;
+    this.drawer.newStaff.visible = true;
   }
 
   newAppoint() {
-    this.drawerAppointment.visible = true;
+    this.drawer.appointment.visible = true;
   }
 
   newDutyResponsibility() {
-    this.drawerDutyResponsibility.visible = true;
+    this.drawer.dutyResponsibility.visible = true;
   }
 
   newContact() {
-    this.drawerContact.visible = true;
+    this.drawer.contact.visible = true;
   }
 
   selectGridAppointment() {
-    this.drawerAppointment.visible = false;
-    this.gridAppointment.getList(this.selectedStaff?.staffNo!);
-    this.staffDesc.get(this.selectedStaff?.staffNo!);
+    this.drawer.appointment.visible = false;
+    this.gridAppointment().getList(this.selectedStaff?.staffNo!);
+    this.staffDesc().get(this.selectedStaff?.staffNo!);
   }
 
   editAppointment(row: StaffAppointmentRecord) {
-    this.drawerAppointment.initLoadId = {staffId: row.staffNo, seq: row.seq};
-    this.drawerAppointment.visible = true;
+    this.drawer.appointment.initLoadId = {staffId: row.staffNo, seq: row.seq};
+    this.drawer.appointment.visible = true;
   }
 
   selectGridFaimly() {
-    this.drawerFamily.visible = false;
-    this.gridFamily.getList(this.selectedStaff?.staffNo!);
+    this.drawer.family.visible = false;
+    this.gridFamily().getList(this.selectedStaff?.staffNo!);
   }
 
   newFamily() {
-    this.drawerFamily.visible = true;
+    this.drawer.family.visible = true;
   }
 
   editFamily(row: StaffFamily) {
-    this.drawerFamily.initLoadId = {staffId: row.staffNo, seq: row.seq};
-    this.drawerFamily.visible = true;
+    this.drawer.family.initLoadId = {staffId: row.staffNo, seq: row.seq};
+    this.drawer.family.visible = true;
   }
 
   selectGridSchoolCareer() {
-    this.drawerSchoolCareer.visible = false;
-    this.gridSchoolcareer.getList(this.selectedStaff?.staffNo!);
+    this.drawer.schoolCareer.visible = false;
+    this.gridSchoolcareer().getList(this.selectedStaff?.staffNo!);
   }
 
   newSchoolCareer() {
-    this.drawerSchoolCareer.visible = true;
+    this.drawer.schoolCareer.visible = true;
   }
 
   editSchoolCareer(row: StaffSchoolCareer) {
-    this.drawerSchoolCareer.initLoadId = {staffId: row.staffNo, seq: row.seq};
-    this.drawerSchoolCareer.visible = true;
+    this.drawer.schoolCareer.initLoadId = {staffId: row.staffNo, seq: row.seq};
+    this.drawer.schoolCareer.visible = true;
   }
 
   selectGridLicense() {
-    this.drawerLicense.visible = false;
-    this.gridLicense.getList(this.selectedStaff?.staffNo!);
+    this.drawer.license.visible = false;
+    this.gridLicense().getList(this.selectedStaff?.staffNo!);
   }
 
   newLicense() {
-    this.drawerLicense.visible = true;
+    this.drawer.license.visible = true;
   }
 
   editLicense(row: StaffLicense) {
-    this.drawerLicense.initLoadId = {staffId: row.staffNo, seq: row.seq};
-    this.drawerLicense.visible = true;
+    this.drawer.license.initLoadId = {staffId: row.staffNo, seq: row.seq};
+    this.drawer.license.visible = true;
   }
 
 }

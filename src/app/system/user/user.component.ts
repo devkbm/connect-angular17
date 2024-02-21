@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, inject, viewChild } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 
 import { AppBase } from 'src/app/core/app/app-base';
@@ -56,19 +56,20 @@ import { UserProfileComponent } from './user-profile.component';
   <app-nz-search-area>
     <div nz-col [nzSpan]="12">
       <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate" [nzSuffix]="suffixIconSearch">
-          <input type="text" [(ngModel)]="query.value" nz-input placeholder="input search text" (keyup.enter)="getUserList()">
-      </nz-input-group>
-      <ng-template #addOnBeforeTemplate>
-        <nz-select [(ngModel)]="query.key">
-          @for (option of query.list; track option.value) {
-          <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
-          }
-        </nz-select>
-      </ng-template>
-      <ng-template #suffixIconSearch>
+        <ng-template #addOnBeforeTemplate>
+          <nz-select [(ngModel)]="query.user.key">
+            @for (option of query.user.list; track option.value) {
+            <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+            }
+          </nz-select>
+        </ng-template>
+        <input type="text" [(ngModel)]="query.user.value" nz-input placeholder="input search text" (keyup.enter)="getUserList()">
+        <ng-template #suffixIconSearch>
           <span nz-icon nzType="search"></span>
-      </ng-template>
+        </ng-template>
+      </nz-input-group>
     </div>
+
     <div nz-col [nzSpan]="12" style="text-align: right;">
       <!--<app-nz-buttons [buttons]="buttons"></app-nz-buttons>-->
 
@@ -109,14 +110,14 @@ import { UserProfileComponent } from './user-profile.component';
   [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
   [nzMaskClosable]="true"
   [nzWidth]="720"
-  [nzVisible]="drawerUser.visible"
+  [nzVisible]="drawer.user.visible"
   nzTitle="사용자 등록"
-  (nzOnClose)="drawerUser.visible = false">
+  (nzOnClose)="drawer.user.visible = false">
     <app-user-form *nzDrawerContent
-      [initLoadId]="drawerUser.initLoadId"
+      [initLoadId]="drawer.user.initLoadId"
       (formSaved)="getUserList()"
       (formDeleted)="getUserList()"
-      (formClosed)="drawerUser.visible = false">
+      (formClosed)="drawer.user.visible = false">
     </app-user-form>
 </nz-drawer>
 
@@ -173,7 +174,7 @@ import { UserProfileComponent } from './user-profile.component';
 })
 export class UserComponent extends AppBase implements OnInit {
 
-  @ViewChild(UserGridComponent) grid!: UserGridComponent;
+  grid = viewChild.required(UserGridComponent);
 
   buttons: ButtonTemplate[] = [{
     text: '구글 로그인',
@@ -205,18 +206,23 @@ export class UserComponent extends AppBase implements OnInit {
     }
   }];
 
-  query: { key: string, value: string, list: {label: string, value: string}[] } = {
-    key: 'userId',
-    value: '',
-    list: [
-      {label: '아이디', value: 'userId'},
-      {label: '성명', value: 'name'}
-    ]
+  query: {
+    user : { key: string, value: string, list: {label: string, value: string}[] }
+  } = {
+    user : {
+      key: 'userId',
+      value: '',
+      list: [
+        {label: '아이디', value: 'userId'},
+        {label: '성명', value: 'name'}
+      ]
+    }
   }
 
-  drawerUser: { visible: boolean, initLoadId: any } = {
-    visible: false,
-    initLoadId: null
+  drawer: {
+    user: { visible: boolean, initLoadId: any }
+  } = {
+    user: { visible: false, initLoadId: null }
   }
 
   private service = inject(UserService);
@@ -225,29 +231,31 @@ export class UserComponent extends AppBase implements OnInit {
   }
 
   newForm() {
-    this.drawerUser.initLoadId = null;
-    this.drawerUser.visible = true;
+    this.drawer.user.initLoadId = null;
+    this.drawer.user.visible = true;
 
   }
 
   editForm(item: User) {
     console.log(item.userId);
-    this.drawerUser.initLoadId = item.userId;
-    this.drawerUser.visible = true;
+    this.drawer.user.initLoadId = item.userId;
+    this.drawer.user.visible = true;
   }
 
   getUserList() {
     let params: any = new Object();
-    if ( this.query.value !== '') {
-      params[this.query.key] = this.query.value;
+    if ( this.query.user.value !== '') {
+      params[this.query.user.key] = this.query.user.value;
     }
 
-    this.drawerUser.visible = false;
-    this.grid.getUserList(params);
+    this.drawer.user.visible = false;
+
+    console.log(this.grid);
+    this.grid().getUserList(params);
   }
 
   deleteUser() {
-    const userId: string = this.grid.getSelectedRow().userId;
+    const userId: string = this.grid().getSelectedRow().userId;
     this.service
         .deleteUser(userId)
         .subscribe(
@@ -258,10 +266,11 @@ export class UserComponent extends AppBase implements OnInit {
   }
 
   userGridSelected(params: any) {
-    this.drawerUser.initLoadId = params.userId;
+    this.drawer.user.initLoadId = params.userId;
   }
 
   test() {
     window.location.href = 'http://localhost:8090/oauth2/authorization/google';
   }
 }
+

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, viewChild } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 
 import { AppBase } from 'src/app/core/app/app-base';
@@ -50,34 +50,34 @@ import { MenuRoleTreeComponent } from './menu-role-tree.component';
 <app-nz-search-area>
   <div nz-col [nzSpan]="8">
     <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate" [nzSuffix]="suffixIconSearch">
-      <input type="text" [(ngModel)]="queryMenuGroup.value" nz-input placeholder="input search text" (keyup.enter)="getMenuGroupList()">
+      <ng-template #addOnBeforeTemplate>
+        <nz-select [(ngModel)]="query.menuGroup.key">
+          @for (option of query.menuGroup.list; track option.value) {
+          <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+          }
+        </nz-select>
+      </ng-template>
+      <input type="text" [(ngModel)]="query.menuGroup.value" nz-input placeholder="input search text" (keyup.enter)="getMenuGroupList()">
+      <ng-template #suffixIconSearch>
+        <span nz-icon nzType="search"></span>
+      </ng-template>
     </nz-input-group>
-    <ng-template #addOnBeforeTemplate>
-      <nz-select [(ngModel)]="queryMenuGroup.key">
-        @for (option of queryMenuGroup.list; track option.value) {
-        <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
-        }
-      </nz-select>
-    </ng-template>
-    <ng-template #suffixIconSearch>
-      <span nz-icon nzType="search"></span>
-    </ng-template>
   </div>
 
   <div nz-col [nzSpan]="8">
     <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate2" [nzSuffix]="suffixIconSearch2">
-      <input type="text" [(ngModel)]="queryMenu.value" nz-input placeholder="input search text" (keyup.enter)="getMenuList()">
+      <ng-template #addOnBeforeTemplate2>
+        <nz-select [(ngModel)]="query.menu.key">
+          @for (option of query.menu.list; track option.value) {
+          <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+          }
+        </nz-select>
+      </ng-template>
+      <input type="text" [(ngModel)]="query.menu.value" nz-input placeholder="input search text" (keyup.enter)="getMenuList()">
+      <ng-template #suffixIconSearch2>
+        <span nz-icon nzType="search"></span>
+      </ng-template>
     </nz-input-group>
-    <ng-template #addOnBeforeTemplate2>
-      <nz-select [(ngModel)]="queryMenu.key">
-        @for (option of queryMenu.list; track option.value) {
-        <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
-        }
-      </nz-select>
-    </ng-template>
-    <ng-template #suffixIconSearch2>
-      <span nz-icon nzType="search"></span>
-    </ng-template>
   </div>
 
   <div nz-col [nzSpan]="8" style="text-align: right;">
@@ -126,14 +126,14 @@ import { MenuRoleTreeComponent } from './menu-role-tree.component';
   [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
   [nzMaskClosable]="true"
   nzWidth="80%"
-  [nzVisible]="drawerMenuGroup.visible"
+  [nzVisible]="drawer.menuGroup.visible"
   nzTitle="메뉴그룹 등록"
-  (nzOnClose)="drawerMenuGroup.visible = false">
+  (nzOnClose)="drawer.menuGroup.visible = false">
     <app-menu-group-form #menuGroupForm *nzDrawerContent
-      [initLoadId]="drawerMenuGroup.initLoadId"
+      [initLoadId]="drawer.menuGroup.initLoadId"
       (formSaved)="getMenuGroupList()"
       (formDeleted)="getMenuGroupList()"
-      (formClosed)="drawerMenuGroup.visible = false">
+      (formClosed)="drawer.menuGroup.visible = false">
     </app-menu-group-form>
 </nz-drawer>
 
@@ -141,15 +141,15 @@ import { MenuRoleTreeComponent } from './menu-role-tree.component';
   [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
   [nzMaskClosable]="true"
   nzWidth="80%"
-  [nzVisible]="drawerMenu.visible"
+  [nzVisible]="drawer.menu.visible"
   nzTitle="메뉴 등록"
-  (nzOnClose)="drawerMenu.visible = false">
+  (nzOnClose)="drawer.menu.visible = false">
     <app-menu-form #menuForm *nzDrawerContent
-      [menuGroupId]="drawerMenuGroup.initLoadId"
-      [initLoadId]="drawerMenu.initLoadId"
+      [menuGroupId]="drawer.menuGroup.initLoadId"
+      [initLoadId]="drawer.menu.initLoadId"
       (formSaved)="getMenuList()"
       (formDeleted)="getMenuList()"
-      (formClosed)="drawerMenu.visible = false">
+      (formClosed)="drawer.menu.visible = false">
     </app-menu-form>
 </nz-drawer>
   `,
@@ -190,35 +190,37 @@ import { MenuRoleTreeComponent } from './menu-role-tree.component';
 })
 export class MenuComponent extends AppBase implements OnInit {
 
-  @ViewChild(MenuGroupGridComponent) gridMenuGroup!: MenuGroupGridComponent;
-  @ViewChild(MenuGridComponent) gridMenu!: MenuGridComponent;
+  gridMenuGroup = viewChild.required(MenuGroupGridComponent);
+  gridMenu = viewChild.required(MenuGridComponent);
 
-  queryMenuGroup: { key: string, value: string, list: {label: string, value: string}[] } = {
-    key: 'menuGroupId',
-    value: '',
-    list: [
-      {label: '메뉴그룹ID', value: 'menuGroupCode'},
-      {label: '메뉴그룹명', value: 'menuGroupName'}
-    ]
+  query: {
+    menuGroup : { key: string, value: string, list: {label: string, value: string}[] },
+    menu: { key: string, value: string, list: {label: string, value: string}[] }
+  } = {
+    menuGroup : {
+      key: 'menuGroupId',
+      value: '',
+      list: [
+        {label: '메뉴그룹ID', value: 'menuGroupCode'},
+        {label: '메뉴그룹명', value: 'menuGroupName'}
+      ]
+    },
+    menu: {
+      key: 'menuId',
+      value: '',
+      list: [
+        {label: '메뉴ID', value: 'menuCode'},
+        {label: '메뉴명', value: 'menuName'}
+      ]
+    }
   }
 
-  queryMenu: { key: string, value: string, list: {label: string, value: string}[] } = {
-    key: 'menuId',
-    value: '',
-    list: [
-      {label: '메뉴ID', value: 'menuCode'},
-      {label: '메뉴명', value: 'menuName'}
-    ]
-  }
-
-  drawerMenuGroup: { visible: boolean, initLoadId: any } = {
-    visible: false,
-    initLoadId: null
-  }
-
-  drawerMenu: { visible: boolean, initLoadId: any } = {
-    visible: false,
-    initLoadId: null
+  drawer: {
+    menuGroup: { visible: boolean, initLoadId: any },
+    menu: { visible: boolean, initLoadId: any }
+  } = {
+    menuGroup: { visible: false, initLoadId: null },
+    menu: { visible: false, initLoadId: null }
   }
 
   ngOnInit() {
@@ -227,27 +229,27 @@ export class MenuComponent extends AppBase implements OnInit {
   //#region 메뉴그룹
   getMenuGroupList(): void {
     let params: any = new Object();
-    if ( this.queryMenuGroup.value !== '') {
-      params[this.queryMenuGroup.key] = this.queryMenuGroup.value;
+    if ( this.query.menuGroup.value !== '') {
+      params[this.query.menuGroup.key] = this.query.menuGroup.value;
     }
 
-    this.drawerMenuGroup.visible = false;
-    this.gridMenu.clearData();
-    this.gridMenuGroup.getMenuGroupList(params);
+    this.drawer.menuGroup.visible = false;
+    this.gridMenu().clearData();
+    this.gridMenuGroup().getMenuGroupList(params);
   }
 
   newMenuGroup(): void {
-    this.drawerMenuGroup.initLoadId = null;
-    this.drawerMenuGroup.visible = true;
+    this.drawer.menuGroup.initLoadId = null;
+    this.drawer.menuGroup.visible = true;
   }
 
   editMenuGroup(item: any) {
-    this.drawerMenuGroup.initLoadId = item.menuGroupCode;
-    this.drawerMenuGroup.visible = true;
+    this.drawer.menuGroup.initLoadId = item.menuGroupCode;
+    this.drawer.menuGroup.visible = true;
   }
 
   menuGroupGridRowClicked(row: any): void {
-    this.drawerMenuGroup.initLoadId = row.menuGroupCode;
+    this.drawer.menuGroup.initLoadId = row.menuGroupCode;
     this.getMenuList();
   }
   //#endregion 메뉴그룹
@@ -255,28 +257,28 @@ export class MenuComponent extends AppBase implements OnInit {
   //#region 메뉴
   getMenuList(): void {
     let params: any = new Object();
-    params['menuGroupCode'] = this.drawerMenuGroup.initLoadId;
+    params['menuGroupCode'] = this.drawer.menuGroup.initLoadId;
 
-    if ( this.queryMenu.value !== '') {
-      params[this.queryMenu.key] = this.queryMenu.value;
+    if ( this.query.menu.value !== '') {
+      params[this.query.menu.key] = this.query.menu.value;
     }
 
-    this.drawerMenu.visible = false;
-    this.gridMenu.getMenuList(params);
+    this.drawer.menu.visible = false;
+    this.gridMenu().getMenuList(params);
   }
 
   newMenu(): void {
-    this.drawerMenu.initLoadId = null;
-    this.drawerMenu.visible = true;
+    this.drawer.menu.initLoadId = null;
+    this.drawer.menu.visible = true;
   }
 
   editMenu(item: any) {
-    this.drawerMenu.initLoadId = {menuGroupCode: item.menuGroupCode, menuCode: item.menuCode};
-    this.drawerMenu.visible = true;
+    this.drawer.menu.initLoadId = {menuGroupCode: item.menuGroupCode, menuCode: item.menuCode};
+    this.drawer.menu.visible = true;
   }
 
   menuGridRowClicked(row: any): void {
-    this.drawerMenu.initLoadId =  {menuGroupCode: row.menuGroupCode, menuCode: row.menuCode};
+    this.drawer.menu.initLoadId =  {menuGroupCode: row.menuGroupCode, menuCode: row.menuCode};
   }
   //#endregion 메뉴
 

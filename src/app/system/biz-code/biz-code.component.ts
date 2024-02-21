@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, viewChild } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 
 import { AppBase } from 'src/app/core/app/app-base';
@@ -80,14 +80,14 @@ import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/n
     [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
     [nzMaskClosable]="true"
     nzWidth="80%"
-    [nzVisible]="drawerCodeType.visible"
+    [nzVisible]="drawer.codeType.visible"
     nzTitle="업무코드분류 등록"
-    (nzOnClose)="drawerCodeType.visible = false">
+    (nzOnClose)="drawer.codeType.visible = false">
     <app-biz-code-type-form *nzDrawerContent
-        [initLoadId]="drawerCodeType.initLoadId"
+        [initLoadId]="drawer.codeType.initLoadId"
         (formSaved)="selectBizCodeTypeList()"
         (formDeleted)="selectBizCodeTypeList()"
-        (formClosed)="drawerCodeType.visible = false">
+        (formClosed)="drawer.codeType.visible = false">
     </app-biz-code-type-form>
 </nz-drawer>
 
@@ -95,14 +95,14 @@ import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/n
     [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
     [nzMaskClosable]="true"
     nzWidth="80%"
-    [nzVisible]="drawerCode.visible"
+    [nzVisible]="drawer.code.visible"
     nzTitle="업무코드 등록"
-    (nzOnClose)="drawerCode.visible = false">
+    (nzOnClose)="drawer.code.visible = false">
     <app-biz-code-form *nzDrawerContent
-        [initLoadId]="drawerCode.initLoadId"
+        [initLoadId]="drawer.code.initLoadId"
         (formSaved)="selectBizCodeList()"
         (formDeleted)="selectBizCodeList()"
-        (formClosed)="drawerCode.visible = false">
+        (formClosed)="drawer.code.visible = false">
     </app-biz-code-form>
 </nz-drawer>
   `,
@@ -200,61 +200,59 @@ import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/n
 })
 export class BizCodeComponent extends AppBase implements OnInit {
 
-  @ViewChild(BizCodeTypeGridComponent) gridCodeType!: BizCodeTypeGridComponent;
-  @ViewChild(BizCodeGridComponent) gridCode!: BizCodeGridComponent;
+  gridCodeType = viewChild.required(BizCodeTypeGridComponent);
+  gridCode = viewChild.required(BizCodeGridComponent);
 
-  drawerCodeType: { visible: boolean, initLoadId: any } = {
-    visible: false,
-    initLoadId: null
-  }
-
-  drawerCode: { visible: boolean, initLoadId: any } = {
-    visible: false,
-    initLoadId: null
+  drawer: {
+    codeType: { visible: boolean, initLoadId: any },
+    code: { visible: boolean, initLoadId: any }
+  } = {
+    codeType: { visible: false, initLoadId: null },
+    code: { visible: false, initLoadId: null }
   }
 
   ngOnInit(): void {
   }
 
   selectBizCodeTypeList() {
-    this.drawerCodeType.visible = false;
+    this.drawer.codeType.visible = false;
 
-    this.gridCodeType.getList();
+    this.gridCodeType().getList();
   }
 
   newCodeType() {
-    this.drawerCodeType.initLoadId = null;
-    this.drawerCodeType.visible = true;
+    this.drawer.codeType.initLoadId = null;
+    this.drawer.codeType.visible = true;
   }
 
   editCodeType(params: any) {
-    this.drawerCodeType.initLoadId = params.typeId;
-    this.drawerCodeType.visible = true;
+    this.drawer.codeType.initLoadId = params.typeId;
+    this.drawer.codeType.visible = true;
   }
 
   codeTypeGridRowClicked(params: any) {
-    this.drawerCodeType.initLoadId = params.typeId;
-    this.drawerCode.initLoadId = {typeId: params.typeId};
+    this.drawer.codeType.initLoadId = params.typeId;
+    this.drawer.code.initLoadId = {typeId: params.typeId};
 
-    this.gridCode.getList(this.drawerCode.initLoadId.typeId);
+    this.gridCode().getList(this.drawer.code.initLoadId.typeId);
   }
 
   selectBizCodeList() {
-    this.drawerCode.visible = false;
-    this.gridCode.getList(this.drawerCode.initLoadId.typeId);
+    this.drawer.code.visible = false;
+    this.gridCode().getList(this.drawer.code.initLoadId.typeId);
   }
 
   newCode() {
-    this.drawerCode.visible = true;
+    this.drawer.code.visible = true;
   }
 
   editCode(params: any) {
-    this.drawerCode.initLoadId = {typeId: params.typeId, code: params.code};
-    this.drawerCode.visible = true;
+    this.drawer.code.initLoadId = {typeId: params.typeId, code: params.code};
+    this.drawer.code.visible = true;
   }
 
   codeGridRowClicked(params: any) {
-    this.drawerCode.initLoadId = {typeId: params.typeId, code: params.code};
+    this.drawer.code.initLoadId = {typeId: params.typeId, code: params.code};
   }
 
 }
