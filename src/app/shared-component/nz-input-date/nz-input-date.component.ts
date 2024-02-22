@@ -1,4 +1,4 @@
-import { Self, Optional, Component, Input, TemplateRef, ViewChild, OnInit, AfterViewInit, viewChild } from '@angular/core';
+import { Self, Optional, Component, Input, TemplateRef, ViewChild, OnInit, AfterViewInit, viewChild, input, effect } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NgModel, NgControl, FormsModule } from '@angular/forms';
 import { NzFormControlComponent, NzFormModule } from 'ng-zorro-antd/form';
 import { NzDatePickerComponent, NzDatePickerModule } from 'ng-zorro-antd/date-picker';
@@ -11,17 +11,17 @@ import * as dateFns from "date-fns";
   imports: [FormsModule, NzFormModule, NzDatePickerModule],
   template: `
     <nz-form-item>
-      <nz-form-label [nzFor]="itemId" [nzRequired]="required">
+      <nz-form-label [nzFor]="itemId()" [nzRequired]="required()">
         <ng-content></ng-content>
       </nz-form-label>
-      <nz-form-control nzHasFeedback [nzErrorTip]="nzErrorTip">
+      <nz-form-control nzHasFeedback [nzErrorTip]="nzErrorTip()">
         <!-- (ngModelChange)="onChange($event)" -->
         <nz-date-picker #inputControl
-              [nzId]="itemId"
-              [nzPlaceHolder]="placeholder"
-              [required]="required"
-              [nzDisabled]="disabled"
-              [nzInputReadOnly]="readonly"
+              [nzId]="itemId()"
+              [nzPlaceHolder]="placeholder()"
+              [required]="required()"
+              [nzDisabled]="_disabled"
+              [nzInputReadOnly]="readonly()"
               nzAllowClear="false"
               [(ngModel)]="_value"
               (ngModelChange)="valueChange($event)"
@@ -36,21 +36,21 @@ import * as dateFns from "date-fns";
     }
   `]
 })
-export class NzInputDateComponent implements ControlValueAccessor, OnInit, AfterViewInit {
+export class NzInputDateComponent implements ControlValueAccessor {
 
-  //@ViewChild(NzFormControlComponent) control!: NzFormControlComponent;
-  //@ViewChild('inputControl') element?: NzDatePickerComponent;
+
   control = viewChild.required(NzFormControlComponent);
   element = viewChild.required<NzDatePickerComponent>('inputControl');
 
-  @Input() itemId: string = '';
-  @Input() required: boolean = false;
-  @Input() disabled: boolean = false;
-  @Input() placeholder: string = '';
-  @Input() readonly: boolean = false;
+  itemId = input<string>('');
+  required = input<boolean>(false);
+  disabled = input<boolean>(false);
+  placeholder = input<string>('');
+  readonly = input<boolean>(false);
 
-  @Input() nzErrorTip?: string | TemplateRef<{$implicit: AbstractControl | NgModel;}>;
+  nzErrorTip = input<string | TemplateRef<{$implicit: AbstractControl | NgModel;}>>();
 
+  _disabled = false;
   _value: any;
 
   onChange!: (value: string | null) => void;
@@ -60,15 +60,12 @@ export class NzInputDateComponent implements ControlValueAccessor, OnInit, After
     if (this.ngControl) {
       this.ngControl.valueAccessor = this;
     }
-  }
 
-  ngOnInit(): void {
-  }
-
-  ngAfterViewInit(): void {
-    if (this.control()) {
-      this.control().nzValidateStatus = this.ngControl.control as AbstractControl;
-    }
+    effect(() => {
+      if (this.control()) {
+        this.control().nzValidateStatus = this.ngControl.control as AbstractControl;
+      }
+    })
   }
 
   writeValue(obj: any): void {
@@ -84,16 +81,16 @@ export class NzInputDateComponent implements ControlValueAccessor, OnInit, After
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this.disabled = isDisabled;
+    this._disabled = isDisabled;
   }
 
   focus(): void {
-    this.element()?.focus();
+    this.element().focus();
   }
 
   valueChange(val: Date) {
     this._value = val;
-    const nativeValue = this.element()?.pickerInput?.nativeElement.value as string;
+    const nativeValue = this.element().pickerInput?.nativeElement.value as string;
     // keyboard로 8자리 숫자입력 받을 경우 Date로 변환 처리
     if (nativeValue.length === 8) {
       this._value = this.convert(nativeValue);

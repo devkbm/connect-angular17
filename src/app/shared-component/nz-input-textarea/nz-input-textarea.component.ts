@@ -33,16 +33,6 @@ export class NzInputTextareaComponent implements ControlValueAccessor {
   control = viewChild.required(NzFormControlComponent)
   element = viewChild.required<ElementRef<HTMLInputElement>>('inputControl');
 
-  /*
-  @Input() itemId: string = '';
-  @Input() required: boolean = false;
-  @Input() disabled: boolean = false;
-  @Input() placeholder: string = '';
-  @Input() nzAutoSize: boolean | { minRows: number, maxRows: number } = false;
-  @Input() rows: number = 1;
-
-  @Input() nzErrorTip?: string | TemplateRef<{$implicit: AbstractControl | NgModel;}>;
-*/
   itemId = input<string>('');
   required = input<boolean>(false);
   disabled = input<boolean>(false);

@@ -209,9 +209,9 @@ export class BoardComponent implements AfterViewInit {
       //  return;
       //}
 
+      //console.log(this.drawer.board.initLoadId);
+      //console.log(event.data);
       //console.log(event);
-      console.log(this.drawer.board.initLoadId);
-      console.log(event.data);
       // BoardId가 저장한 게시글의 boardId가 일치하면 재조회
       if (this.drawer.board.initLoadId == event.data) {
         this.getArticleGridData();
