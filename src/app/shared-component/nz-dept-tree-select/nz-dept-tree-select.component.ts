@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, forwardRef, inject, Input, OnInit, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, forwardRef, inject, input, model, OnInit, signal, TemplateRef } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, FormGroup, FormsModule, NgModel, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 import { ResponseList } from 'src/app/core/model/response-list';
 import { DeptHierarchy } from './dept-hierarchy.model';
 import { DeptHierarchyService } from './dept-hierarchy.service';
+import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/tree';
 
 @Component({
   standalone: true,
@@ -12,16 +13,16 @@ import { DeptHierarchyService } from './dept-hierarchy.service';
   imports: [FormsModule, NzFormModule, NzTreeSelectModule],
   template: `
    <nz-form-item>
-      <nz-form-label [nzFor]="itemId" [nzRequired]="required">
+      <nz-form-label [nzFor]="itemId()" [nzRequired]="required()">
         <ng-content></ng-content>
       </nz-form-label>
-      <nz-form-control [nzErrorTip]="nzErrorTip">
+      <nz-form-control [nzErrorTip]="nzErrorTip()">
        <nz-tree-select
-            [nzId]="itemId"
-            [ngModel]="value"
-            [nzNodes]="nodes"
-            [nzDisabled]="disabled"
-            [nzPlaceHolder]="placeholder"
+            [nzId]="itemId()"
+            [ngModel]="_value()"
+            [nzNodes]="nodes()"
+            [nzDisabled]="_disabled"
+            [nzPlaceHolder]="placeholder()"
             (blur)="onTouched()"
             (ngModelChange)="onChange($event)">
         </nz-tree-select>
@@ -42,16 +43,16 @@ import { DeptHierarchyService } from './dept-hierarchy.service';
 })
 export class NzDeptTreeSelectComponent implements ControlValueAccessor, OnInit {
 
-  @Input() parentFormGroup?: FormGroup;
-  @Input() itemId: string = '';
-  @Input() required: boolean = false;
-  @Input() disabled: boolean = false;
-  @Input() placeholder: string = '';
-  @Input() nodes: any[] = [];
+  parentFormGroup = input<FormGroup>();
+  itemId = input<string>('');
+  required = input<boolean>(false);
+  disabled = input<boolean>(false);
+  placeholder = input<string>('');
+  nodes = signal<NzTreeNodeOptions[] | NzTreeNode[] | DeptHierarchy[]>([]);
+  nzErrorTip = input<string | TemplateRef<{$implicit: AbstractControl | NgModel;}>>();
 
-  @Input() nzErrorTip?: string | TemplateRef<{$implicit: AbstractControl | NgModel;}>;
-
-  value!: string;
+  _disabled = false;
+  _value = model<string>();
 
   onChange!: (value: string) => void;
   onTouched!: () => void;
@@ -63,10 +64,10 @@ export class NzDeptTreeSelectComponent implements ControlValueAccessor, OnInit {
   }
 
   writeValue(obj: any): void {
-    this.value = obj;
+    this._value.set(obj);
   }
   setDisabledState(isDisabled: boolean): void {
-    this.disabled = isDisabled;
+    this._disabled = isDisabled;
   }
   registerOnChange(fn: any): void {
     this.onChange = fn;
@@ -83,9 +84,9 @@ export class NzDeptTreeSelectComponent implements ControlValueAccessor, OnInit {
         .subscribe(
           (model: ResponseList<DeptHierarchy>) => {
             if (model.total > 0) {
-              this.nodes = model.data;
+              this.nodes.set(model.data);
             } else {
-              this.nodes = [];
+              this.nodes.set([]);
             }
           }
         );
