@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Self, Optional, Component, Input, TemplateRef, ViewChild, OnInit, AfterViewInit, viewChild } from '@angular/core';
+import { Self, Optional, Component, Input, TemplateRef, ViewChild, OnInit, AfterViewInit, viewChild, effect, input, model } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NgModel, NgControl, FormsModule } from '@angular/forms';
 import { NzFormControlComponent, NzFormModule } from 'ng-zorro-antd/form';
 import { NzSelectModeType, NzSelectModule } from 'ng-zorro-antd/select';
@@ -11,23 +11,23 @@ import { NzSelectModeType, NzSelectModule } from 'ng-zorro-antd/select';
   template: `
    <!--{{formField.errors | json}}-->
    <nz-form-item>
-    <nz-form-label [nzFor]="itemId" [nzRequired]="required">
+    <nz-form-label [nzFor]="itemId()" [nzRequired]="required()">
       <ng-content></ng-content>
     </nz-form-label>
-    <nz-form-control nzHasFeedback [nzErrorTip]="nzErrorTip">
+    <nz-form-control nzHasFeedback [nzErrorTip]="nzErrorTip()">
       <nz-select
-          [nzId]="itemId"
-          [(ngModel)]="_value"
-          [nzDisabled]="disabled"
-          [nzPlaceHolder]="placeholder"
-          [nzMode]="mode"
+          [nzId]="itemId()"
+          [ngModel]="_value()"
+          [nzDisabled]="_disabled"
+          [nzPlaceHolder]="placeholder()"
+          [nzMode]="mode()"
           nzShowSearch
           (blur)="onTouched()"
           (ngModelChange)="onChange($event)">
-        @for (option of options; track option[opt_value]) {
+        @for (option of options(); track option[opt_value()]) {
           <nz-option
-            [nzLabel]="custom_label ? custom_label(option, $index) : option[opt_label]"
-            [nzValue]="option[opt_value]">asf
+            [nzLabel]="custom_label ? custom_label(option, $index) : option[opt_label()]"
+            [nzValue]="option[opt_value()]">asf
           </nz-option>
         }
         </nz-select>
@@ -36,50 +36,47 @@ import { NzSelectModeType, NzSelectModule } from 'ng-zorro-antd/select';
   `,
   styles: []
 })
-export class NzInputSelectComponent implements ControlValueAccessor, OnInit, AfterViewInit {
+export class NzInputSelectComponent implements ControlValueAccessor {
 
-  //@ViewChild(NzFormControlComponent) control!: NzFormControlComponent;
   control = viewChild.required(NzFormControlComponent);
 
-  @Input() itemId: string = '';
-  @Input() required: boolean = false;
-  @Input() disabled: boolean = false;
-  @Input() placeholder: string = '';
-  @Input() mode: NzSelectModeType = 'default';
-  @Input() options!: any[];
-  @Input() opt_label: string = 'label';
-  @Input() opt_value: string = 'value';
+  itemId = input<string>('');
+  required = input<boolean>(false);
+  disabled = input<boolean>(false);
+  placeholder = input<string>('');
+  mode = input<NzSelectModeType>('default');
+  options = input<any[]>();
+  opt_label = input<string>('label');
+  opt_value = input<string>('value');
   @Input() custom_label?: (option: any, index: number) => {};
+  //custom_label = input<(option: any, index: number) => {}>();
 
-  @Input() nzErrorTip?: string | TemplateRef<{$implicit: AbstractControl | NgModel;}>;
+  nzErrorTip = input<string | TemplateRef<{$implicit: AbstractControl | NgModel;}>>();
 
   onChange!: (value: string) => void;
   onTouched!: () => void;
 
-  _value: any;
+  _disabled = false;
+  _value = model();
 
   constructor(@Self()  @Optional() private ngControl: NgControl) {
     if (this.ngControl) {
       this.ngControl.valueAccessor = this;
     }
-  }
 
-  ngOnInit(): void {
-    //this.control.nzValidateStatus = this.ngControl.control as AbstractControl;
-  }
-
-  ngAfterViewInit(): void {
-    if (this.control()) {
-      this.control().nzValidateStatus = this.ngControl.control as AbstractControl;
-    }
+    effect(() => {
+      if (this.control()) {
+        this.control().nzValidateStatus = this.ngControl.control as AbstractControl;
+      }
+    })
   }
 
   writeValue(obj: any): void {
-    this._value = obj;
+    this._value.set(obj);
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this.disabled = isDisabled;
+    this._disabled = isDisabled;
   }
 
   registerOnChange(fn: any): void {

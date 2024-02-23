@@ -31,7 +31,6 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 })
 export class NzInputRadioGroupComponent implements ControlValueAccessor, OnInit {
 
-  //@ViewChild(NzFormControlComponent) control!: NzFormControlComponent;
   control = viewChild.required(NzFormControlComponent);
 
   @Input() itemId: string = '';

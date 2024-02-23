@@ -1,4 +1,4 @@
-import { Self, Optional, Component, Input, TemplateRef, ViewChild, OnInit, viewChild } from '@angular/core';
+import { Self, Optional, Component, Input, TemplateRef, ViewChild, OnInit, viewChild, effect, input, model } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, FormGroup, NgModel, NgControl, FormsModule } from '@angular/forms';
 import { NzFormControlComponent, NzFormModule } from 'ng-zorro-antd/form';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
@@ -9,14 +9,14 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
   imports: [FormsModule, NzFormModule, NzSwitchModule],
   template: `
    <nz-form-item>
-      <nz-form-label [nzFor]="itemId" [nzRequired]="required">
+      <nz-form-label [nzFor]="itemId()" [nzRequired]="required()">
         <ng-content></ng-content>
       </nz-form-label>
-      <nz-form-control nzHasFeedback [nzErrorTip]="nzErrorTip">
+      <nz-form-control nzHasFeedback [nzErrorTip]="nzErrorTip()">
         <nz-switch
-          [nzId]="itemId"
-          [nzDisabled]="disabled"
-          [(ngModel)]="_value"
+          [nzId]="itemId()"
+          [nzDisabled]="_disabled"
+          [ngModel]="_value()"
           (ngModelChange)="onChange($event)"
           (ngModelChange)="valueChange($event)"
           (blur)="onTouched()">
@@ -26,21 +26,21 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
   `,
   styles: []
 })
-export class NzInputSwitchComponent implements ControlValueAccessor, OnInit {
+export class NzInputSwitchComponent implements ControlValueAccessor {
 
-  //@ViewChild(NzFormControlComponent) control!: NzFormControlComponent;
   control = viewChild.required(NzFormControlComponent);
 
-  @Input() parentFormGroup?: FormGroup;
-  @Input() itemId: string = '';
-  @Input() required: boolean = false;
-  @Input() disabled: boolean = false;
-  @Input() placeholder: string = '';
-  @Input() readonly: boolean = false;
+  parentFormGroup = input<FormGroup>();
+  itemId = input<string>('');
+  required = input<boolean>(false);
+  disabled = input<boolean>(false);
+  placeholder = input<string>('');
+  readonly = input<boolean>(false);
 
-  @Input() nzErrorTip?: string | TemplateRef<{$implicit: AbstractControl | NgModel;}>;
+  nzErrorTip = input<string | TemplateRef<{$implicit: AbstractControl | NgModel;}>>();
 
-  _value: string = '';
+  _disabled = false;
+  _value = model();
 
   onChange!: (value: string) => void;
   onTouched!: () => void;
@@ -49,14 +49,16 @@ export class NzInputSwitchComponent implements ControlValueAccessor, OnInit {
     if (this.ngControl) {
       this.ngControl.valueAccessor = this;
     }
-  }
 
-  ngOnInit(): void {
-    //this.control.nzValidateStatus = this.ngControl.control as AbstractControl;
+    effect(() => {
+      if (this.control()) {
+        this.control().nzValidateStatus = this.ngControl.control as AbstractControl;
+      }
+    })
   }
 
   writeValue(obj: any): void {
-    this._value = obj;
+    this._value.set(obj);
   }
 
   registerOnChange(fn: any): void {
@@ -68,7 +70,7 @@ export class NzInputSwitchComponent implements ControlValueAccessor, OnInit {
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this.disabled = isDisabled;
+    this._disabled = isDisabled;
   }
 
   valueChange(val: any) {

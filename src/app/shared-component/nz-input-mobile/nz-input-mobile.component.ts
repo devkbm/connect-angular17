@@ -21,7 +21,7 @@ export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
         <ng-content></ng-content>
       </nz-form-label>
       <nz-form-control nzHasFeedback [nzErrorTip]="nzErrorTip()">
-        <input #inputElement nz-input
+        <input #inputControl nz-input
               [required]="required()"
               [disabled]="_disabled"
               [id]="itemId()"
