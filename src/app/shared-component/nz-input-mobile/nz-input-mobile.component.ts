@@ -1,4 +1,4 @@
-import { Self, Optional, Component, ElementRef, Input, TemplateRef, ViewChild, OnInit, AfterViewInit, viewChild } from '@angular/core';
+import { Self, Optional, Component, ElementRef, Input, TemplateRef, ViewChild, OnInit, AfterViewInit, viewChild, effect, input, model } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NgModel, NgControl, FormsModule } from '@angular/forms';
 import { NzFormModule, NzFormControlComponent } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -7,7 +7,6 @@ import { NgxMaskDirective, provideNgxMask, IConfig } from 'ngx-mask'
 export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
 
 // https://www.npmjs.com/package/ngx-mask
-
 
 @Component({
   standalone: true,
@@ -18,17 +17,17 @@ export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
   ],
   template: `
    <nz-form-item>
-      <nz-form-label [nzFor]="itemId" [nzRequired]="required">
+      <nz-form-label [nzFor]="itemId()" [nzRequired]="required()">
         <ng-content></ng-content>
       </nz-form-label>
-      <nz-form-control nzHasFeedback [nzErrorTip]="nzErrorTip">
+      <nz-form-control nzHasFeedback [nzErrorTip]="nzErrorTip()">
         <input #inputElement nz-input
-              [required]="required"
-              [disabled]="disabled"
-              [id]="itemId"
-              [placeholder]="placeholder"
-              [(ngModel)]="_value"
-              [readonly]="readonly"
+              [required]="required()"
+              [disabled]="_disabled"
+              [id]="itemId()"
+              [placeholder]="placeholder()"
+              [ngModel]="_value()"
+              [readonly]="readonly()"
               mask="000-0000-0000"
               (ngModelChange)="onChange($event)"
               (ngModelChange)="valueChange($event)"
@@ -38,22 +37,21 @@ export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
   `,
   styles: []
 })
-export class NzInputMobileComponent implements ControlValueAccessor, OnInit, AfterViewInit {
+export class NzInputMobileComponent implements ControlValueAccessor {
 
-  //@ViewChild(NzFormControlComponent) control!: NzFormControlComponent;
-  //@ViewChild('inputElement') element?: ElementRef<HTMLInputElement>;
   control = viewChild.required(NzFormControlComponent);
   element = viewChild.required<ElementRef<HTMLInputElement>>('inputControl');
 
-  @Input() itemId: string = '';
-  @Input() required: boolean = false;
-  @Input() disabled: boolean = false;
-  @Input() placeholder: string = '';
-  @Input() readonly: boolean = false;
+  itemId = input<string>('');
+  required = input<boolean>(false);
+  disabled = input<boolean>(false);
+  placeholder = input<string>('');
+  readonly = input<boolean>(false);
 
-  @Input() nzErrorTip?: string | TemplateRef<{$implicit: AbstractControl | NgModel;}>;
+  nzErrorTip = input<string | TemplateRef<{$implicit: AbstractControl | NgModel;}>>();
 
-  _value: any;
+  _disabled = false;
+  _value = model();
 
   onChange!: (value: string) => void;
   onTouched!: () => void;
@@ -62,19 +60,16 @@ export class NzInputMobileComponent implements ControlValueAccessor, OnInit, Aft
     if (this.ngControl) {
       this.ngControl.valueAccessor = this;
     }
-  }
 
-  ngOnInit(): void {
-  }
-
-  ngAfterViewInit(): void {
-    if (this.control()) {
-      this.control().nzValidateStatus = this.ngControl.control as AbstractControl;
-    }
+    effect(() => {
+      if (this.control()) {
+        this.control().nzValidateStatus = this.ngControl.control as AbstractControl;
+      }
+    })
   }
 
   writeValue(obj: any): void {
-    this._value = obj;
+    this._value.set(obj);
   }
 
   registerOnChange(fn: any): void {
@@ -86,11 +81,11 @@ export class NzInputMobileComponent implements ControlValueAccessor, OnInit, Aft
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this.disabled = isDisabled;
+    this._disabled = isDisabled;
   }
 
   focus(): void {
-    this.element()?.nativeElement.focus();
+    this.element().nativeElement.focus();
   }
 
   valueChange(val: any) {

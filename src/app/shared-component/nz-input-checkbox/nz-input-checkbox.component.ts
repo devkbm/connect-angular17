@@ -1,4 +1,4 @@
-import { Self, Optional, Component, Input, TemplateRef, OnInit, viewChild } from '@angular/core';
+import { Self, Optional, Component, TemplateRef, viewChild, input, model, effect } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NgModel, NgControl, FormsModule } from '@angular/forms';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzFormControlComponent, NzFormModule } from 'ng-zorro-antd/form';
@@ -9,36 +9,35 @@ import { NzFormControlComponent, NzFormModule } from 'ng-zorro-antd/form';
   imports: [FormsModule, NzFormModule, NzCheckboxModule],
   template: `
    <nz-form-item>
-      <nz-form-label [nzFor]="itemId" [nzRequired]="required">
+      <nz-form-label [nzFor]="itemId()" [nzRequired]="required()">
         <ng-content></ng-content>
       </nz-form-label>
-      <nz-form-control nzHasFeedback [nzErrorTip]="nzErrorTip">
+      <nz-form-control nzHasFeedback [nzErrorTip]="nzErrorTip()">
         <label nz-checkbox
-          [nzId]="itemId"
-          [nzDisabled]="disabled"
-          [(ngModel)]="_value"
+          [nzId]="itemId()"
+          [nzDisabled]="_disabled"
+          [ngModel]="_value"
           (ngModelChange)="onChange($event)"
           (ngModelChange)="valueChange($event)"
-          (blur)="onTouched()">{{checkboxText}}
+          (blur)="onTouched()">{{checkboxText()}}
         </label>
       </nz-form-control>
     </nz-form-item>
   `,
   styles: []
 })
-export class NzInputCheckboxComponent implements ControlValueAccessor, OnInit {
+export class NzInputCheckboxComponent implements ControlValueAccessor {
 
-  //@ViewChild(NzFormControlComponent) control!: NzFormControlComponent;
-  control = viewChild.required(NzFormControlComponent)
+  control = viewChild.required(NzFormControlComponent);
 
-  @Input() itemId: string = '';
-  @Input() required: boolean = false;
-  @Input() disabled: boolean = false;
-  @Input() checkboxText: string = '';
+  itemId = input<string>('');
+  required = input<boolean>(false);
+  disabled = input<boolean>(false);
+  checkboxText = input<string>('');
+  nzErrorTip = input<string | TemplateRef<{$implicit: AbstractControl | NgModel;}>>();
 
-  @Input() nzErrorTip?: string | TemplateRef<{$implicit: AbstractControl | NgModel;}>;
-
-  _value: any;
+  _disabled = false;
+  _value = model();
 
   onChange!: (value: string) => void;
   onTouched!: () => void;
@@ -47,13 +46,16 @@ export class NzInputCheckboxComponent implements ControlValueAccessor, OnInit {
     if (this.ngControl) {
       this.ngControl.valueAccessor = this;
     }
-  }
-  ngOnInit(): void {
-    //this.control.nzValidateStatus = this.ngControl.control as AbstractControl;
+
+    effect(() => {
+      if (this.control()) {
+        this.control().nzValidateStatus = this.ngControl.control as AbstractControl;
+      }
+    })
   }
 
   writeValue(obj: any): void {
-    this._value = obj;
+    this._value.set(obj);
   }
 
   registerOnChange(fn: any): void {
@@ -65,7 +67,7 @@ export class NzInputCheckboxComponent implements ControlValueAccessor, OnInit {
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this.disabled = isDisabled;
+    this._disabled = isDisabled;
   }
 
   valueChange(val: any) {

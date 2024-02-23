@@ -1,6 +1,6 @@
-import { Component, Self, Optional, Input, TemplateRef, OnInit } from '@angular/core';
+import { Component, Self, Optional, Input, TemplateRef, OnInit, input, model, effect, viewChild } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NgModel, NgControl, FormsModule } from '@angular/forms';
-import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzFormControlComponent, NzFormModule } from 'ng-zorro-antd/form';
 
 import { NzSelectModeType, NzSelectModule } from 'ng-zorro-antd/select';
 
@@ -14,23 +14,23 @@ import { NzInputDeptSelectService } from './nz-input-dept-select.service';
   imports: [FormsModule, NzFormModule, NzSelectModule],
   template: `
    <nz-form-item>
-    <nz-form-label [nzFor]="itemId" [nzRequired]="required">
+    <nz-form-label [nzFor]="itemId()" [nzRequired]="required()">
       <ng-content></ng-content>
     </nz-form-label>
-    <nz-form-control [nzErrorTip]="nzErrorTip">
+    <nz-form-control [nzErrorTip]="nzErrorTip()">
       <nz-select
-          [nzId]="itemId"
-          [(ngModel)]="_value"
-          [nzDisabled]="disabled"
-          [nzPlaceHolder]="placeholder"
-          [nzMode]="mode"
+          [nzId]="itemId()"
+          [ngModel]="_value()"
+          [nzDisabled]="disabled()"
+          [nzPlaceHolder]="placeholder()"
+          [nzMode]="mode()"
           nzShowSearch
           (blur)="onTouched()"
           (ngModelChange)="onChange($event)">
-          @for (option of deptList; track option[opt_value]) {
+          @for (option of deptList; track option[opt_value()]) {
             <nz-option
-              [nzLabel]="option[opt_label]"
-              [nzValue]="option[opt_value]">
+              [nzLabel]="option[opt_label()]"
+              [nzValue]="option[opt_value()]">
             </nz-option>
           }
         </nz-select>
@@ -41,20 +41,23 @@ import { NzInputDeptSelectService } from './nz-input-dept-select.service';
 })
 export class NzInputDeptSelectComponent implements ControlValueAccessor, OnInit {
 
-  @Input() itemId: string = '';
-  @Input() required: boolean = false;
-  @Input() disabled: boolean = false;
-  @Input() placeholder: string = '';
-  @Input() opt_label: string = 'deptNameKorean';
-  @Input() opt_value: 'deptId' | 'deptCode' = 'deptCode';
-  @Input() mode: NzSelectModeType = 'default';
+  control = viewChild.required(NzFormControlComponent);
 
-  @Input() nzErrorTip?: string | TemplateRef<{$implicit: AbstractControl | NgModel;}>;
+  itemId = input<string>('');
+  required = input<boolean>(false);
+  disabled = input<boolean>(false);
+  placeholder = input<string>('');
+  opt_label = input<string>('deptNameKorean');
+  opt_value = input<'deptId' | 'deptCode'>('deptCode');
+  mode = input<NzSelectModeType>('default');
+
+  nzErrorTip = input<string | TemplateRef<{$implicit: AbstractControl | NgModel;}>>();
 
   onChange!: (value: string) => void;
   onTouched!: () => void;
 
-  _value: any;
+  _disabled = false;
+  _value = model();
 
   deptList: NzInputDeptSelectModel[] = [];
 
@@ -63,6 +66,12 @@ export class NzInputDeptSelectComponent implements ControlValueAccessor, OnInit 
     if (this.ngControl) {
       this.ngControl.valueAccessor = this;
     }
+
+    effect(() => {
+      if (this.control()) {
+        this.control().nzValidateStatus = this.ngControl.control as AbstractControl;
+      }
+    })
   }
 
   ngOnInit(): void {
@@ -70,11 +79,11 @@ export class NzInputDeptSelectComponent implements ControlValueAccessor, OnInit 
   }
 
   writeValue(obj: any): void {
-    this._value = obj;
+    this._value.set(obj);
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this.disabled = isDisabled;
+    this._disabled = isDisabled;
   }
 
   registerOnChange(fn: any): void {

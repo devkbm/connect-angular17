@@ -1,6 +1,7 @@
-import { Self, Optional, Component, Input, TemplateRef, ViewChild, OnInit, AfterViewInit, viewChild } from '@angular/core';
+import { Self, Optional, Component, Input, TemplateRef, ViewChild, OnInit, AfterViewInit, viewChild, input, model, effect } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NgModel, NgControl, FormsModule } from '@angular/forms';
 import { NzFormControlComponent, NzFormModule } from 'ng-zorro-antd/form';
+import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/tree';
 import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 
 @Component({
@@ -9,16 +10,16 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
   imports: [FormsModule, NzFormModule, NzTreeSelectModule],
   template: `
    <nz-form-item>
-      <nz-form-label [nzFor]="itemId" [nzRequired]="required">
+      <nz-form-label [nzFor]="itemId()" [nzRequired]="required()">
         <ng-content></ng-content>
       </nz-form-label>
-      <nz-form-control nzHasFeedback [nzErrorTip]="nzErrorTip">
+      <nz-form-control nzHasFeedback [nzErrorTip]="nzErrorTip()">
        <nz-tree-select
-            [nzId]="itemId"
-            [(ngModel)]="_value"
-            [nzNodes]="nodes"
-            [nzDisabled]="disabled"
-            [nzPlaceHolder]="placeholder"
+            [nzId]="itemId()"
+            [ngModel]="_value()"
+            [nzNodes]="nodes()"
+            [nzDisabled]="_disabled"
+            [nzPlaceHolder]="placeholder()"
             (blur)="onTouched()"
             (ngModelChange)="onChange($event)">
         </nz-tree-select>
@@ -27,20 +28,20 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
   `,
   styles: []
 })
-export class NzInputDeptTreeSelectComponent implements ControlValueAccessor, OnInit, AfterViewInit {
+export class NzInputDeptTreeSelectComponent implements ControlValueAccessor {
 
-  //@ViewChild(NzFormControlComponent) control!: NzFormControlComponent;
   control = viewChild.required(NzFormControlComponent);
 
-  @Input() itemId: string = '';
-  @Input() required: boolean = false;
-  @Input() disabled: boolean = false;
-  @Input() placeholder: string = '';
-  @Input() nodes!: any[];
+  itemId = input<string>('');
+  required = input<boolean>(false);
+  disabled = input<boolean>(false);
+  placeholder = input<string>('');
+  nodes = input.required<NzTreeNodeOptions[] | NzTreeNode[]>();
 
-  @Input() nzErrorTip?: string | TemplateRef<{$implicit: AbstractControl | NgModel;}>;
+  nzErrorTip = input<string | TemplateRef<{$implicit: AbstractControl | NgModel;}>>();
 
-  _value: any;
+  _disabled = false;
+  _value = model();
 
   onChange!: (value: string) => void;
   onTouched!: () => void;
@@ -49,22 +50,19 @@ export class NzInputDeptTreeSelectComponent implements ControlValueAccessor, OnI
     if (this.ngControl) {
       this.ngControl.valueAccessor = this;
     }
-  }
 
-  ngOnInit(): void {
-  }
-
-  ngAfterViewInit(): void {
-    if (this.control()) {
-      this.control().nzValidateStatus = this.ngControl.control as AbstractControl;
-    }
+    effect(() => {
+      if (this.control()) {
+        this.control().nzValidateStatus = this.ngControl.control as AbstractControl;
+      }
+    })
   }
 
   writeValue(obj: any): void {
-    this._value = obj;
+    this._value.set(obj);
   }
   setDisabledState(isDisabled: boolean): void {
-    this.disabled = isDisabled;
+    this._disabled = isDisabled;
   }
   registerOnChange(fn: any): void {
     this.onChange = fn;
