@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, Output, EventEmitter, inject } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, inject, input, model } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzListModule } from 'ng-zorro-antd/list';
@@ -9,17 +9,18 @@ import { RoadAddress, RoadAddressJuso, RoadAddressResult } from './road-address.
 import { RoadAddressService } from './road-address.service';
 
 @Component({
-  standalone: true,
   selector: 'app-nz-list-road-address',
+  standalone: true,
   imports: [CommonModule, FormsModule, NzInputModule, NzListModule, NzPaginationModule],
   providers: [NzMessageService],
   template: `
+    111- {{searchText}}
     <div class="container" [style.height]="height">
-      <ng-template #suffixIconButton>
-        <button nz-button nzType="primary" nzSearch on-click="search()"><span nz-icon nzType="search"></span></button>
-      </ng-template>
       <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
-        <input [(ngModel)]="searchText" (keyup.enter)="search()" type="text" nz-input placeholder="input search text"/>
+        <input nz-input type="text" [(ngModel)]="searchText" (keyup.enter)="fetch()" placeholder="input search text"/>
+        <ng-template #suffixIconButton>
+          <button nz-button nzType="primary" nzSearch on-click="fetch()"><span nz-icon nzType="search"></span></button>
+        </ng-template>
       </nz-input-group>
 
       <nz-list [nzLoading]="_isLoading">
@@ -30,7 +31,7 @@ import { RoadAddressService } from './road-address.service';
         </nz-list-item>
         }
       </nz-list>
-      <nz-pagination [nzPageIndex]="_page?.index" [nzPageSize]="countPerPage" [nzTotal]="_page?.total" (nzPageIndexChange)="changePageIndex($event)"></nz-pagination>
+      <nz-pagination [nzPageIndex]="_page?.index" [nzPageSize]="countPerPage()" [nzTotal]="_page?.total" (nzPageIndexChange)="changePageIndex($event)"></nz-pagination>
     </div>
   `,
   styles: [`
@@ -46,8 +47,10 @@ import { RoadAddressService } from './road-address.service';
 export class NzListRoadAddressComponent implements OnInit {
 
   @Input() searchText: string = '';
-  @Input() height = '100%';
-  @Input() countPerPage: number = 10;
+  //searchText = model('');
+  height = input<string>('100%');
+  countPerPage = input<number>(10);
+
   @Output() itemClicked: EventEmitter<{roadAddress: string, zipNo: string}> = new EventEmitter<{roadAddress: string, zipNo: string}>();
 
   protected _isLoading: boolean = false;
@@ -70,12 +73,12 @@ export class NzListRoadAddressComponent implements OnInit {
     } else {
       this._page = {index: page, total: 0};
     }
-    this.search();
+    this.fetch();
   }
 
-  search() {
+  fetch() {
     let currentPage: number = this._page?.index ?? 1;
-    this.getList(this.searchText, currentPage, this.countPerPage);
+    this.getList(this.searchText, currentPage, this.countPerPage());
   }
 
   getList(keyword: string, currentPage: number, countPerPage: number) {
