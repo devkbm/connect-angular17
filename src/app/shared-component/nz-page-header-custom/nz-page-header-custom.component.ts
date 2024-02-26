@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, TemplateRef, inject } from '@angular/core';
+import { Component, OnInit, TemplateRef, inject, input } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { MenuBreadCrumb, SessionManager } from 'src/app/core/session-manager';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
@@ -11,7 +11,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   selector: 'app-nz-page-header-custom',
   imports: [CommonModule, NzPageHeaderModule, NzBreadCrumbModule, NzIconModule],
   template: `
-   <nz-page-header (nzBack)="goBack()" nzBackIcon [nzTitle]="title" [nzSubtitle]="subtitle">
+   <nz-page-header (nzBack)="goBack()" nzBackIcon [nzTitle]="title()" [nzSubtitle]="subtitle()">
     <nz-breadcrumb nz-page-header-breadcrumb nzSeparator=">" >
       <nz-breadcrumb-item><a routerLink="/home"><span nz-icon [nzType]="'home'"></span></a></nz-breadcrumb-item>
       @for (menu of menuBreadCrumb; track menu.url) {
@@ -25,8 +25,9 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 export class NzPageHeaderCustomComponent implements OnInit {
 
   menuBreadCrumb: MenuBreadCrumb[] = SessionManager.createBreadCrumb();
-  @Input() title: string | TemplateRef<void> = '';
-  @Input() subtitle: string | TemplateRef<void> = '';
+
+  title = input<string | TemplateRef<void>>('');
+  subtitle = input<string | TemplateRef<void>>('');
 
   protected _location = inject(Location);
 
