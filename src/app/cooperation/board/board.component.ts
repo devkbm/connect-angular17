@@ -175,6 +175,8 @@ export class BoardComponent implements AfterViewInit {
 
   boardTree = viewChild.required(BoardTreeComponent);
   articleGrid = viewChild.required(ArticleGridComponent);
+  articleList =  viewChild.required(ArticleListComponent);
+
 
   drawer: {
     board: { visible: boolean, initLoadId: any },
@@ -230,7 +232,8 @@ export class BoardComponent implements AfterViewInit {
     this.drawer.article.visible = false;
     this.drawer.articleView.visible = false;
 
-    this.articleGrid().getArticleList(this.drawer.board.initLoadId);
+    //this.articleGrid().getArticleList(this.drawer.board.initLoadId);
+    this.articleList().getArticleList(this.drawer.board.initLoadId);
   }
 
   getBoardTree(): void {
