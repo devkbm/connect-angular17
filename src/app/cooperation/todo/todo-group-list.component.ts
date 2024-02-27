@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { ContextMenuComponent, ContextMenuModule, ContextMenuService } from '@perfectmemory/ngx-contextmenu';
 
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, viewChild } from '@angular/core';
 
 import { ResponseList } from 'src/app/core/model/response-list';
 import { ResponseObject } from 'src/app/core/model/response-object';
@@ -22,7 +22,7 @@ import { TodoService } from './todo.service';
                         (selectionChange)="selectTodoGroup(todoGroups.selectedOptions.selected[0].value)">
       <!--<mat-list-option *ngFor="let todoGroup of todoGroupList; index as i" [value]="todoGroup.pkTodoGroup" (contextmenu)="onContextMenu($event, todoGroup)">-->
       @for (todoGroup of todoGroupList; track todoGroup.pkTodoGroup) {
-      <mat-list-option [value]="todoGroup.pkTodoGroup" [contextMenu]="basicMenu" [contextMenuValue]="todoGroup">
+      <mat-list-option [value]="todoGroup.pkTodoGroup" [contextMenu]="basicMenu()" [contextMenuValue]="todoGroup">
         {{todoGroup.todoGroupName}}
       </mat-list-option>
       }
@@ -97,11 +97,13 @@ export class TodoGroupListComponent implements OnInit {
 
   todoGroupList: TodoGroupModel[] = [];
 
-  @ViewChild(MatMenuTrigger) contextMenu!: MatMenuTrigger;
+  //@ViewChild(MatMenuTrigger) contextMenu!: MatMenuTrigger;
+  contextMenu = viewChild.required(MatMenuTrigger);
   contextMenuPosition = { x: '0px', y: '0px' };
 
   // https://perfectmemory.github.io/ngx-contextmenu/?path=/docs/context-menu-introduction--docs
-  @ViewChild(ContextMenuComponent) public basicMenu!: ContextMenuComponent<any>;
+  //@ViewChild(ContextMenuComponent) public basicMenu!: ContextMenuComponent<any>;
+  basicMenu = viewChild.required<ContextMenuComponent<any>>(ContextMenuComponent);
 
   constructor(private service: TodoService,  private _contextMenuService: ContextMenuService<any>) { }
 
@@ -146,9 +148,9 @@ export class TodoGroupListComponent implements OnInit {
     event.preventDefault();
     this.contextMenuPosition.x = event.clientX + 'px';
     this.contextMenuPosition.y = event.clientY + 'px';
-    this.contextMenu.menuData = { 'item': item };
-    this.contextMenu.menu?.focusFirstItem('mouse');
-    this.contextMenu.openMenu();
+    this.contextMenu().menuData = { 'item': item };
+    this.contextMenu().menu?.focusFirstItem('mouse');
+    this.contextMenu().openMenu();
   }
 
   onContextMenuAction1(item: TodoGroupModel) {

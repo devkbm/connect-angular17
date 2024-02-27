@@ -1,6 +1,4 @@
-export class TodoGroupModel {
-  constructor(
-    public pkTodoGroup: string,
-    public todoGroupName: string) {}
+export interface TodoGroupModel {
+  pkTodoGroup: string;
+  todoGroupName: string;
 }
-

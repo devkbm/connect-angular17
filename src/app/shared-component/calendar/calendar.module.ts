@@ -25,7 +25,6 @@ import { DaypilotCalendarBasicComponent } from './daypilot-calendar-basic.compon
     DaypilotCalendarNavigatorComponent,
     DaypilotCalendarBasicComponent
   ],
-  providers: [DataService],
   exports: [
     CalendarComponent,
     DaypilotCalendarComponent,
