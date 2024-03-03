@@ -5,10 +5,10 @@ import { NzFormControlComponent, NzFormModule } from 'ng-zorro-antd/form';
 import { CKEditorComponent, CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
 
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+//import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 //import '@ckeditor/ckeditor5-build-classic/build/translations/ko';
-//import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import Editor from 'ckeditor5/build/ckeditor';
 
 import { MyUploadAdapter } from './my-upload-adapter';
 
@@ -67,7 +67,7 @@ export class NzInputCkeditorComponent implements ControlValueAccessor {
   onChange!: (value: any) => void;
   onTouched!: () => void;
 
-  Editor = ClassicEditor;
+  Editor = Editor;
   editorConfig;
 
   constructor(@Self()  @Optional() private ngControl: NgControl) {
