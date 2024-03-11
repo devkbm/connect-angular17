@@ -15,6 +15,7 @@ import { CommonCodeComponent } from '../system/commoncode/common-code.component'
 import { DeptComponent } from '../system/dept/dept.component';
 import { HolidayComponent } from '../system/holiday/holiday.component';
 import { BizCodeComponent } from '../system/biz-code/biz-code.component';
+import { MenuRoleComponent } from './menu-role/menu-role.component';
 
 
 const layoutroutes: Routes = [
@@ -24,8 +25,9 @@ const layoutroutes: Routes = [
       /* 공통 시스템 */
       {path: 'user',          component: UserComponent},
       {path: 'role',          component: RoleComponent},
-      {path: 'webresource',   component: WebResourceComponent},
       {path: 'menu',          component: MenuComponent},
+      {path: 'menu-role',     component: MenuRoleComponent},
+      {path: 'webresource',   component: WebResourceComponent},
       {path: 'commoncode',    component: CommonCodeComponent},
       {path: 'dept',          component: DeptComponent},
       {path: 'term',          component: TermComponent},

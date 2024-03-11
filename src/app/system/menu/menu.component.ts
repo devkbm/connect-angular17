@@ -18,7 +18,7 @@ import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/n
 import { NzTreeSelectCustomComponent } from 'src/app/shared-component/nz-tree-select-custom/nz-tree-select-custom.component';
 import { MenuFormComponent } from './menu-form.component';
 import { MenuGroupFormComponent } from './menu-group-form.component';
-import { MenuRoleTreeComponent } from './menu-role-tree.component';
+import { MenuRoleTreeComponent } from '../menu-role/menu-role-tree.component';
 
 
 @Component({

@@ -193,32 +193,4 @@ export class MenuService extends DataService {
               );
   }
 
-  getMenuRoleHierarchy(menuGroupCode: string, roleCode: string): Observable<ResponseList<MenuRoleHierarchy>> {
-    const url = `${this.API_URL}/menurolehierarchy/${menuGroupCode}/${roleCode}`;
-    const options = {
-      headers: this.getAuthorizedHttpHeaders(),
-      withCredentials: true
-    };
-
-    return this.http
-              .get<ResponseList<MenuRoleHierarchy>>(url, options)
-              .pipe(
-                //catchError((err) => Observable.throw(err))
-              );
-  }
-
-  saveMenuRoleMapping(menu: MenuRoleMapping[]): Observable<ResponseList<MenuRoleMapping>> {
-    const url = `${this.API_URL}/menurole`;
-    const options = {
-      headers: this.getAuthorizedHttpHeaders(),
-      withCredentials: true
-    };
-
-    return this.http
-              .post<ResponseList<MenuRoleMapping>>(url, menu, options)
-              .pipe(
-                //catchError((err) => Observable.throw(err))
-              );
-  }
-
 }
