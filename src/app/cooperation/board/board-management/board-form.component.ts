@@ -10,7 +10,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
-import { AfterViewInit, Component, OnChanges, OnInit, SimpleChanges, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, Component, OnChanges, OnInit, SimpleChanges, ViewChild, inject, viewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { BoardManagementService } from './board-management.service';
@@ -161,7 +161,8 @@ import { FormBase, FormType } from 'src/app/core/form/form-base';
 })
 export class BoardFormComponent extends FormBase implements OnInit, OnChanges, AfterViewInit {
 
-  @ViewChild('boardName') boardName!: NzInputTextComponent;
+  //@ViewChild('boardName') boardName!: NzInputTextComponent;
+  boardName = viewChild.required<NzInputTextComponent>('boardName');
 
   parentBoardItems: BoardHierarchy[] = [];
 
@@ -190,7 +191,7 @@ export class BoardFormComponent extends FormBase implements OnInit, OnChanges, A
   }
 
   ngAfterViewInit(): void {
-    this.boardName.focus();
+    this.boardName().focus();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -207,7 +208,7 @@ export class BoardFormComponent extends FormBase implements OnInit, OnChanges, A
     this.fg.controls.boardId.enable();
     this.fg.controls.boardType.setValue('BOARD');
 
-    this.boardName.focus();
+    this.boardName().focus();
   }
 
   modifyForm(formData: BoardManagement): void {
@@ -236,6 +237,17 @@ export class BoardFormComponent extends FormBase implements OnInit, OnChanges, A
   }
 
   save(): void {
+    if (this.fg.invalid) {
+      Object.values(this.fg.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+
+      return;
+    }
+
     this.service
         .saveBoard(this.fg.getRawValue())
         .subscribe(
