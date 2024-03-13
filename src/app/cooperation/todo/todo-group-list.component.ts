@@ -97,12 +97,10 @@ export class TodoGroupListComponent implements OnInit {
 
   todoGroupList: TodoGroupModel[] = [];
 
-  //@ViewChild(MatMenuTrigger) contextMenu!: MatMenuTrigger;
   contextMenu = viewChild.required(MatMenuTrigger);
   contextMenuPosition = { x: '0px', y: '0px' };
 
   // https://perfectmemory.github.io/ngx-contextmenu/?path=/docs/context-menu-introduction--docs
-  //@ViewChild(ContextMenuComponent) public basicMenu!: ContextMenuComponent<any>;
   basicMenu = viewChild.required<ContextMenuComponent<any>>(ContextMenuComponent);
 
   constructor(private service: TodoService,  private _contextMenuService: ContextMenuService<any>) { }

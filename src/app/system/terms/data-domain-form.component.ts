@@ -5,8 +5,8 @@ import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-text
 import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, AfterViewInit, OnChanges, SimpleChanges, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild } from '@angular/core';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
@@ -116,7 +116,7 @@ export class DataDomainFormComponent extends FormBase implements OnInit, AfterVi
 
   databaseList: HtmlSelectOption[] = [];
 
-  @ViewChild('domainName') domainName?: NzInputTextComponent;
+  domainName = viewChild.required<NzInputTextComponent>('domainName');
 
   private fb = inject(FormBuilder);
   private service = inject(DataDomainService);
@@ -148,7 +148,7 @@ export class DataDomainFormComponent extends FormBase implements OnInit, AfterVi
   }
 
   focus() {
-    this.domainName?.focus();
+    this.domainName().focus();
   }
 
   newForm() {

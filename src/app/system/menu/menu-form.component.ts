@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, AfterViewInit, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { FormBase, FormType } from 'src/app/core/form/form-base';
@@ -151,7 +151,8 @@ import { NzTreeSelectCustomComponent } from 'src/app/shared-component/nz-tree-se
 })
 export class MenuFormComponent extends FormBase implements OnInit, AfterViewInit, OnChanges {
 
-  @ViewChild('menuCode') menuCode!: NzInputTextComponent;
+  menuCode = viewChild.required<NzInputTextComponent>('menuCode');
+
   @Input() menuGroupId: any;
 
   programList: any;
@@ -206,7 +207,7 @@ export class MenuFormComponent extends FormBase implements OnInit, AfterViewInit
     this.fg.controls.menuGroupCode.setValue(this.menuGroupId);
     //this.fg.controls.menuCode.disable();
 
-    this.menuCode.focus();
+    this.menuCode().focus();
   }
 
   modifyForm(formData: Menu): void {

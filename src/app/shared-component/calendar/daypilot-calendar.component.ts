@@ -1,4 +1,4 @@
-import {Component, ViewChild, AfterViewInit, Input, Output, EventEmitter} from "@angular/core";
+import {Component, AfterViewInit, Input, Output, EventEmitter, viewChild} from "@angular/core";
 import {
   DayPilot,
   DayPilotCalendarComponent,
@@ -53,9 +53,9 @@ export interface ModeChangedArgs {
 })
 export class DaypilotCalendarComponent implements AfterViewInit {
 
-  @ViewChild("day") day!: DayPilotCalendarComponent;
-  @ViewChild("week") week!: DayPilotCalendarComponent;
-  @ViewChild("month") month!: DayPilotMonthComponent;
+  day = viewChild.required<DayPilotCalendarComponent>('day');
+  week = viewChild.required<DayPilotCalendarComponent>('week');
+  month = viewChild.required<DayPilotMonthComponent>('month');
 
   @Input() mode?: "Day" | "Week" | "Month" | "None" = "Month";
   @Input() events: DayPilot.EventData[] = [];
@@ -208,7 +208,7 @@ export class DaypilotCalendarComponent implements AfterViewInit {
       this.rangeChanged.emit(range);
       // Day Component
       this.configDay.startDate = this.start;
-      this.day.control.startDate = this.start;
+      this.day().control.startDate = this.start;
     } else if (this.mode === 'Week') {
       this.selectedDate = date;
       const sunday: DayPilot.Date = this.selectedDate.firstDayOfWeek('ko-kr');
@@ -218,7 +218,7 @@ export class DaypilotCalendarComponent implements AfterViewInit {
       this.rangeChanged.emit(range);
 
       // Week Component
-      this.week.control.startDate = this.start;
+      this.week().control.startDate = this.start;
       this.configWeek.startDate = this.start;
     } else if (this.mode === 'Month') {
       this.selectedDate = date;
@@ -228,7 +228,7 @@ export class DaypilotCalendarComponent implements AfterViewInit {
       this.rangeChanged.emit(range);
 
       // Month Component
-      this.month.control.startDate = this.selectedDate;
+      this.month().control.startDate = this.selectedDate;
       this.configMonth.startDate = this.selectedDate;
     }
   }
@@ -275,9 +275,9 @@ export class DaypilotCalendarComponent implements AfterViewInit {
     console.log('configWeek control: ' + this.configWeek.startDate);
     console.log('configMonth control: ' + this.configMonth.startDate);
 
-    console.log('day control: ' + this.day.control.startDate);
-    console.log('week control: ' + this.week.control.startDate);
-    console.log('month control: ' + this.month.control.startDate);
+    console.log('day control: ' + this.day().control.startDate);
+    console.log('week control: ' + this.week().control.startDate);
+    console.log('month control: ' + this.month().control.startDate);
   }
 
 }

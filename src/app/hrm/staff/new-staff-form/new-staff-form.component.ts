@@ -5,7 +5,7 @@ import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-
 import { NzInputRregnoComponent } from 'src/app/shared-component/nz-input-rregno/nz-input-rregno.component';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 
-import { Component, OnInit, ViewChild, AfterViewInit, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import { FormBase, FormType } from 'src/app/core/form/form-base';
@@ -91,7 +91,7 @@ import { NewStaff } from './new-staff-form.model';
 })
 export class NewStaffFormComponent extends FormBase implements OnInit, AfterViewInit, OnChanges {
 
-  @ViewChild('staffNo') staffNo?: NzInputTextComponent;
+  staffNo = viewChild.required<NzInputTextComponent>('staffNo');
 
   private fb = inject(FormBuilder);
   private service = inject(StaffService);
@@ -118,7 +118,7 @@ export class NewStaffFormComponent extends FormBase implements OnInit, AfterView
   newForm(id: String) {
     this.formType = FormType.NEW;
 
-    this.staffNo?.focus();
+    this.staffNo().focus();
   }
 
   /*

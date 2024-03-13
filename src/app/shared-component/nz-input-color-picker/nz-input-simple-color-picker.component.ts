@@ -1,4 +1,4 @@
-import { Self, Optional, Component, ElementRef, Input, TemplateRef, ViewChild, OnInit } from '@angular/core';
+import { Self, Optional, Component, ElementRef, Input, TemplateRef, OnInit, viewChild } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NgModel, NgControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzFormControlComponent, NzFormModule } from 'ng-zorro-antd/form';
 import { NgxColorsModule } from 'ngx-colors';
@@ -28,10 +28,8 @@ import { NgxColorsModule } from 'ngx-colors';
 })
 export class NzInputSimpleColorPickerComponent implements ControlValueAccessor, OnInit {
 
-  @ViewChild(NzFormControlComponent)
-  control!: NzFormControlComponent;
-
-  @ViewChild('input') element?: ElementRef;
+  control = viewChild.required(NzFormControlComponent);
+  element = viewChild.required<ElementRef>('input');
 
   @Input() itemId: string = '';
   @Input() required: boolean = false;
@@ -77,7 +75,7 @@ export class NzInputSimpleColorPickerComponent implements ControlValueAccessor, 
   }
 
   focus(): void {
-    this.element?.nativeElement.focus();
+    this.element().nativeElement.focus();
   }
 
 }

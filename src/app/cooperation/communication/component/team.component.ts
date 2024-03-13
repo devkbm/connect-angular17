@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, viewChild } from '@angular/core';
 import { TeamGridComponent } from './team-grid.component';
 import { TeamFormComponent } from './team-form.component';
 
@@ -14,11 +14,8 @@ export class TeamComponent implements OnInit {
   queryKey = 'teamId';
   queryValue = '';
 
-  @ViewChild('teamGrid', {static: false})
-  grid!: TeamGridComponent;
-
-  @ViewChild('teamForm', {static: false})
-  form!: TeamFormComponent;
+  grid = viewChild.required<TeamGridComponent>('teamGrid');
+  form = viewChild.required<TeamFormComponent>('teamForm');
 
   ngOnInit() {
     this.getTeamList();
@@ -37,7 +34,7 @@ export class TeamComponent implements OnInit {
   }
 
   editDrawOpen(item: any) {
-    this.form.getTeam(item.teamId);
+    this.form().getTeam(item.teamId);
 
     this.openDrawer();
   }
@@ -49,15 +46,15 @@ export class TeamComponent implements OnInit {
     }
 
     this.closeDrawer();
-    this.grid.getTeamList(params);
+    this.grid().getTeamList(params);
   }
 
   deleteTeam() {
-    this.form.deleteTeam(this.form.form.get('teamId')?.value);
+    this.form().deleteTeam(this.form().form.get('teamId')?.value);
   }
 
   initForm() {
-    this.form.newForm();
+    this.form().newForm();
     this.openDrawer();
   }
 

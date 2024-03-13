@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { NzTreeComponent, NzTreeModule, NzTreeNode } from 'ng-zorro-antd/tree';
 import { NzFormatEmitEvent } from 'ng-zorro-antd/tree';
 
-import { Component, OnInit, ViewChild, Output, EventEmitter, Input, inject, viewChild, input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, inject, viewChild, input } from '@angular/core';
 import { ResponseList } from 'src/app/core/model/response-list';
 
 import { MenuRoleHierarchy } from '../menu/menu-role-hierarchy.model';

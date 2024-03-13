@@ -5,8 +5,8 @@ import { NzInputDateComponent } from 'src/app/shared-component/nz-input-date/nz-
 import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 import { NzFormModule } from 'ng-zorro-antd/form';
 
-import { Component, OnInit, Output, EventEmitter, ViewChild, AfterViewInit, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, OnInit, AfterViewInit, inject, viewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { DeptService } from './dept.service';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
@@ -213,7 +213,7 @@ import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-
 })
 export class DeptFormComponent extends FormBase implements OnInit, AfterViewInit {
 
-  @ViewChild('deptCode', {static: true}) deptCode!: NzInputTextComponent;
+  deptCode = viewChild.required<NzInputTextComponent>('deptCode');
 
   deptHierarchy: DeptHierarchy[] = [];
 
@@ -245,7 +245,7 @@ export class DeptFormComponent extends FormBase implements OnInit, AfterViewInit
   }
 
   ngAfterViewInit(): void {
-    this.deptCode.focus();
+    this.deptCode().focus();
   }
 
   newForm(): void {
@@ -269,7 +269,7 @@ export class DeptFormComponent extends FormBase implements OnInit, AfterViewInit
     });
     */
 
-    this.deptCode.focus();
+    this.deptCode().focus();
   }
 
   modifyForm(formData: Dept): void {

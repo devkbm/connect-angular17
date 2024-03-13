@@ -7,7 +7,8 @@ import { registerLocaleData } from '@angular/common';
 import ko from '@angular/common/locales/ko';
 import { FormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule, HttpClientXsrfModule } from '@angular/common/http';
-import { provideAnimations } from '@angular/platform-browser/animations';
+//import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { CustomHttpInterceptor } from 'src/app/core/interceptor/custom-http-interceptor';
 import { ErrorInterceptorService } from './core/interceptor/error-interceptor';
 
@@ -22,6 +23,7 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(HttpClientXsrfModule.withOptions({cookieName: 'XSRF-TOKEN', headerName: 'X-XSRF-TOKEN'})),
     { provide: HTTP_INTERCEPTORS, useClass: CustomHttpInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptorService, multi: true },
-    provideAnimations()
+    //provideAnimations()
+    provideAnimationsAsync()
   ]
 };

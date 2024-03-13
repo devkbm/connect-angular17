@@ -6,7 +6,7 @@ import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-but
 import { NzInputCkeditorComponent } from 'src/app/shared-component/nz-input-ckeditor/nz-input-ckeditor.component';
 import { NzFileUploadComponent } from 'src/app/shared-component/nz-file-upload/nz-file-upload.component';
 
-import { AfterViewInit, Component, HostListener, Input, OnInit, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, inject, viewChild } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ChangeEvent, CKEditorComponent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import { ArticleService } from './article.service';
@@ -157,9 +157,9 @@ export class ArticleFormComponent extends FormBase implements OnInit, AfterViewI
 
   @Input() boardId!: string;
 
-  @ViewChild('upload', { static: true }) upload!: NzUploadComponent;
-  @ViewChild('ckEditor', { static: true }) ckEditor!: CKEditorComponent;
-  @ViewChild('title', { static: true }) title!: NzInputTextComponent;
+  upload = viewChild.required<NzUploadComponent>('upload');
+  ckEditor = viewChild.required<CKEditorComponent>('ckEditor');
+  title = viewChild.required<NzInputTextComponent>('title');
 
   private fb = inject(FormBuilder);
   private boardService= inject(ArticleService);
@@ -207,7 +207,7 @@ export class ArticleFormComponent extends FormBase implements OnInit, AfterViewI
   }
 
   ngAfterViewInit(): void {
-    this.title.focus();
+    this.title().focus();
   }
 
   newForm(boardId: any): void {

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, ViewChild, AfterViewInit, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { FormBase, FormType } from 'src/app/core/form/form-base';
@@ -13,7 +13,6 @@ import { RoleService } from './role.service';
 import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
 import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
-import { RoleGridComponent } from './role-grid.component';
 
 
 @Component({
@@ -178,7 +177,7 @@ import { RoleGridComponent } from './role-grid.component';
 })
 export class RoleFormComponent extends FormBase implements OnInit, AfterViewInit, OnChanges {
 
-  @ViewChild('roleCode') roleCode!: NzInputTextComponent;
+  roleCode = viewChild.required<NzInputTextComponent>('roleCode');
 
   private fb = inject(FormBuilder);
   private service = inject(RoleService);
@@ -202,7 +201,7 @@ export class RoleFormComponent extends FormBase implements OnInit, AfterViewInit
   }
 
   ngAfterViewInit(): void {
-    this.roleCode.focus();
+    this.roleCode().focus();
   }
 
   ngOnChanges(changes: SimpleChanges): void {

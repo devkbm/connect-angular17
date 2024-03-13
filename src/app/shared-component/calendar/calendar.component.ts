@@ -1,4 +1,4 @@
-import {Component, ViewChild, AfterViewInit, inject} from "@angular/core";
+import {Component, AfterViewInit, inject, viewChild} from "@angular/core";
 import {DayPilot, DayPilotCalendarComponent} from "@daypilot/daypilot-lite-angular";
 import {DataService} from "./data.service";
 import {forkJoin} from "rxjs";
@@ -10,8 +10,7 @@ import {forkJoin} from "rxjs";
 })
 export class CalendarComponent implements AfterViewInit {
 
-  @ViewChild("calendar")
-  calendar!: DayPilotCalendarComponent;
+  calendar = viewChild.required<DayPilotCalendarComponent>('calendar');
 
   config: DayPilot.CalendarConfig = {
     viewType: "Resources",
@@ -19,7 +18,7 @@ export class CalendarComponent implements AfterViewInit {
     onTimeRangeSelected: async params => {
       const modal = await DayPilot.Modal.prompt("Create a new event:", "Event 1");
 
-      const dp = this.calendar.control;
+      const dp = this.calendar().control;
       dp.clearSelection();
       if (modal.canceled) {
         return;
@@ -51,7 +50,7 @@ export class CalendarComponent implements AfterViewInit {
           columns: data[0],
           events: data[1]
         };
-        this.calendar.control.update(options);
+        this.calendar().control.update(options);
     });
 
   }

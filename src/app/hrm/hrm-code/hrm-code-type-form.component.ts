@@ -9,8 +9,8 @@ import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-text
 import { NzInputNumberCustomComponent } from 'src/app/shared-component/nz-input-number-custom/nz-input-number-custom.component';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 
-import { Component, OnInit, Output, EventEmitter, AfterViewInit, ViewChild, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, AfterViewInit, inject, viewChild } from '@angular/core';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { ResponseObject } from 'src/app/core/model/response-object';
@@ -177,7 +177,7 @@ import { existingHrmTypeValidator } from './hrm-code-type-duplication-validator'
 })
 export class HrmCodeTypeFormComponent extends FormBase implements OnInit, AfterViewInit {
 
-  @ViewChild('typeId') typeId!: NzInputTextComponent;
+  typeId = viewChild.required<NzInputTextComponent>('typeId');
 
   private fb = inject(FormBuilder);
   private service = inject(HrmCodeTypeService);
@@ -219,7 +219,7 @@ export class HrmCodeTypeFormComponent extends FormBase implements OnInit, AfterV
     this.fg.reset();
     this.fg.controls.typeId.enable();
 
-    this.typeId.focus();
+    this.typeId().focus();
   }
 
   modifyForm(formData: HrmType): void {

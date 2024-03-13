@@ -1,4 +1,4 @@
-import {Component, ViewChild, AfterViewInit, Input} from "@angular/core";
+import {Component, AfterViewInit, Input, viewChild} from "@angular/core";
 // npm i @daypilot/daypilot-lite-angular
 import {
   DayPilot,
@@ -54,10 +54,10 @@ import {
 })
 export class DaypilotCalendarBasicComponent implements AfterViewInit {
 
-  @ViewChild("navigator") nav!: DayPilotNavigatorComponent;
-  @ViewChild("day") day!: DayPilotCalendarComponent;
-  @ViewChild("week") week!: DayPilotCalendarComponent;
-  @ViewChild("month") month!: DayPilotMonthComponent;
+  nav = viewChild.required<DayPilotNavigatorComponent>('navigator');
+  day = viewChild.required<DayPilotCalendarComponent>('day');
+  week = viewChild.required<DayPilotCalendarComponent>('week');
+  month = viewChild.required<DayPilotMonthComponent>('month');
 
   @Input() events: DayPilot.EventData[] = [];
 
@@ -78,7 +78,7 @@ export class DaypilotCalendarBasicComponent implements AfterViewInit {
   }
 
   changeDate(date: DayPilot.Date): void {
-    this.nav.date = date;
+    this.nav().date = date;
     this.configDay.startDate = date;
     this.configWeek.startDate = date;
     this.configMonth.startDate = date;
@@ -157,8 +157,8 @@ export class DaypilotCalendarBasicComponent implements AfterViewInit {
   }
 
   loadEvents(): void {
-    const from = this.nav.control.visibleStart();
-    const to = this.nav.control.visibleEnd();
+    const from = this.nav().control.visibleStart();
+    const to = this.nav().control.visibleEnd();
     //console.log('from: ' + from);
     //console.log('to: ' + to);
   }

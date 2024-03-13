@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 
 import { SessionManager } from 'src/app/core/session-manager';
-import { Component, OnInit, ViewChild, AfterViewInit, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, inject, viewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { ResponseObject } from 'src/app/core/model/response-object';
@@ -124,7 +124,7 @@ export class WorkCalendarFormComponent extends FormBase implements OnInit, After
   color: any;
   preset_colors = ['#fff', '#000', '#2889e9', '#e920e9', '#fff500', 'rgb(236,64,64)'];
 
-  @ViewChild('workCalendarName') workCalendarName?: NzInputTextComponent;
+  workCalendarName = viewChild.required<NzInputTextComponent>('workCalendarName');
 
   private fb = inject(FormBuilder);
   private workGroupService = inject(WorkCalendarService);
@@ -143,7 +143,7 @@ export class WorkCalendarFormComponent extends FormBase implements OnInit, After
   }
 
   ngAfterViewInit(): void {
-    this.workCalendarName?.focus();
+    this.workCalendarName().focus();
   }
 
   newForm(): void {

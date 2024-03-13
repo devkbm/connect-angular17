@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, Output, viewChild } from '@angular/core';
 import {
   DayPilot,
   DayPilotNavigatorComponent
@@ -32,7 +32,7 @@ interface NavigatorRangeChangedArgs {
 })
 export class DaypilotCalendarNavigatorComponent implements AfterViewInit {
 
-  @ViewChild("navigator") nav!: DayPilotNavigatorComponent;
+  nav = viewChild.required<DayPilotNavigatorComponent>('navigator');
 
   @Input() mode: "Day" | "Week" | "Month" | "None" = "Day";
   @Input() events: DayPilot.EventDataShort[] = [];

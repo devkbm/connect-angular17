@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { FormBase, FormType } from 'src/app/core/form/form-base';
@@ -88,7 +88,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
   `]
 })
 export class TeamFormComponent extends FormBase implements OnInit, AfterViewInit, OnChanges {
-  @ViewChild('teamName') teamName?: NzInputTextComponent;
+  teamName = viewChild.required<NzInputTextComponent>('teamName');
 
   members: TeamJoinableUserModel[] = [];
 
@@ -114,9 +114,9 @@ export class TeamFormComponent extends FormBase implements OnInit, AfterViewInit
 
   ngAfterViewInit(): void {
     if (this.formType === FormType.NEW) {
-      this.teamName?.focus();
+      this.teamName().focus();
     } else {
-      this.teamName?.focus();
+      this.teamName().focus();
     }
 
 

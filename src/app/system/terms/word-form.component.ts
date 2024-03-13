@@ -5,13 +5,12 @@ import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-text
 import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, AfterViewInit, OnChanges, SimpleChanges, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild } from '@angular/core';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import { FormBase, FormType } from 'src/app/core/form/form-base';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 
-import { ResponseList } from 'src/app/core/model/response-list';
 import { ResponseObject } from 'src/app/core/model/response-object';
 import { WordService } from './word.service';
 import { Word } from './word.model';
@@ -91,7 +90,7 @@ import { Word } from './word.model';
 })
 export class WordFormComponent extends FormBase implements OnInit, AfterViewInit, OnChanges {
 
-  @ViewChild('logicalName') logicalName?: NzInputTextComponent;
+  logicalName = viewChild.required<NzInputTextComponent>('logicalName');
 
   private fb = inject(FormBuilder);
   private service = inject(WordService);
@@ -120,7 +119,7 @@ export class WordFormComponent extends FormBase implements OnInit, AfterViewInit
   }
 
   focus() {
-    this.logicalName?.focus();
+    this.logicalName().focus();
   }
 
   newForm() {

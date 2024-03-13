@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { NzFormatEmitEvent, NzTreeModule } from 'ng-zorro-antd/tree';
+import { NzFormatEmitEvent, NzTreeComponent, NzTreeModule } from 'ng-zorro-antd/tree';
 
-import { Component, OnInit, ViewChild, Output, EventEmitter, Input, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter, Input, inject, viewChild } from '@angular/core';
 import { ResponseList } from 'src/app/core/model/response-list';
 import { CommonCodeHierarchy } from './common-code-hierarchy.model';
 
@@ -25,7 +25,7 @@ import { CommonCodeService } from './common-code.service';
 })
 export class CommonCodeTreeComponent implements OnInit {
 
-  @ViewChild('treeComponent', {static: false}) treeComponent: any;
+  treeComponent = viewChild.required(NzTreeComponent);
 
   @Input() searchValue = '';
   @Output() itemSelected = new EventEmitter();

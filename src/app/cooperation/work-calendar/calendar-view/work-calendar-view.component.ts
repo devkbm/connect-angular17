@@ -1,7 +1,7 @@
 import { CommonModule, formatDate } from '@angular/common';
 import { CalendarModule } from 'src/app/shared-component/calendar/calendar.module';
 
-import { Component, OnInit, ViewChild, Output, EventEmitter, Input, AfterViewInit, inject } from '@angular/core';
+import { Component, Output, EventEmitter, Input, AfterViewInit, inject, viewChild } from '@angular/core';
 
 import { ResponseList } from 'src/app/core/model/response-list';
 
@@ -51,7 +51,8 @@ export interface NewDateSelectedArgs {
 })
 export class WorkCalendarViewComponent implements AfterViewInit {
 
-  @ViewChild(DaypilotCalendarComponent) calendar!: DaypilotCalendarComponent;
+  calendar = viewChild.required(DaypilotCalendarComponent);
+
   @Input() fkWorkCalendar: number = 0;
   @Output() itemSelected = new EventEmitter();
   @Output() newDateSelected: EventEmitter<NewDateSelectedArgs> = new EventEmitter<NewDateSelectedArgs>();
@@ -70,8 +71,8 @@ export class WorkCalendarViewComponent implements AfterViewInit {
     //this.from = this.datePipe.transform(this.calendar.start.toDateLocal(),'yyyyMMdd') ?? '';
     //this.to = this.datePipe.transform(this.calendar.end.toDateLocal(),'yyyyMMdd') ?? '';
 
-    this.from = formatDate(this.calendar.start.toDateLocal(),'YYYYMMdd','ko-kr') ?? '';
-    this.to = formatDate(this.calendar.end.toDateLocal(),'YYYYMMdd','ko-kr') ?? '';
+    this.from = formatDate(this.calendar().start.toDateLocal(),'YYYYMMdd','ko-kr') ?? '';
+    this.to = formatDate(this.calendar().end.toDateLocal(),'YYYYMMdd','ko-kr') ?? '';
   }
 
   rangeChanged(e: any): void {
@@ -133,6 +134,6 @@ export class WorkCalendarViewComponent implements AfterViewInit {
   }
 
   calendarSetDate(date: DayPilot.Date) {
-    this.calendar.rangeChangedEvent(date);
+    this.calendar().rangeChangedEvent(date);
   }
 }

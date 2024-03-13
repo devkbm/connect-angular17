@@ -10,8 +10,8 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
-import { AfterViewInit, Component, OnChanges, OnInit, SimpleChanges, ViewChild, inject, viewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AfterViewInit, Component, OnChanges, OnInit, SimpleChanges, inject, viewChild } from '@angular/core';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import { BoardManagementService } from './board-management.service';
 
@@ -161,7 +161,6 @@ import { FormBase, FormType } from 'src/app/core/form/form-base';
 })
 export class BoardFormComponent extends FormBase implements OnInit, OnChanges, AfterViewInit {
 
-  //@ViewChild('boardName') boardName!: NzInputTextComponent;
   boardName = viewChild.required<NzInputTextComponent>('boardName');
 
   parentBoardItems: BoardHierarchy[] = [];

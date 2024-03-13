@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { NzTreeModule } from 'ng-zorro-antd/tree';
+import { NzTreeComponent, NzTreeModule } from 'ng-zorro-antd/tree';
 
-import { Component, OnInit, ViewChild, Output, EventEmitter, Input, inject } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, inject, viewChild } from '@angular/core';
 import { ResponseList } from 'src/app/core/model/response-list';
 import { DeptHierarchy } from './dept-hierarchy.model';
 
@@ -32,7 +32,7 @@ import { NzFormatEmitEvent } from 'ng-zorro-antd/tree';
 })
 export class DeptTreeComponent implements OnInit {
 
-  @ViewChild('treeComponent', {static: false}) treeComponent: any;
+  treeComponent = viewChild.required(NzTreeComponent);
 
   nodeItems: DeptHierarchy[] = [];
 

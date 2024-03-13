@@ -6,7 +6,7 @@ import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
 import { NzListRoadAddressComponent } from 'src/app/shared-component/nz-list-road-address/nz-list-road-address.component';
 
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, AfterViewInit, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import { FormBase, FormType } from 'src/app/core/form/form-base';
@@ -146,8 +146,6 @@ import { StaffContact } from './staff-contact.model';
 export class StaffContactFormComponent extends FormBase implements OnInit, AfterViewInit, OnChanges {
 
   @Input() staff?: {companyCode: string, staffNo: string, staffName: string};
-
-  //@ViewChild('domainName') domainName?: NzInputTextComponent;
 
   private fb = inject(FormBuilder);
   private service = inject(StaffContactService);

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, Input, OnChanges, SimpleChanges, inject, viewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { FormBase, FormType } from 'src/app/core/form/form-base';
@@ -141,7 +141,8 @@ export interface NewFormValue {
 })
 export class WorkCalendarEventFormComponent extends FormBase implements OnInit, AfterViewInit, OnChanges {
 
-  @ViewChild('text', {static: true}) text!: NzInputTextareaComponent;
+  text = viewChild.required<NzInputTextareaComponent>('text');
+
   @Input() override initLoadId: number = -1;
   @Input() newFormValue?: NewFormValue;
 
@@ -177,7 +178,7 @@ export class WorkCalendarEventFormComponent extends FormBase implements OnInit, 
   }
 
   ngAfterViewInit(): void {
-    this.text?.focus();
+    this.text().focus();
   }
 
   newForm(params: NewFormValue): void {

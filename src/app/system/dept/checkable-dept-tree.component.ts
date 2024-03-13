@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 
-import { Component, OnInit, ViewChild, Output, EventEmitter, Input, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter, Input, inject, viewChild } from '@angular/core';
 import { ResponseList } from 'src/app/core/model/response-list';
 import { DeptHierarchy } from './dept-hierarchy.model';
 
@@ -31,7 +31,7 @@ import { NzFormatEmitEvent, NzTreeComponent, NzTreeModule } from 'ng-zorro-antd/
 })
 export class CheckableDeptTreeComponent implements OnInit {
 
-    @ViewChild('treeComponent', {static: false}) treeComponent!: NzTreeComponent;
+    treeComponent = viewChild.required(NzTreeComponent);
 
     nodeItems: DeptHierarchy[] = [];
     defaultCheckedKeys: any = [''];
@@ -58,12 +58,6 @@ export class CheckableDeptTreeComponent implements OnInit {
                     } else {
                     this.nodeItems = [];
                     }
-                },
-                (err) => {
-                console.log(err);
-                },
-                () => {
-                console.log('완료');
                 }
             );
     }

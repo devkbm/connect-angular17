@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 
-import { Component, OnInit, Output, EventEmitter, ViewChild, AfterViewInit, inject } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, AfterViewInit, inject, viewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { WebResourceService } from './web-resource.service';
@@ -126,7 +126,7 @@ import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-text
 })
 export class WebResourceFormComponent extends FormBase implements OnInit, AfterViewInit {
 
-  @ViewChild('resourceCode') resourceCode!: NzInputTextComponent;
+  resourceCode = viewChild.required<NzInputTextComponent>('resourceCode');
 
   resourceTypeList: ResouceTypeEnum[] = [];
 
@@ -157,7 +157,7 @@ export class WebResourceFormComponent extends FormBase implements OnInit, AfterV
   }
 
   ngAfterViewInit(): void {
-    this.resourceCode.focus();
+    this.resourceCode().focus();
   }
 
   newForm(): void {

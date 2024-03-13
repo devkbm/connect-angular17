@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { NzFormatEmitEvent, NzTreeModule } from 'ng-zorro-antd/tree';
+import { NzFormatEmitEvent, NzTreeComponent, NzTreeModule } from 'ng-zorro-antd/tree';
 
-import { Component, OnInit, ViewChild, Output, EventEmitter, Input, inject } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, inject, viewChild } from '@angular/core';
 import { ResponseList } from '../../../core/model/response-list';
 import { BoardHierarchy } from './board-hierarchy.model';
 import { BoardHierarcyService } from './board-hierarcy.service';
@@ -27,7 +27,7 @@ import { BoardHierarcyService } from './board-hierarcy.service';
 })
 export class BoardTreeComponent implements OnInit {
 
-  @ViewChild('treeCom', {static: false}) treeCom: any;
+  treeCom = viewChild.required(NzTreeComponent);
 
   boardItems: BoardHierarchy[] = [];
   selectedKeys: string[] = [];

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, viewChild } from '@angular/core';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTreeNodeOptions } from 'ng-zorro-antd/tree';
@@ -89,7 +89,7 @@ import { BoardTreeComponent } from '../board-hierarcy/board-tree.component';
 })
 export class BoardManagementComponent implements AfterViewInit {
 
-  @ViewChild(BoardTreeComponent) boardTree!: BoardTreeComponent;
+  boardTree = viewChild.required(BoardTreeComponent);
 
   drawerBoard: { visible: boolean, initLoadId: any } = {
     visible: false,
@@ -109,7 +109,7 @@ export class BoardManagementComponent implements AfterViewInit {
 
   getBoardTree(): void {
     this.drawerBoard.visible = false;
-    this.boardTree.getboardHierarchy();
+    this.boardTree().getboardHierarchy();
   }
 
   newBoard(): void {

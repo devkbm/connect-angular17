@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 
-import { Component, OnInit, AfterViewInit, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject, viewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { FormBase, FormType } from 'src/app/core/form/form-base';
@@ -101,7 +101,7 @@ import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-text
 })
 export class MenuGroupFormComponent extends FormBase implements OnInit, AfterViewInit {
 
-  @ViewChild('menuGroupCode') menuGroupCode!: NzInputTextComponent;
+  menuGroupCode = viewChild.required<NzInputTextComponent>('menuGroupCode');
 
   private fb = inject(FormBuilder);
   private menuService = inject(MenuService);
@@ -136,7 +136,7 @@ export class MenuGroupFormComponent extends FormBase implements OnInit, AfterVie
     this.fg.reset();
 
     this.fg.controls.menuGroupCode.enable();
-    this.menuGroupCode.focus();
+    this.menuGroupCode().focus();
   }
 
   modifyForm(formData: MenuGroup): void {

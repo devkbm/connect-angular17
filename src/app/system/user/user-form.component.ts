@@ -8,7 +8,7 @@ import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select
 import { UserImageUploadComponent } from './user-image-upload.component';
 import { NzInputSwitchComponent } from 'src/app/shared-component/nz-input-switch/nz-input-switch.component';
 
-import { Component, OnInit, ViewChild, AfterViewInit, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnChanges, SimpleChanges, inject, viewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { FormType, FormBase } from 'src/app/core/form/form-base';
@@ -19,7 +19,7 @@ import { ResponseObject } from 'src/app/core/model/response-object';
 import { UserService } from './user.service';
 import { User } from './user.model';
 import { Role } from '../role/role.model';
-import { MenuGroup } from '../menu/menu-group.model';
+
 import { existingUserValidator } from './user-duplication-validator.directive';
 
 import { DeptHierarchy } from '../dept/dept-hierarchy.model';
@@ -195,7 +195,7 @@ export class UserFormComponent extends FormBase implements OnInit, AfterViewInit
 
   imageBase64: any;
 
-  @ViewChild('staffNo') staffNoField!: NzInputTextComponent;
+  staffNoField = viewChild.required<NzInputTextComponent>('staffNo');
 
   private fb = inject(FormBuilder);
   private service = inject(UserService);
@@ -231,7 +231,7 @@ export class UserFormComponent extends FormBase implements OnInit, AfterViewInit
   }
 
   ngAfterViewInit(): void {
-    this.staffNoField.focus();
+    this.staffNoField().focus();
   }
 
   ngOnChanges(changes: SimpleChanges): void {

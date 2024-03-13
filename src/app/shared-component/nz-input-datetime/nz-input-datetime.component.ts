@@ -56,10 +56,6 @@ export enum TimeFormat {
 })
 export class NzInputDateTimeComponent implements ControlValueAccessor, OnInit, AfterViewInit {
 
-  //@ViewChild(NzFormControlComponent) control!: NzFormControlComponent;
-  //@ViewChild('date') dateElement?: NzDatePickerComponent;
-  //@ViewChild('time') timeElement?: NzTimePickerComponent;
-
   control = viewChild.required(NzFormControlComponent);
   dateElement = viewChild.required(NzDatePickerComponent);
   timeElement = viewChild.required(NzTimePickerComponent);
