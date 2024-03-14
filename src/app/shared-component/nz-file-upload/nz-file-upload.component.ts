@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, output } from '@angular/core';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzUploadChangeParam, NzUploadFile, NzUploadModule } from 'ng-zorro-antd/upload';
 import { GlobalProperty } from 'src/app/core/global-property';
@@ -54,7 +54,8 @@ export class NzFileUploadComponent implements OnInit {
       url: 'http://www.baidu.com/yyy.png'
     }*/
   @Input() fileList: NzUploadFile[] = [];
-  @Output() uploadCompleted = new EventEmitter<NzUploadFile[]>();
+
+  uploadCompleted = output<NzUploadFile[]>();
 
   ngOnInit() {
     this.fileUploadHeader = {

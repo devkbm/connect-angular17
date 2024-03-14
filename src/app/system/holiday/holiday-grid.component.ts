@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { AgGridModule } from 'ag-grid-angular';
 
 import { Holiday } from './holiday.model';
-import { Component, OnInit, Output, EventEmitter, Input, inject } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, inject, output } from '@angular/core';
 import { AggridFunction } from 'src/app/core/grid/aggrid-function';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { ResponseList } from 'src/app/core/model/response-list';
@@ -32,9 +32,9 @@ import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-rende
 })
 export class HolidayGridComponent extends AggridFunction implements OnInit {
 
-  @Output() rowSelected = new EventEmitter();
-  @Output() rowDoubleClicked = new EventEmitter();
-  @Output() editButtonClicked = new EventEmitter();
+  rowClicked = output<any>();
+  rowDoubleClicked = output<any>();
+  editButtonClicked = output<any>();
 
   gridList: Holiday[] = [];
 
@@ -101,7 +101,7 @@ export class HolidayGridComponent extends AggridFunction implements OnInit {
   selectionChanged(event: any): void {
     const selectedRows = this.gridApi.getSelectedRows();
 
-    this.rowSelected.emit(selectedRows[0]);
+    this.rowClicked.emit(selectedRows[0]);
   }
 
   rowDbClicked(event: any): void {

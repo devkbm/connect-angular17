@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, Output, EventEmitter, inject, input, model } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, inject, input, model, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzListModule } from 'ng-zorro-antd/list';
@@ -51,7 +51,7 @@ export class NzListRoadAddressComponent implements OnInit {
   height = input<string>('100%');
   countPerPage = input<number>(10);
 
-  @Output() itemClicked: EventEmitter<{roadAddress: string, zipNo: string}> = new EventEmitter<{roadAddress: string, zipNo: string}>();
+  itemClicked = output<{roadAddress: string, zipNo: string}>();
 
   protected _isLoading: boolean = false;
   protected _data?: RoadAddress;

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { AgGridModule } from 'ag-grid-angular';
 
-import { Component, OnInit, Output, EventEmitter, Input, inject } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, inject, output } from '@angular/core';
 
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { AggridFunction } from 'src/app/core/grid/aggrid-function';
@@ -36,9 +36,9 @@ export class BizCodeGridComponent extends AggridFunction implements OnInit {
 
   _list: BizCode[] = [];
 
-  @Output() rowClickedEvent = new EventEmitter();
-  @Output() rowDoubleClickedEvent = new EventEmitter();
-  @Output() editButtonClickedEvent = new EventEmitter();
+  rowClicked = output<any>();
+  rowDoubleClicked = output<any>();
+  editButtonClicked = output<any>();
 
   private service = inject(BizCodeService);
   private appAlarmService = inject(AppAlarmService);
@@ -93,15 +93,15 @@ export class BizCodeGridComponent extends AggridFunction implements OnInit {
 
   rowClickedFunc(event: any): void {
     const selectedRows = this.gridApi.getSelectedRows();
-    this.rowClickedEvent.emit(selectedRows[0]);
+    this.rowClicked.emit(selectedRows[0]);
   }
 
   rowDoubleClickedFunc(event: any): void {
-    this.rowDoubleClickedEvent.emit(event.data);
+    this.rowDoubleClicked.emit(event.data);
   }
 
   onEditButtonClick(e: any): void {
-    this.editButtonClickedEvent.emit(e.rowData);
+    this.editButtonClicked.emit(e.rowData);
   }
 
 }

@@ -96,9 +96,9 @@ import { WordFormComponent } from './word-form.component';
       <!--<h3>용어사전 목록</h3>-->
       <div class="grid-wrapper">
         <app-term-grid #termGrid
-          (rowClickedEvent)="termGridSelected($event)"
-          (editButtonClickedEvent)="editTerm($event)"
-          (rowDoubleClickedEvent)="editTerm($event)">
+          (rowClicked)="termGridSelected($event)"
+          (editButtonClicked)="editTerm($event)"
+          (rowDoubleClicked)="editTerm($event)">
         </app-term-grid>
       </div>
     </nz-tab>
@@ -106,9 +106,9 @@ import { WordFormComponent } from './word-form.component';
     <nz-tab nzTitle="단어사전">
       <div class="grid-wrapper">
         <app-word-grid #wordGrid
-        (rowClickedEvent)="wordGridSelected($event)"
-        (editButtonClickedEvent)="editWord($event)"
-        (rowDoubleClickedEvent)="editWord($event)">
+        (rowClicked)="wordGridSelected($event)"
+        (editButtonClicked)="editWord($event)"
+        (rowDoubleClicked)="editWord($event)">
         </app-word-grid>
       </div>
     </nz-tab>
@@ -116,9 +116,9 @@ import { WordFormComponent } from './word-form.component';
     <nz-tab nzTitle="도메인">
       <div class="grid-wrapper">
         <app-data-domain-grid #domainGrid
-          (rowClickedEvent)="domainGridSelected($event)"
-          (editButtonClickedEvent)="this.drawer.domain.visible = true"
-          (rowDoubleClickedEvent)="this.drawer.domain.visible = true">
+          (rowClicked)="domainGridSelected($event)"
+          (editButtonClicked)="this.drawer.domain.visible = true"
+          (rowDoubleClicked)="this.drawer.domain.visible = true">
         </app-data-domain-grid>
       </div>
     </nz-tab>

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, Output, EventEmitter, inject } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, inject, output } from '@angular/core';
 
 import { AgGridModule } from 'ag-grid-angular';
 
@@ -40,14 +40,9 @@ export class ArticleGridComponent extends AggridFunction implements OnInit {
 
   articleList: Article[] = [];
 
-  @Output()
-  rowClicked = new EventEmitter();
-
-  @Output()
-  rowDoubleClicked = new EventEmitter();
-
-  @Output()
-  editButtonClicked = new EventEmitter();
+  rowClicked = output<any>();
+  rowDoubleClicked = output<any>();
+  editButtonClicked = output<any>();
 
   private appAlarmService = inject(AppAlarmService);
   private boardService = inject(ArticleService);

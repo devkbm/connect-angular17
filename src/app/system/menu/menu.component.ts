@@ -103,7 +103,7 @@ import { MenuRoleTreeComponent } from '../menu-role/menu-role-tree.component';
   <app-menu-group-grid
     #menuGroupGrid
     id="menuGroupGrid"
-    (rowSelected)="menuGroupGridRowClicked($event)"
+    (rowClicked)="menuGroupGridRowClicked($event)"
     (editButtonClicked)="editMenuGroup($event)"
     (rowDoubleClicked)="editMenuGroup($event)">
   </app-menu-group-grid>
@@ -112,7 +112,7 @@ import { MenuRoleTreeComponent } from '../menu-role/menu-role-tree.component';
   <app-menu-grid
     id="menuGrid"
     #menuGrid
-    (rowSelected)="menuGridRowClicked($event)"
+    (rowClicked)="menuGridRowClicked($event)"
     (editButtonClicked)="editMenu($event)"
     (rowDoubleClicked)="editMenu($event)">
   </app-menu-grid>

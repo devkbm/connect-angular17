@@ -63,16 +63,16 @@ import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/n
 <div class="page-content">
   <h3 class="header1">업무코드분류</h3>
   <app-biz-type-grid
-    (rowClickedEvent)="codeTypeGridRowClicked($event)"
-    (editButtonClickedEvent)="editCodeType($event)"
-    (rowDoubleClickedEvent)="editCodeType($event)">
+    (rowClicked)="codeTypeGridRowClicked($event)"
+    (editButtonClicked)="editCodeType($event)"
+    (rowDoubleClicked)="editCodeType($event)">
   </app-biz-type-grid>
 
   <h3 class="header2">업무코드</h3>
   <app-biz-code-grid
-    (rowClickedEvent)="codeGridRowClicked($event)"
-    (editButtonClickedEvent)="editCode($event)"
-    (rowDoubleClickedEvent)="editCode($event)">
+    (rowClicked)="codeGridRowClicked($event)"
+    (editButtonClicked)="editCode($event)"
+    (rowDoubleClicked)="editCode($event)">
   </app-biz-code-grid>
 </div>
 

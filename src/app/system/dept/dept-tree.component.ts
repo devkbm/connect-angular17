@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NzTreeComponent, NzTreeModule } from 'ng-zorro-antd/tree';
 
-import { Component, OnInit, Output, EventEmitter, Input, inject, viewChild } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, inject, viewChild, output } from '@angular/core';
 import { ResponseList } from 'src/app/core/model/response-list';
 import { DeptHierarchy } from './dept-hierarchy.model';
 
@@ -39,8 +39,7 @@ export class DeptTreeComponent implements OnInit {
   @Input()
   searchValue = '';
 
-  @Output()
-  itemSelected = new EventEmitter();
+  itemSelected = output<any>();
 
   private deptService = inject(DeptService);
 

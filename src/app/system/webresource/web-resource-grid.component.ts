@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { AgGridModule } from 'ag-grid-angular';
 
-import { Component, OnInit, Output, EventEmitter, inject } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, inject, output } from '@angular/core';
 
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { AggridFunction } from 'src/app/core/grid/aggrid-function';
@@ -50,19 +50,21 @@ import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-rende
     }
   `]
 })
-export class WebResourceGridComponent extends AggridFunction implements OnInit {
+export class WebResourceGridComponent extends AggridFunction {
 
   isLoading: boolean = false;
   _list: WebResource[] = [];
 
-  @Output() rowClicked = new EventEmitter();
-  @Output() rowDoubleClicked = new EventEmitter();
-  @Output() editButtonClicked = new EventEmitter();
+  rowClicked = output<any>();
+  rowDoubleClicked = output<any>();
+  editButtonClicked = output<any>();
 
   private service = inject(WebResourceService);
   private appAlarmService = inject(AppAlarmService);
 
-  ngOnInit() {
+  constructor() {
+    super();
+
     this.columnDefs = [
       {
         headerName: '',

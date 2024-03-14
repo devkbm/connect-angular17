@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { AgGridModule } from 'ag-grid-angular';
 
-import { Component, OnInit, Output, EventEmitter, inject } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, inject, output } from '@angular/core';
 
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { AggridFunction } from 'src/app/core/grid/aggrid-function';
@@ -34,9 +34,9 @@ export class CommonCodeGridComponent extends AggridFunction implements OnInit {
 
   commonCodeList: CommonCode[] = [];
 
-  @Output() rowSelected = new EventEmitter();
-  @Output() rowDoubleClicked = new EventEmitter();
-  @Output() editButtonClicked = new EventEmitter();
+  rowClicked = output<any>();
+  rowDoubleClicked = output<any>();
+  editButtonClicked = output<any>();
 
   private commonCodeService = inject(CommonCodeService);
   private appAlarmService = inject(AppAlarmService);
@@ -108,7 +108,7 @@ export class CommonCodeGridComponent extends AggridFunction implements OnInit {
 
   selectionChanged(event: any): void {
     const selectedRows = this.gridApi.getSelectedRows();
-    this.rowSelected.emit(selectedRows[0]);
+    this.rowClicked.emit(selectedRows[0]);
   }
 
   rowDbClicked(event: any): void {

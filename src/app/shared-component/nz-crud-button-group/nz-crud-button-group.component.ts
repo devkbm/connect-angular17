@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output, output } from '@angular/core';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -75,10 +75,10 @@ export class NzCrudButtonGroupComponent implements OnInit {
   @Input() saveVisible: boolean = true;
   @Input() deleteVisible: boolean = true;
 
-  @Output() searchClick = new EventEmitter();
-  @Output() saveClick = new EventEmitter();
-  @Output() deleteClick = new EventEmitter();
-  @Output() closeClick = new EventEmitter();
+  searchClick = output<any>();
+  saveClick = output<any>();
+  deleteClick = output<any>();
+  closeClick = output<any>();
 
   ngOnInit(): void {
   }
@@ -91,16 +91,16 @@ export class NzCrudButtonGroupComponent implements OnInit {
   @HostListener('window:keydown.alt.s', ['$event'])
   saveHotKeyClick(event: KeyboardEvent) {
     event.preventDefault();
-    this.saveClick.emit();
+    this.saveClick.emit(event);
   }
 
   saveButtonClick() {
-    this.saveClick.emit();
+    this.saveClick.emit('');
   }
 
   @HostListener('window:keydown.alt.r', ['$event'])
   deleteButtonClick() {
-    this.deleteClick.emit();
+    this.deleteClick.emit('');
   }
 
   @HostListener('window:keydown.alt.q', ['$event'])
