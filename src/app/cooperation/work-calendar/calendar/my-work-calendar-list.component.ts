@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, inject, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatListModule } from '@angular/material/list';
 
@@ -40,8 +40,8 @@ export class MyWorkCalendarListComponent implements OnInit {
 
   workGroupList: WorkCalendar[] = [];
 
-  @Output() rowSelected = new EventEmitter();
-  @Output() rowDoubleClicked = new EventEmitter();
+  rowClicked = output<any>();
+  rowDoubleClicked = output<any>();
 
   private appAlarmService = inject(AppAlarmService);
   private workGroupService = inject(WorkCalendarService);
@@ -70,7 +70,7 @@ export class MyWorkCalendarListComponent implements OnInit {
                   .map((v: { value: any; }) => v.value.id)   // id 추출
                   .join(',');       // 콤마 구분자로 분리함
 
-    this.rowSelected.emit(ids);
+    this.rowClicked.emit(ids);
   }
 
   rowDbClicked(event: any): void {

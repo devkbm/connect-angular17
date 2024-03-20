@@ -50,29 +50,30 @@ import { RoleFormComponent } from './role-form.component';
   <app-nz-page-header-custom class="page-header" title="롤 등록" subtitle="This is a subtitle"></app-nz-page-header-custom>
 </div>
 
-<div class="page-search">
-  <app-nz-search-area>
+<app-nz-search-area [height]="'var(--page-search-height)'">
+  <div row>
     <div nz-col [nzSpan]="12">
       <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate" [nzSuffix]="suffixIconSearch">
+        <ng-template #addOnBeforeTemplate>
+          <nz-select [(ngModel)]="query.role.key">
+            @for (option of query.role.list; track option.value) {
+            <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+            }
+          </nz-select>
+        </ng-template>
         <input type="text" [(ngModel)]="query.role.value" nz-input placeholder="input search text" (keyup.enter)="getRoleList()">
+        <ng-template #suffixIconSearch>
+          <span nz-icon nzType="search"></span>
+        </ng-template>
       </nz-input-group>
-      <ng-template #addOnBeforeTemplate>
-        <nz-select [(ngModel)]="query.role.key">
-          @for (option of query.role.list; track option.value) {
-          <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
-          }
-        </nz-select>
-      </ng-template>
-      <ng-template #suffixIconSearch>
-        <span nz-icon nzType="search"></span>
-      </ng-template>
     </div>
 
     <div nz-col [nzSpan]="12" style="text-align: right;">
       <app-nz-buttons [buttons]="buttons"></app-nz-buttons>
     </div>
-  </app-nz-search-area>
-</div>
+  </div>
+</app-nz-search-area>
+
 
 <div class="page-content-title">
   <h3 class="grid-title">롤 목록</h3>

@@ -42,8 +42,8 @@ import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/n
   <app-nz-page-header-custom title="업무코드 등록" subtitle="This is a subtitle"></app-nz-page-header-custom>
 </div>
 
-<div class="page-search">
-  <app-nz-search-area>
+<app-nz-search-area [height]="'var(--page-search-height)'">
+  <div nz-row>
     <div nz-col [nzSpan]="24" class="text-align-right">
       <button nz-button (click)="selectBizCodeTypeList()">
         <span nz-icon nzType="search" nzTheme="outline"></span>조회
@@ -57,8 +57,9 @@ import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/n
         <span nz-icon nzType="form" nzTheme="outline"></span>신규 코드
       </button>
     </div>
-  </app-nz-search-area>
-</div>
+  </div>
+</app-nz-search-area>
+
 
 <div class="page-content">
   <h3 class="header1">업무코드분류</h3>

@@ -93,7 +93,7 @@ import { StaffSchoolCareerFormComponent } from './staff-school-career/staff-scho
 
 <div class="app-grid">
   <app-staff-grid
-    (rowClickedEvent)="staffGridRowClicked($event)">
+    (rowClicked)="staffGridRowClicked($event)">
   </app-staff-grid>
 
   <div>

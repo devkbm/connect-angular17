@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { AgGridModule } from 'ag-grid-angular';
 
-import { Component, OnInit, Output, EventEmitter, inject } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, inject, output } from '@angular/core';
 
 import { ResponseList } from 'src/app/core/model/response-list';
 import { AggridFunction } from 'src/app/core/grid/aggrid-function';
@@ -35,9 +35,9 @@ export class StaffGridComponent extends AggridFunction implements OnInit {
 
   list: Staff[] = [];
 
-  @Output() rowClickedEvent = new EventEmitter();
-  @Output() rowDoubleClickedEvent = new EventEmitter();
-  @Output() editButtonClickedEvent = new EventEmitter();
+  rowClicked = output<any>();
+  rowDoubleClicked = output<any>();
+  editButtonClicked = output<any>();
 
   private service = inject(StaffService);
   private appAlarmService = inject(AppAlarmService);
@@ -76,7 +76,7 @@ export class StaffGridComponent extends AggridFunction implements OnInit {
   }
 
   private onEditButtonClick(e: any) {
-    this.editButtonClickedEvent.emit(e.rowData);
+    this.editButtonClicked.emit(e.rowData);
   }
 
   getList(params?: any): void {
@@ -97,11 +97,11 @@ export class StaffGridComponent extends AggridFunction implements OnInit {
   rowClickedFunc(event: any) {
     const selectedRows = this.gridApi.getSelectedRows();
 
-    this.rowClickedEvent.emit(selectedRows[0]);
+    this.rowClicked.emit(selectedRows[0]);
   }
 
   rowDbClickedFunc(event: any) {
-    this.rowDoubleClickedEvent.emit(event.data);
+    this.rowDoubleClicked.emit(event.data);
   }
 
 }

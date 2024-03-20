@@ -1,5 +1,5 @@
 
-import { Component, OnInit, Output, EventEmitter, Input, inject } from '@angular/core';
+import { Component, OnInit, inject, output } from '@angular/core';
 import { AggridFunction } from 'src/app/core/grid/aggrid-function';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { ResponseList } from 'src/app/core/model/response-list';
@@ -34,9 +34,9 @@ export class DutyApplicationGridComponent extends AggridFunction implements OnIn
 
   _list: DutyApplication[] = [];
 
-  @Output() rowSelected = new EventEmitter();
-  @Output() rowDoubleClicked = new EventEmitter();
-  @Output() editButtonClicked = new EventEmitter();
+  rowClicked = output<any>();
+  rowDoubleClicked = output<any>();
+  editButtonClicked = output<any>();
 
   private appAlarmService = inject(AppAlarmService);
   private dutyApplicationService = inject(DutyApplicationService);
@@ -102,7 +102,7 @@ export class DutyApplicationGridComponent extends AggridFunction implements OnIn
   selectionChanged(event: any) {
     const selectedRows = this.gridApi.getSelectedRows();
 
-    this.rowSelected.emit(selectedRows[0]);
+    this.rowClicked.emit(selectedRows[0]);
   }
 
   rowDbClicked(event: any) {

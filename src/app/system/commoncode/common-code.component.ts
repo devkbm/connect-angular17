@@ -39,45 +39,47 @@ import { CommonCodeGridComponent } from './common-code-grid.component';
 <app-nz-page-header-custom title="공통코드 등록" subtitle="This is a subtitle"></app-nz-page-header-custom>
 
 <!--조회 조건-->
-<app-nz-search-area>
-  <div nz-col [nzSpan]="12">
-    <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate" [nzSuffix]="suffixIconSearch">
-      <input type="text" [(ngModel)]="queryValue" nz-input placeholder="input search text">
-    </nz-input-group>
-    <ng-template #addOnBeforeTemplate>
-      <nz-select [(ngModel)]="systeTypeCode">
-        @for (option of systemTypeCodeList; track option.value) {
-        <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
-        }
-      </nz-select>
-    </ng-template>
-    <ng-template #suffixIconSearch>
-      <span nz-icon nzType="search"></span>
-    </ng-template>
-  </div>
-  <div nz-col [nzSpan]="12" style="text-align: right;">
-    <app-nz-buttons [buttons]="buttons"></app-nz-buttons>
-    <!--
-    <button nz-button nzType="primary" (click)="getCommonCodeTree()">
-      <span nz-icon nzType="search"></span>조회
-    </button>
-    <nz-divider nzType="vertical"></nz-divider>
-    <button nz-button (click)="newForm()">
-      <span nz-icon nzType="form" nzTheme="outline"></span>신규
-    </button>
-    <nz-divider nzType="vertical"></nz-divider>
-    <button nz-button nzType="primary"
-      nz-popconfirm nzPopconfirmTitle="저장하시겠습니까?"
-      (nzOnConfirm)="saveCommonCode()" (nzOnCancel)="false">
-      <span nz-icon nzType="save" nzTheme="outline"></span>저장
-    </button>
-    <nz-divider nzType="vertical"></nz-divider>
-    <button nz-button nzDanger="true"
-      nz-popconfirm nzPopconfirmTitle="삭제하시겠습니까?"
-      (nzOnConfirm)="deleteCommonCode()" (nzOnCancel)="false">
-      <span nz-icon nzType="delete" nzTheme="outline"></span>삭제
-    </button>
-    -->
+<app-nz-search-area [height]="'var(--page-search-height)'">
+  <div nz-row>
+    <div nz-col [nzSpan]="12">
+      <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate" [nzSuffix]="suffixIconSearch">
+        <input type="text" [(ngModel)]="queryValue" nz-input placeholder="input search text">
+      </nz-input-group>
+      <ng-template #addOnBeforeTemplate>
+        <nz-select [(ngModel)]="systeTypeCode">
+          @for (option of systemTypeCodeList; track option.value) {
+          <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+          }
+        </nz-select>
+      </ng-template>
+      <ng-template #suffixIconSearch>
+        <span nz-icon nzType="search"></span>
+      </ng-template>
+    </div>
+    <div nz-col [nzSpan]="12" style="text-align: right;">
+      <app-nz-buttons [buttons]="buttons"></app-nz-buttons>
+      <!--
+      <button nz-button nzType="primary" (click)="getCommonCodeTree()">
+        <span nz-icon nzType="search"></span>조회
+      </button>
+      <nz-divider nzType="vertical"></nz-divider>
+      <button nz-button (click)="newForm()">
+        <span nz-icon nzType="form" nzTheme="outline"></span>신규
+      </button>
+      <nz-divider nzType="vertical"></nz-divider>
+      <button nz-button nzType="primary"
+        nz-popconfirm nzPopconfirmTitle="저장하시겠습니까?"
+        (nzOnConfirm)="saveCommonCode()" (nzOnCancel)="false">
+        <span nz-icon nzType="save" nzTheme="outline"></span>저장
+      </button>
+      <nz-divider nzType="vertical"></nz-divider>
+      <button nz-button nzDanger="true"
+        nz-popconfirm nzPopconfirmTitle="삭제하시겠습니까?"
+        (nzOnConfirm)="deleteCommonCode()" (nzOnCancel)="false">
+        <span nz-icon nzType="delete" nzTheme="outline"></span>삭제
+      </button>
+      -->
+    </div>
   </div>
 </app-nz-search-area>
 
@@ -95,6 +97,14 @@ import { CommonCodeGridComponent } from './common-code-grid.component';
 </div>
   `,
   styles: `
+:host {
+  --page-header-height: 98px;
+  --page-search-height: 46px;
+  --page-content-title-height: 26px;
+  --page-content-title-margin-height: 6px;
+  --page-content-margin-height: 6px;
+}
+
 .pgm-title {
   padding-left: 5px;
   border-left: 5px solid green;

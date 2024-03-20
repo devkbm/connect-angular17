@@ -1,5 +1,5 @@
 import { FormGroup } from '@angular/forms';
-import { Output, EventEmitter, Component, Input } from '@angular/core';
+import { Component, Input, output } from '@angular/core';
 
 export enum FormType {
     NEW = 'NEW',
@@ -44,9 +44,10 @@ export abstract class FormBase {
   fg: FormGroup = new FormGroup({});
 
   @Input() initLoadId: any;
-  @Output() formSaved = new EventEmitter();
-  @Output() formDeleted = new EventEmitter();
-  @Output() formClosed = new EventEmitter();
+
+  formSaved = output<any>();
+  formDeleted = output<any>();
+  formClosed = output<any>();
 
   /**
    *

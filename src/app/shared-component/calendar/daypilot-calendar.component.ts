@@ -1,4 +1,4 @@
-import {Component, AfterViewInit, Input, Output, EventEmitter, viewChild} from "@angular/core";
+import {Component, AfterViewInit, Input, viewChild, output} from "@angular/core";
 import {
   DayPilot,
   DayPilotCalendarComponent,
@@ -60,10 +60,10 @@ export class DaypilotCalendarComponent implements AfterViewInit {
   @Input() mode?: "Day" | "Week" | "Month" | "None" = "Month";
   @Input() events: DayPilot.EventData[] = [];
 
-  @Output() datesSelected: EventEmitter<{start: Date, end: Date}> = new EventEmitter<{start: Date, end: Date}>();
-  @Output() rangeChanged: EventEmitter<{start: Date , end: Date, date: Date}> = new EventEmitter<{start: Date , end: Date, date: Date}>();
-  @Output() eventClicked: EventEmitter<any> = new EventEmitter<any>();
-  @Output() modeChanged:  EventEmitter<ModeChangedArgs> = new EventEmitter<ModeChangedArgs>();
+  datesSelected = output<{start: Date, end: Date}>();
+  rangeChanged = output<{start: Date , end: Date, date: Date}>();
+  eventClicked = output<any>();
+  modeChanged = output<ModeChangedArgs>();
 
   selectedDate: DayPilot.Date;
   start: DayPilot.Date;

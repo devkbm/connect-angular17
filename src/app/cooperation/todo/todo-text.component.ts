@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit, output } from '@angular/core';
 import { TodoModel } from './todo.model';
 
 
@@ -71,8 +71,9 @@ import { TodoModel } from './todo.model';
 export class TodoTextComponent implements OnInit {
 
   @Input({required: true}) todo!: TodoModel;
-  @Output() stateChanged = new EventEmitter();
-  @Output() deleteClicked = new EventEmitter<TodoModel>();
+
+  stateChanged = output<any>();
+  deleteClicked = output<TodoModel>();
 
   constructor() {}
 

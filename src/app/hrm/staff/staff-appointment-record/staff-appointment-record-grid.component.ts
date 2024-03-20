@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { AgGridModule } from 'ag-grid-angular';
-import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, inject, output } from '@angular/core';
 import { AggridFunction } from 'src/app/core/grid/aggrid-function';
 
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
@@ -38,9 +38,9 @@ export class StaffAppointmentRecordGridComponent extends AggridFunction implemen
 
   @Input() staffNo?: string;
 
-  @Output() rowSelected = new EventEmitter();
-  @Output() rowDoubleClicked = new EventEmitter();
-  @Output() editButtonClicked = new EventEmitter();
+  rowClicked = output<any>();
+  rowDoubleClicked = output<any>();
+  editButtonClicked = output<any>();
 
   private appAlarmService = inject(AppAlarmService);
   private service = inject(StaffAppointmentRecordService);
@@ -116,7 +116,7 @@ export class StaffAppointmentRecordGridComponent extends AggridFunction implemen
   selectionChanged(event: any) {
     const selectedRows = this.gridApi.getSelectedRows();
 
-    this.rowSelected.emit(selectedRows[0]);
+    this.rowClicked.emit(selectedRows[0]);
   }
 
   rowDbClicked(event: any) {

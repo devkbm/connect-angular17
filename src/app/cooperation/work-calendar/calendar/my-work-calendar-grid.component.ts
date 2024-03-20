@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { AgGridModule } from 'ag-grid-angular';
 
-import { Component, OnInit, Output, EventEmitter, inject } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, inject, output } from '@angular/core';
 import { AggridFunction } from '../../../core/grid/aggrid-function';
 import { ResponseList } from '../../../core/model/response-list';
 import { AppAlarmService } from '../../../core/service/app-alarm.service';
@@ -35,9 +35,9 @@ export class MyWorkCalendarGridComponent extends AggridFunction implements OnIni
 
   workGroupList: WorkCalendar[] = [];
 
-  @Output() rowSelected = new EventEmitter();
-  @Output() rowDoubleClicked = new EventEmitter();
-  @Output() editButtonClicked = new EventEmitter();
+  rowClicked = output<any>();
+  rowDoubleClicked = output<any>();
+  editButtonClicked = output<any>();
 
   private appAlarmService = inject(AppAlarmService);
   private workGroupService = inject(WorkCalendarService);
@@ -107,7 +107,7 @@ export class MyWorkCalendarGridComponent extends AggridFunction implements OnIni
     const selectedRows = this.gridApi.getSelectedRows();
     let ids = selectedRows.map((v: { id: any; }) => v.id)   // id 추출
                           .join(',');       // 콤마 구분자로 분리함
-    this.rowSelected.emit(ids);
+    this.rowClicked.emit(ids);
     // console.log('ids ' + ids);
   }
 

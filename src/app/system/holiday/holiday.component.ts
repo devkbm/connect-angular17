@@ -43,8 +43,8 @@ import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/n
   <app-nz-page-header-custom title="공휴일 등록" subtitle="This is a subtitle"></app-nz-page-header-custom>
 </div>
 
-<div class="page-search">
-  <app-nz-search-area>
+<app-nz-search-area [height]="'var(--page-search-height)'">
+  <div nz-row>
     <div nz-col [nzSpan]="1" style="text-align: left;">
       <nz-date-picker nzMode="year" [(ngModel)]="query.holiday.year" nzAllowClear="false" style="width: 80px;"></nz-date-picker>
     </div>
@@ -64,8 +64,8 @@ import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/n
         <span nz-icon nzType="delete" nzTheme="outline"></span>삭제
       </button>
     </div>
-  </app-nz-search-area>
-</div>
+  </div>
+</app-nz-search-area>
 
 <div class="page-content-title">
   <h3 class="grid-title">공휴일 목록</h3>
@@ -74,7 +74,7 @@ import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/n
 <div class="page-content">
   <app-holiday-grid
       #holidayGrid
-      (rowSelected)="holidayGridRowClicked($event)"
+      (rowClicked)="holidayGridRowClicked($event)"
       (editButtonClicked)="edit($event)"
       (rowDoubleClicked)="edit($event)">
   </app-holiday-grid>

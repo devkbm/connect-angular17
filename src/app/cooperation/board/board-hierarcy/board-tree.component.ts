@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
+import { Component, OnInit, Input, inject, viewChild, output } from '@angular/core';
+
 import { NzFormatEmitEvent, NzTreeComponent, NzTreeModule } from 'ng-zorro-antd/tree';
 
-import { Component, OnInit, Output, EventEmitter, Input, inject, viewChild } from '@angular/core';
 import { ResponseList } from '../../../core/model/response-list';
 import { BoardHierarchy } from './board-hierarchy.model';
 import { BoardHierarcyService } from './board-hierarcy.service';
@@ -33,8 +34,9 @@ export class BoardTreeComponent implements OnInit {
   selectedKeys: string[] = [];
 
   @Input() searchValue = '';
-  @Output() itemSelected = new EventEmitter();
-  @Output() itemDbClicked = new EventEmitter();
+
+  itemSelected = output<any>();
+  itemDbClicked = output<any>();
 
   private boardService = inject(BoardHierarcyService);
 

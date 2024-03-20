@@ -1,7 +1,7 @@
 import { CommonModule, formatDate } from '@angular/common';
 import { CalendarModule } from 'src/app/shared-component/calendar/calendar.module';
 
-import { Component, Output, EventEmitter, Input, AfterViewInit, inject, viewChild } from '@angular/core';
+import { Component, Output, EventEmitter, Input, AfterViewInit, inject, viewChild, output } from '@angular/core';
 
 import { ResponseList } from 'src/app/core/model/response-list';
 
@@ -54,11 +54,12 @@ export class WorkCalendarViewComponent implements AfterViewInit {
   calendar = viewChild.required(DaypilotCalendarComponent);
 
   @Input() fkWorkCalendar: number = 0;
-  @Output() itemSelected = new EventEmitter();
-  @Output() newDateSelected: EventEmitter<NewDateSelectedArgs> = new EventEmitter<NewDateSelectedArgs>();
-  @Output() eventDataChanged = new EventEmitter();
-  @Output() visibleRangeChanged: EventEmitter<{start: Date, end: Date, date: Date}> = new EventEmitter<{start: Date, end: Date, date: Date}>();
-  @Output() modeChanged: EventEmitter<ModeChangedArgs> = new EventEmitter<ModeChangedArgs>();
+
+  itemSelected = output<any>();
+  newDateSelected = output<NewDateSelectedArgs>();
+  eventDataChanged = output<any>();
+  visibleRangeChanged = output<{start: Date, end: Date, date: Date}>();
+  modeChanged = output<ModeChangedArgs>();
 
   from!: string;
   to!: string;

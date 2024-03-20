@@ -55,13 +55,13 @@ import { MyWorkCalendarListComponent } from './calendar/my-work-calendar-list.co
 
   <app-my-work-calendar-grid class="title"
       #myWorkGroupGrid
-      (rowSelected)="workGroupSelect($event)"
+      (rowClicked)="workGroupSelect($event)"
       (rowDoubleClicked)="modifyWorkGroup($event)">
   </app-my-work-calendar-grid>
 
   <!--
   <app-my-work-calendar-list class="title"
-    (rowSelected)="workGroupSelect($event)"
+    (rowClicked)="workGroupSelect($event)"
     (rowDoubleClicked)="modifyWorkGroup($event)">
   </app-my-work-calendar-list>
   -->

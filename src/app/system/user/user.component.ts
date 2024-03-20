@@ -52,8 +52,8 @@ import { UserProfileComponent } from './user-profile.component';
   <app-nz-page-header-custom title="사용자 등록" subtitle="This is a subtitle"></app-nz-page-header-custom>
 </div>
 
-<div class="page-search">
-  <app-nz-search-area>
+<app-nz-search-area [height]="'var(--page-search-height)'">
+  <div nz-row>
     <div nz-col [nzSpan]="12">
       <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate" [nzSuffix]="suffixIconSearch">
         <ng-template #addOnBeforeTemplate>
@@ -90,8 +90,9 @@ import { UserProfileComponent } from './user-profile.component';
           <span nz-icon nzType="delete" nzTheme="outline"></span>삭제
       </button>
     </div>
-  </app-nz-search-area>
-</div>
+  </div>
+</app-nz-search-area>
+
 
 <div class="page-content-title">
   <h3 class="grid-title">사용자 목록</h3>

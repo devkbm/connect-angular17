@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { ContextMenuComponent, ContextMenuModule, ContextMenuService } from '@perfectmemory/ngx-contextmenu';
 
-import { Component, EventEmitter, OnInit, Output, viewChild } from '@angular/core';
+import { Component, OnInit, output, viewChild } from '@angular/core';
 
 import { ResponseList } from 'src/app/core/model/response-list';
 import { ResponseObject } from 'src/app/core/model/response-object';
@@ -92,8 +92,8 @@ import { TodoService } from './todo.service';
 })
 export class TodoGroupListComponent implements OnInit {
 
-  @Output() onSelectedTodoGroup = new EventEmitter<string>();
-  @Output() onDeletedTodoGroup = new EventEmitter<string>();
+  onSelectedTodoGroup = output<any>();
+  onDeletedTodoGroup = output<any>();
 
   todoGroupList: TodoGroupModel[] = [];
 

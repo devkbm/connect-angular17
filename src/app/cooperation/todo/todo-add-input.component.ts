@@ -5,7 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, output } from '@angular/core';
 import { TodoModel } from './todo.model';
 
 @Component({
@@ -33,7 +33,9 @@ import { TodoModel } from './todo.model';
 export class TodoAddInputComponent implements OnInit {
 
   @Input() pkTodoGroup: string = '';
-  @Output() onTodoAdded = new EventEmitter<TodoModel>();
+
+  onTodoAdded = output<TodoModel>();
+
   newText: string;
 
   constructor() {

@@ -47,54 +47,56 @@ import { MenuRoleTreeComponent } from '../menu-role/menu-role-tree.component';
   template: `
 <app-nz-page-header-custom title="메뉴 등록" subtitle="This is a subtitle"></app-nz-page-header-custom>
 
-<app-nz-search-area>
-  <div nz-col [nzSpan]="8">
-    <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate" [nzSuffix]="suffixIconSearch">
-      <ng-template #addOnBeforeTemplate>
-        <nz-select [(ngModel)]="query.menuGroup.key">
-          @for (option of query.menuGroup.list; track option.value) {
-          <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
-          }
-        </nz-select>
-      </ng-template>
-      <input type="text" [(ngModel)]="query.menuGroup.value" nz-input placeholder="input search text" (keyup.enter)="getMenuGroupList()">
-      <ng-template #suffixIconSearch>
-        <span nz-icon nzType="search"></span>
-      </ng-template>
-    </nz-input-group>
-  </div>
+<app-nz-search-area [height]="'var(--page-search-height)'">
+  <div nz-row>
+    <div nz-col [nzSpan]="8">
+      <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate" [nzSuffix]="suffixIconSearch">
+        <ng-template #addOnBeforeTemplate>
+          <nz-select [(ngModel)]="query.menuGroup.key">
+            @for (option of query.menuGroup.list; track option.value) {
+            <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+            }
+          </nz-select>
+        </ng-template>
+        <input type="text" [(ngModel)]="query.menuGroup.value" nz-input placeholder="input search text" (keyup.enter)="getMenuGroupList()">
+        <ng-template #suffixIconSearch>
+          <span nz-icon nzType="search"></span>
+        </ng-template>
+      </nz-input-group>
+    </div>
 
-  <div nz-col [nzSpan]="8">
-    <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate2" [nzSuffix]="suffixIconSearch2">
-      <ng-template #addOnBeforeTemplate2>
-        <nz-select [(ngModel)]="query.menu.key">
-          @for (option of query.menu.list; track option.value) {
-          <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
-          }
-        </nz-select>
-      </ng-template>
-      <input type="text" [(ngModel)]="query.menu.value" nz-input placeholder="input search text" (keyup.enter)="getMenuList()">
-      <ng-template #suffixIconSearch2>
-        <span nz-icon nzType="search"></span>
-      </ng-template>
-    </nz-input-group>
-  </div>
+    <div nz-col [nzSpan]="8">
+      <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate2" [nzSuffix]="suffixIconSearch2">
+        <ng-template #addOnBeforeTemplate2>
+          <nz-select [(ngModel)]="query.menu.key">
+            @for (option of query.menu.list; track option.value) {
+            <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+            }
+          </nz-select>
+        </ng-template>
+        <input type="text" [(ngModel)]="query.menu.value" nz-input placeholder="input search text" (keyup.enter)="getMenuList()">
+        <ng-template #suffixIconSearch2>
+          <span nz-icon nzType="search"></span>
+        </ng-template>
+      </nz-input-group>
+    </div>
 
-  <div nz-col [nzSpan]="8" style="text-align: right;">
-    <button nz-button (click)="newMenuGroup()">
-      <span nz-icon nzType="search"></span>메뉴그룹등록
-    </button>
-    <nz-divider nzType="vertical"></nz-divider>
+    <div nz-col [nzSpan]="8" style="text-align: right;">
+      <button nz-button (click)="newMenuGroup()">
+        <span nz-icon nzType="search"></span>메뉴그룹등록
+      </button>
+      <nz-divider nzType="vertical"></nz-divider>
 
-    <button nz-button (click)="newMenu()">
-      <span nz-icon nzType="form"></span>메뉴등록
-    </button>
-    <nz-divider nzType="vertical"></nz-divider>
+      <button nz-button (click)="newMenu()">
+        <span nz-icon nzType="form"></span>메뉴등록
+      </button>
+      <nz-divider nzType="vertical"></nz-divider>
 
-    <button nz-button (click)="getMenuGroupList()">
-      <span nz-icon nzType="form"></span>조회
-    </button>
+      <button nz-button (click)="getMenuGroupList()">
+        <span nz-icon nzType="form"></span>조회
+      </button>
 
+    </div>
   </div>
 </app-nz-search-area>
 
@@ -154,6 +156,14 @@ import { MenuRoleTreeComponent } from '../menu-role/menu-role-tree.component';
 </nz-drawer>
   `,
   styles: `
+:host {
+  --page-header-height: 98px;
+  --page-search-height: 46px;
+  --page-content-title-height: 26px;
+  --page-content-title-margin-height: 6px;
+  --page-content-margin-height: 6px;
+}
+
 .pgm-title {
   padding-left: 5px;
   border-left: 5px solid green;

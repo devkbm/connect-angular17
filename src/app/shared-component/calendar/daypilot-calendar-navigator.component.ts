@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, Output, viewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, output, viewChild } from '@angular/core';
 import {
   DayPilot,
   DayPilotNavigatorComponent
@@ -38,8 +38,8 @@ export class DaypilotCalendarNavigatorComponent implements AfterViewInit {
   @Input() events: DayPilot.EventDataShort[] = [];
   @Input() date: DayPilot.Date = DayPilot.Date.today();
 
-  @Output() selectChanged:EventEmitter<NavigatorTimeRangeSelectedArgs> = new EventEmitter<NavigatorTimeRangeSelectedArgs>();
-  @Output() rangeChanged:EventEmitter<NavigatorRangeChangedArgs> = new EventEmitter<NavigatorRangeChangedArgs>();
+  selectChanged = output<NavigatorTimeRangeSelectedArgs>();
+  rangeChanged = output<NavigatorRangeChangedArgs>();
 
   configNavigator: DayPilot.NavigatorConfig = {
     orientation: 'Vertical',

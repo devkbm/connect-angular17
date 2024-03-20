@@ -53,8 +53,8 @@ import { WordFormComponent } from './word-form.component';
   <app-nz-page-header-custom title="용어사전 등록" subtitle="This is a subtitle"></app-nz-page-header-custom>
 </div>
 
-<div class="page-search">
-  <app-nz-search-area>
+<app-nz-search-area [height]="'var(--page-search-height)'">
+  <div nz-row>
     <div nz-col [nzSpan]="12">
       <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate" [nzSuffix]="suffixIconSearch">
         <input type="text" [(ngModel)]="query.term.value" nz-input placeholder="input search text" (keyup.enter)="getTermList()">
@@ -87,8 +87,9 @@ import { WordFormComponent } from './word-form.component';
         <span nz-icon nzType="form" nzTheme="outline"></span>신규 도메인
       </button>
     </div>
-  </app-nz-search-area>
-</div>
+  </div>
+</app-nz-search-area>
+
 
 <div class="page-content">
   <nz-tabset [nzSelectedIndex]="tabIndex">

@@ -71,7 +71,7 @@ import { HrmCodeTypeFormComponent } from './hrm-code-type-form.component';
     <h3 class="header1">코드 분류 목록 {{drawer.codeType | json}}</h3>
     <app-hrm-code-type-grid #gridHrmType
       [list]="gridHrmCodeTypeList"
-      (rowSelected)="rowClickHrmCodeType($event)"
+      (rowClicked)="rowClickHrmCodeType($event)"
       (rowDoubleClicked)="editHrmCodeType($event)"
       (editButtonClicked)="editHrmCodeType($event)">
     </app-hrm-code-type-grid>
@@ -79,7 +79,7 @@ import { HrmCodeTypeFormComponent } from './hrm-code-type-form.component';
     <h3 class="header2">코드 목록 {{drawer.code | json}}</h3>
     <app-hrm-code-grid #gridHrmTypeCode
       [list]="gridHrmCodeList"
-      (rowSelected)="rowClickHrmCode($event)"
+      (rowClicked)="rowClickHrmCode($event)"
       (rowDoubleClicked)="editHrmCode($event)"
       (editButtonClicked)="editHrmCode($event)">
     </app-hrm-code-grid>
