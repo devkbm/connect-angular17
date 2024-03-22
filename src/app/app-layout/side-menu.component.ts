@@ -1,10 +1,11 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, TemplateRef, inject } from '@angular/core';
+import { Component, inject, input, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NzLayoutModule } from 'ng-zorro-antd/layout';
-import { NzMenuModeType, NzMenuModule, NzMenuThemeType } from 'ng-zorro-antd/menu';
 import { Router } from '@angular/router';
+
+import { NzMenuModeType, NzMenuModule, NzMenuThemeType } from 'ng-zorro-antd/menu';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { MenuHierarchy } from './app-layout.model';
+
 import { AppLayoutService } from './app-layout.service';
 import { SessionManager } from '../core/session-manager';
 import { ResponseList } from '../core/model/response-list';
@@ -76,7 +77,7 @@ import { ResponseList } from '../core/model/response-list';
     }
   `]
 })
-export class SideMenuComponent implements OnInit, OnChanges {
+export class SideMenuComponent {
 
   private router = inject(Router);
   private service = inject(AppLayoutService);
@@ -89,20 +90,19 @@ export class SideMenuComponent implements OnInit, OnChanges {
     menuItems: []
   }
 
-  @Input() menuGroupCode = '';
-  @Input() menuUrl = '';
+  menuGroupCode = input<string>('');
+  menuUrl = input<string>('');
 
-  ngOnInit() {
-  }
+  constructor() {
+    effect(() => {
+      if (this.menuGroupCode() !== '') {
+        this.getMenuList(this.menuGroupCode());
+      }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['menuGroupCode'].currentValue) {
-      this.getMenuList(changes['menuGroupCode'].currentValue);
-    }
-
-    if (changes['menuUrl']?.currentValue) {
-      this.moveToUrl(changes['menuUrl'].currentValue);
-    }
+      if (this.menuUrl() !== '') {
+        this.moveToUrl(this.menuUrl());
+      }
+    })
   }
 
   moveToUrl(url: string) {

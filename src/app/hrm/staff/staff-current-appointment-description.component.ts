@@ -1,7 +1,10 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
-import { ResponseObject } from 'src/app/core/model/response-object';
-import { StaffService } from './staff.service';
+import { Component, effect, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
+import { ResponseObject } from 'src/app/core/model/response-object';
+
+import { StaffService } from './staff.service';
+
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 
 export interface StaffCurrentAppointment {
@@ -44,21 +47,20 @@ export interface StaffCurrentAppointment {
   `,
   styles: []
 })
-export class StaffCurrentAppointmentDescriptionComponent implements OnInit, OnChanges {
+export class StaffCurrentAppointmentDescriptionComponent {
 
-  @Input() staffNo?: string;
+  staffNo = input<string | undefined>('');
 
   info?: StaffCurrentAppointment;
 
   private service = inject(StaffService);
 
-  ngOnInit() {
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['staffNo']) {
-      this.get(changes['staffNo'].currentValue);
-    }
+  constructor() {
+    effect(() => {
+      if (this.staffNo() !== '') {
+        this.get(this.staffNo()!);
+      }
+    })
   }
 
   get(staffNo: string): void {
