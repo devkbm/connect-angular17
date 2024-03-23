@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, inject, input } from '@angular/core';
+import { Component, TemplateRef, inject, input } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { MenuBreadCrumb, SessionManager } from 'src/app/core/session-manager';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
@@ -7,8 +7,8 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 
 // NzBreadCrumbModule
 @Component({
-  standalone: true,
   selector: 'app-nz-page-header-custom',
+  standalone: true,
   imports: [CommonModule, NzPageHeaderModule, NzBreadCrumbModule, NzIconModule],
   template: `
    <nz-page-header (nzBack)="goBack()" nzBackIcon [nzTitle]="title()" [nzSubtitle]="subtitle()">
@@ -22,7 +22,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   `,
   styles: []
 })
-export class NzPageHeaderCustomComponent implements OnInit {
+export class NzPageHeaderCustomComponent {
 
   menuBreadCrumb: MenuBreadCrumb[] = SessionManager.createBreadCrumb();
 
@@ -30,9 +30,6 @@ export class NzPageHeaderCustomComponent implements OnInit {
   subtitle = input<string | TemplateRef<void>>('');
 
   protected _location = inject(Location);
-
-  ngOnInit() {
-  }
 
   goBack() {
     this._location.back();

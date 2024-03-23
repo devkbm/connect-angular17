@@ -11,7 +11,7 @@ import { Component, OnInit, input } from '@angular/core';
   styles: [`
     .search-area {
       overflow: visible;
-      background-color: brown;
+      background-color: green;
 
       padding: 6px;
       border: 1px solid #d9d9d9;
@@ -21,11 +21,7 @@ import { Component, OnInit, input } from '@angular/core';
     }
   `]
 })
-export class NzSearchAreaComponent implements OnInit {
-
+export class NzSearchAreaComponent {
   height = input<any>();
-
-  ngOnInit() {
-  }
 
 }

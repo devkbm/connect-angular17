@@ -1,4 +1,4 @@
-import { Component, effect, inject, input } from '@angular/core';
+import { Component, effect, inject, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { Article } from './article.model';
@@ -21,7 +21,8 @@ import { NzListModule } from 'ng-zorro-antd/list';
             nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
             [nzDescription]="article.title">
             <nz-list-item-meta-title>
-              <a href="https://ng.ant.design">{{ article.contents }}</a>
+              <a>{{ article.contents }}</a>
+              <button (click)="onClick(article)">edit </button>
             </nz-list-item-meta-title>
           </nz-list-item-meta>
         </nz-list-item>
@@ -33,11 +34,12 @@ import { NzListModule } from 'ng-zorro-antd/list';
 })
 export class ArticleListComponent {
 
-  boardId = input<string>();
-
+  private service = inject(ArticleService);
   articles: Article[] = [];
 
-  private service = inject(ArticleService);
+  boardId = input<string>();
+
+  articleEditClicked = output<Article>();
 
   constructor() {
     effect(() => {
@@ -60,5 +62,10 @@ export class ArticleListComponent {
             //this.appAlarmService.changeMessage(model.message);
           }
         );
+  }
+
+  onClick(article: any) {
+    console.log(article);
+    this.articleEditClicked.emit(article);
   }
 }

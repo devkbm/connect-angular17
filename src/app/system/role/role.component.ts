@@ -51,7 +51,7 @@ import { RoleFormComponent } from './role-form.component';
 </div>
 
 <app-nz-search-area [height]="'var(--page-search-height)'">
-  <div row>
+  <div nz-row>
     <div nz-col [nzSpan]="12">
       <nz-input-group nzSearch [nzAddOnBefore]="addOnBeforeTemplate" [nzSuffix]="suffixIconSearch">
         <ng-template #addOnBeforeTemplate>
@@ -73,7 +73,6 @@ import { RoleFormComponent } from './role-form.component';
     </div>
   </div>
 </app-nz-search-area>
-
 
 <div class="page-content-title">
   <h3 class="grid-title">롤 목록</h3>

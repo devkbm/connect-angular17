@@ -93,7 +93,6 @@ export interface TabArticle {
       </app-article-grid>
 -->
       <app-article-list [boardId]="drawer.board.initLoadId">
-
       </app-article-list>
     </div>
   </nz-tab>
@@ -256,8 +255,8 @@ export class BoardComponent implements AfterViewInit {
 
   }
 
+  // 게시글 등록 폼 팝업으로 오픈
   popupNewArticle() {
-    // 게시글 등록 폼 팝업으로 오픈
     const url = this.router.serializeUrl(
       this.router.createUrlTree([`/boarda`, this.drawer.board.initLoadId])  // /grw/boarda
     );
