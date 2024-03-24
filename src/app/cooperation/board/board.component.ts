@@ -92,8 +92,11 @@ export interface TabArticle {
         (editButtonClicked)="editArticleByButton($event)">
       </app-article-grid>
 -->
-      <app-article-list [boardId]="drawer.board.initLoadId">
-      </app-article-list>
+      <app-article-list
+        [boardId]="drawer.board.initLoadId"
+        (articleEditClicked)="popupEditArticle($event)"
+        (articleViewClicked)="popupArticleView($event)"
+      />
     </div>
   </nz-tab>
   @for (tab of tabs; track tab.articleId) {
@@ -258,7 +261,16 @@ export class BoardComponent implements AfterViewInit {
   // 게시글 등록 폼 팝업으로 오픈
   popupNewArticle() {
     const url = this.router.serializeUrl(
-      this.router.createUrlTree([`/boarda`, this.drawer.board.initLoadId])  // /grw/boarda
+      this.router.createUrlTree([`/article-write`, this.drawer.board.initLoadId])  // /grw/boarda
+    );
+    const popOption = 'scrollbars=yes, menubar=no, resizable=no, top=0, left=0, width=800, height=800';
+    var windowObjectReference = this.winRef.nativeWindow.open(url, '_blank', popOption);
+    windowObjectReference.focus();
+  }
+
+  popupEditArticle(article: Article) {
+    const url = this.router.serializeUrl(
+      this.router.createUrlTree([`/article-edit`, this.drawer.board.initLoadId, article.articleId])  // /grw/boarda
     );
     const popOption = 'scrollbars=yes, menubar=no, resizable=no, top=0, left=0, width=800, height=800';
     var windowObjectReference = this.winRef.nativeWindow.open(url, '_blank', popOption);
@@ -284,13 +296,13 @@ export class BoardComponent implements AfterViewInit {
     if (this.drawer.articleView.use) {
       this.addTabArticleView();
     } else {
-      this.popupArticleView();
+      this.popupArticleView(this.drawer.articleView.article);
     }
   }
 
-  popupArticleView() {
+  popupArticleView(article: Article) {
     const url = this.router.serializeUrl(
-      this.router.createUrlTree([`/boardv`, {article: JSON.stringify(this.drawer.articleView.article)}])  // /grw/boarda
+      this.router.createUrlTree([`/article-view`, {article: JSON.stringify(article)}])  // /grw/boarda
     );
     const popOption = 'scrollbars=yes, menubar=no, resizable=no, top=0, left=0, width=800, height=800';
     var windowObjectReference = this.winRef.nativeWindow.open(url, '_blank', popOption);

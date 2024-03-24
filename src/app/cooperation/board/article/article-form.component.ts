@@ -148,7 +148,7 @@ export class ArticleFormComponent extends FormBase implements OnInit, AfterViewI
     }*/
   ];
 
-  imageUploadParam = { pgmId: 'board' ,appUrl:'asd' };
+  imageUploadParam = { pgmId: 'board', appUrl:'asd' };
   fileUploadHeader: any;
   fileUploadUrl: any;
 
@@ -191,6 +191,10 @@ export class ArticleFormComponent extends FormBase implements OnInit, AfterViewI
 
     if (this.activatedRoute.snapshot.params['boardId']) {
       this.boardId = this.activatedRoute.snapshot.params['boardId'];
+    }
+
+    if (this.activatedRoute.snapshot.params['initLoadId']) {
+      this.initLoadId = this.activatedRoute.snapshot.params['initLoadId'];
     }
 
     if (this.initLoadId) {

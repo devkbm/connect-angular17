@@ -22,7 +22,8 @@ import { NzListModule } from 'ng-zorro-antd/list';
             [nzDescription]="article.title">
             <nz-list-item-meta-title>
               <a>{{ article.contents }}</a>
-              <button (click)="onClick(article)">edit </button>
+              <button (click)="onViewClicked(article)">view</button>
+              <button (click)="onEditClicked(article)">edit</button>
             </nz-list-item-meta-title>
           </nz-list-item-meta>
         </nz-list-item>
@@ -40,6 +41,7 @@ export class ArticleListComponent {
   boardId = input<string>();
 
   articleEditClicked = output<Article>();
+  articleViewClicked = output<Article>();
 
   constructor() {
     effect(() => {
@@ -64,8 +66,11 @@ export class ArticleListComponent {
         );
   }
 
-  onClick(article: any) {
-    console.log(article);
+  onEditClicked(article: any) {
     this.articleEditClicked.emit(article);
+  }
+
+  onViewClicked(article: any) {
+    this.articleViewClicked.emit(article);
   }
 }

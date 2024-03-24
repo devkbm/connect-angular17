@@ -1,9 +1,8 @@
-import { Self, Optional, Component, Input, TemplateRef, ViewChild, OnInit, HostBinding, AfterViewInit, viewChild, effect, input, model } from '@angular/core';
+import { Self, Optional, Component, Input, TemplateRef, HostBinding, viewChild, effect, input, model } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NgModel, NgControl, FormsModule } from '@angular/forms';
 import { NzFormControlComponent, NzFormModule } from 'ng-zorro-antd/form';
 
 import { CKEditorComponent, CKEditorModule } from '@ckeditor/ckeditor5-angular';
-import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
 
 //import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
@@ -31,7 +30,7 @@ import { MyUploadAdapter } from './my-upload-adapter';
           [editor]="Editor"
           [config]="editorConfig"
           [disabled]="_disabled"
-          [ngModel]="_value"
+          [ngModel]="_value()"
           (change)="textChange($event)"
           (blur)="onTouched()"
           (ready)="onReady($event)">
@@ -75,6 +74,12 @@ export class NzInputCkeditorComponent implements ControlValueAccessor {
       this.ngControl.valueAccessor = this;
     }
 
+    effect(() => {
+      if (this.control()) {
+        this.control().nzValidateStatus = this.ngControl.control as AbstractControl;
+      }
+    });
+
     this.editorConfig = {
       language: 'ko',
       toolbar: [
@@ -109,11 +114,6 @@ export class NzInputCkeditorComponent implements ControlValueAccessor {
       ]
     };
 
-    effect(() => {
-      if (this.control()) {
-        this.control().nzValidateStatus = this.ngControl.control as AbstractControl;
-      }
-    });
   }
 
   onReady(editor: any): void {
@@ -149,7 +149,8 @@ export class NzInputCkeditorComponent implements ControlValueAccessor {
 
   //textChange( {editor}: ChangeEvent): void {
   textChange( {editor}: any): void {
-    this._value = editor.getData();
+
+    this._value.set(editor.getData());
     this.onChange(this._value());
   }
 

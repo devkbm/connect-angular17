@@ -19,7 +19,8 @@ export const routes: Routes = [
   {path: 'system', loadChildren: () => import('src/app/system/system-management.module').then(m => m.SystemManagementModule)},
   {path: 'hrm', loadChildren: () => import('src/app/hrm/hrm.module').then(m => m.HrmModule)},
   {path: 'grw', loadChildren: () => import('src/app/cooperation/cooperation.module').then(m => m.CooperationModule)},
-  {path: 'boarda/:boardId', component: ArticleFormComponent},
-  {path: 'boardv', component: ArticleViewComponent}
+  {path: 'article-write/:boardId', component: ArticleFormComponent},
+  {path: 'article-edit/:boardId/:initLoadId', component: ArticleFormComponent},
+  {path: 'article-view', component: ArticleViewComponent}
 
 ];
