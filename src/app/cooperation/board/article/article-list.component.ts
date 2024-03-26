@@ -5,23 +5,36 @@ import { Article } from './article.model';
 import { ArticleService } from './article.service';
 import { ResponseList } from 'src/app/core/model/response-list';
 import { NzListModule } from 'ng-zorro-antd/list';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
+// 무한 스크롤 적용 필요
+// https://www.npmjs.com/package/ngx-infinite-scroll
 
 @Component({
   selector: 'app-article-list',
   standalone: true,
   imports: [
-    CommonModule, NzListModule
+    CommonModule, NzListModule, InfiniteScrollModule
   ],
   template: `
+    <div
+      class="search-results"
+      infiniteScroll
+      [infiniteScrollDistance]="1"
+      [infiniteScrollUpDistance]="1"
+      [infiniteScrollThrottle]="350"
+      [alwaysCallback]="true"
+      [scrollWindow]="false"
+      (scrolled)="onScroll($event)"
+      (scrolledUp)="onScrollUp()">
     <nz-list>
-      @for (article of articles; track article.articleId) {
+      @for (article of articles; track article.articleId; let idx = $index) {
         <nz-list-item>
           <nz-list-item-meta
             nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
             [nzDescription]="article.title">
             <nz-list-item-meta-title>
-              <a>{{ article.contents }}</a>
+              {{idx+1}} <a>{{ article.contents }}</a>
               <button (click)="onViewClicked(article)">view</button>
               <button (click)="onEditClicked(article)">edit</button>
             </nz-list-item-meta-title>
@@ -29,8 +42,13 @@ import { NzListModule } from 'ng-zorro-antd/list';
         </nz-list-item>
       }
     </nz-list>
+    </div>
   `,
   styles: `
+    .search-results {
+      height: 500px;
+      overflow: scroll;
+    }
   `
 })
 export class ArticleListComponent {
@@ -72,5 +90,14 @@ export class ArticleListComponent {
 
   onViewClicked(article: any) {
     this.articleViewClicked.emit(article);
+  }
+
+  onScroll(ev: any) {
+    //console.log("scrolled!" + ev);
+    console.log(ev);
+  }
+
+  onScrollUp() {
+    console.log("scrolled Up!");
   }
 }
