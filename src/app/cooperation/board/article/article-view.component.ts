@@ -1,5 +1,6 @@
+import { ArticleShareService } from './article-share.service';
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, Input, inject } from '@angular/core';
+import { Component, OnInit, Input, inject, effect } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
@@ -8,8 +9,8 @@ import { NzFileUploadComponent } from 'src/app/shared-component/nz-file-upload/n
 import { Article } from './article.model';
 
 @Component({
-  standalone: true,
   selector: 'app-article-view',
+  standalone: true,
   imports: [
     CommonModule, NzPageHeaderModule, NzFileUploadComponent
   ],
@@ -26,6 +27,8 @@ import { Article } from './article.model';
     <app-nz-file-upload
       [fileList]="fileList">
     </app-nz-file-upload>
+
+    {{articleShareService.getData()}}
   `,
   styles: [`
     nz-page-header {
@@ -39,6 +42,7 @@ export class ArticleViewComponent implements OnInit {
   fileList: any = [];
 
   private activatedRoute = inject(ActivatedRoute);
+  articleShareService = inject(ArticleShareService);
 
   ngOnInit() {
 

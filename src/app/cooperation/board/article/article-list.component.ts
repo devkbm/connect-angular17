@@ -6,6 +6,7 @@ import { ArticleService } from './article.service';
 import { ResponseList } from 'src/app/core/model/response-list';
 import { NzListModule } from 'ng-zorro-antd/list';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { ArticleShareService } from './article-share.service';
 
 // 무한 스크롤 적용 필요
 // https://www.npmjs.com/package/ngx-infinite-scroll
@@ -61,6 +62,8 @@ export class ArticleListComponent {
   articleEditClicked = output<Article>();
   articleViewClicked = output<Article>();
 
+  articleShareService = inject(ArticleShareService);
+
   constructor() {
     effect(() => {
       this.getArticleList(this.boardId());
@@ -89,6 +92,8 @@ export class ArticleListComponent {
   }
 
   onViewClicked(article: any) {
+    this.articleShareService.change(article);
+
     this.articleViewClicked.emit(article);
   }
 
