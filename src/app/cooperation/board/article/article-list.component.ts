@@ -7,6 +7,8 @@ import { ResponseList } from 'src/app/core/model/response-list';
 import { NzListModule } from 'ng-zorro-antd/list';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ArticleShareService } from './article-share.service';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { ArticleListRowComponent } from './article-list-row.component';
 
 // 무한 스크롤 적용 필요
 // https://www.npmjs.com/package/ngx-infinite-scroll
@@ -15,7 +17,7 @@ import { ArticleShareService } from './article-share.service';
   selector: 'app-article-list',
   standalone: true,
   imports: [
-    CommonModule, NzListModule, InfiniteScrollModule
+    CommonModule, NzListModule, NzButtonModule, InfiniteScrollModule, ArticleListRowComponent
   ],
   template: `
     <div
@@ -28,26 +30,30 @@ import { ArticleShareService } from './article-share.service';
       [scrollWindow]="false"
       (scrolled)="onScroll($event)"
       (scrolledUp)="onScrollUp()">
-    <nz-list>
-      @for (article of articles; track article.articleId; let idx = $index) {
-        <nz-list-item>
-          <nz-list-item-meta
-            nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-            [nzDescription]="article.title">
-            <nz-list-item-meta-title>
-              {{idx+1}} <a>{{ article.contents }}</a>
-              <button (click)="onViewClicked(article)">view</button>
-              <button (click)="onEditClicked(article)">edit</button>
-            </nz-list-item-meta-title>
-          </nz-list-item-meta>
-        </nz-list-item>
-      }
-    </nz-list>
+      <nz-list>
+        @for (article of articles; track article.articleId; let idx = $index) {
+          <nz-list-item>
+            <nz-list-item-meta
+              nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+              [nzDescription]="article.title">
+              <nz-list-item-meta-title>
+                <!--{{idx+1}} -->
+                <a (click)="onViewClicked(article)"><div [innerHTML]="article.contents"></div></a>
+                <button nz-button (click)="onEditClicked(article)"><span nz-icon nzType="search" nzTheme="outline"></span>edit</button>
+                <!--<button nz-button (click)="onViewClicked(article)"><span nz-icon nzType="search" nzTheme="outline"></span>view</button>-->
+
+              </nz-list-item-meta-title>
+            </nz-list-item-meta>
+          </nz-list-item>
+
+          <!--<app-article-list-row [article]="article"></app-article-list-row>-->
+        }
+      </nz-list>
     </div>
   `,
   styles: `
     .search-results {
-      height: 500px;
+      height: 600px;
       overflow: scroll;
     }
   `
