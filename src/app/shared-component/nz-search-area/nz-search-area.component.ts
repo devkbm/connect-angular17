@@ -10,8 +10,8 @@ import { Component, OnInit, input } from '@angular/core';
   `,
   styles: [`
     .search-area {
-      overflow: visible;
-      background-color: green;
+      overflow: auto;
+      //background-color: green;
 
       padding: 6px;
       border: 1px solid #d9d9d9;
