@@ -1,56 +1,66 @@
-import { ArticleShareService } from './article-share.service';
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, Input, inject, effect } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, inject, effect, input } from '@angular/core';
 
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzFileUploadComponent } from 'src/app/shared-component/nz-file-upload/nz-file-upload.component';
+import { TrustHtmlPipe } from "src/app/shared-component/trust-html.pipe";
 
+import { ResponseObject } from 'src/app/core/model/response-object';
+import { ArticleService } from './article.service';
 import { Article } from './article.model';
 
 @Component({
   selector: 'app-article-view',
   standalone: true,
-  imports: [
-    CommonModule, NzPageHeaderModule, NzFileUploadComponent
-  ],
   template: `
-    <nz-page-header nzTitle="제목" [nzSubtitle]="article?.title">
-      <nz-page-header-content>
-          {{article?.fromDate}}
-      </nz-page-header-content>
-    </nz-page-header>
+  <nz-page-header nzTitle="제목" [nzSubtitle]="article?.title">
+    <nz-page-header-content>
+        {{article?.fromDate}}
+    </nz-page-header-content>
+  </nz-page-header>
 
-    <div [innerHTML]="article?.contents">
-    </div>
+  <div [innerHTML]="article?.contents | trustHtml">
+  </div>
 
-    <app-nz-file-upload
-      [fileList]="fileList">
-    </app-nz-file-upload>
-
-    {{articleShareService.getData()}}
+  <app-nz-file-upload
+    [fileList]="fileList">
+  </app-nz-file-upload>
   `,
-  styles: [`
-    nz-page-header {
-      border: 1px solid rgb(235, 237, 240);
-    }
-  `]
+  styles: `
+  nz-page-header {
+    border: 1px solid rgb(235, 237, 240);
+  }
+  `,
+  imports: [
+    CommonModule, TrustHtmlPipe, NzPageHeaderModule, NzFileUploadComponent
+  ]
 })
-export class ArticleViewComponent implements OnInit {
+export class ArticleViewComponent {
 
-  @Input() article?: Article;
+  id = input<string>();
+
+  article: Article | null = null;
   fileList: any = [];
 
-  private activatedRoute = inject(ActivatedRoute);
-  articleShareService = inject(ArticleShareService);
+  private service= inject(ArticleService);
 
-  ngOnInit() {
+  constructor() {
+    effect(() => {
+      this.get(this.id());
+    })
+  }
 
-    if (this.activatedRoute.snapshot.params['article']) {
-      this.article = JSON.parse(this.activatedRoute.snapshot.params['article']);
-    }
-
-    this.fileList = this.article?.fileList ?? [];
+  get(id: any): void {
+    this.service
+        .getArticle(id)
+        .subscribe(
+          (model: ResponseObject<Article>) => {
+            if (model.data) {
+              this.article = model.data;
+              this.fileList = model.data.fileList;
+            }
+          }
+        );
   }
 
 }

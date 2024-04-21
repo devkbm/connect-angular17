@@ -168,8 +168,8 @@ export class ArticleFormComponent extends FormBase implements OnInit, AfterViewI
 
   override fg = this.fb.group({
     boardId         : new FormControl<string | null>(null, { validators: [Validators.required] }),
-    articleId       : new FormControl<number | null>(null, { validators: [Validators.required] }),
-    articleParentId : new FormControl<number | null>(null),
+    articleId       : new FormControl<string | null>(null, { validators: [Validators.required] }),
+    articleParentId : new FormControl<string | null>(null),
     title           : new FormControl<string | null>(null, { validators: [Validators.required] }),
     contents        : new FormControl<string | null>(null),
     attachFile      : new FormControl<any>(null)

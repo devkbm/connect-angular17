@@ -1,5 +1,5 @@
 import { Component, OnInit, viewChild } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
+import { CommonModule } from '@angular/common';
 
 import { AppBase } from 'src/app/core/app/app-base';
 
@@ -100,8 +100,8 @@ import { MenuRoleTreeComponent } from '../menu-role/menu-role-tree.component';
   </div>
 </app-nz-search-area>
 
-<div class="content">
-  <h3 class="pgm-title">메뉴 그룹 목록</h3>
+<div class="page-content">
+  <h3 class="header1">메뉴 그룹 목록</h3>
   <app-menu-group-grid
     #menuGroupGrid
     id="menuGroupGrid"
@@ -110,7 +110,7 @@ import { MenuRoleTreeComponent } from '../menu-role/menu-role-tree.component';
     (rowDoubleClicked)="editMenuGroup($event)">
   </app-menu-group-grid>
 
-  <h3 class="pgm-title">메뉴 목록</h3>
+  <h3 class="header2">메뉴 목록</h3>
   <app-menu-grid
     id="menuGrid"
     #menuGrid
@@ -119,10 +119,6 @@ import { MenuRoleTreeComponent } from '../menu-role/menu-role-tree.component';
     (rowDoubleClicked)="editMenu($event)">
   </app-menu-grid>
 </div>
-
-<app-menu-role-tree>
-
-</app-menu-role-tree>
 
 <nz-drawer
   [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
@@ -164,26 +160,75 @@ import { MenuRoleTreeComponent } from '../menu-role/menu-role-tree.component';
   --page-content-margin-height: 6px;
 }
 
-.pgm-title {
-  padding-left: 5px;
-  border-left: 5px solid green;
+.page-header {
+  height: var(--page-header-height);
 }
 
-.btn-group {
-  padding: 6px;
-  /*background: #fbfbfb;*/
-  border: 1px solid #d9d9d9;
-  border-radius: 6px;
-  padding-left: auto;
-  padding-right: 5;
-  margin-bottom: 5PX;
+.page-search {
+  height: var(--page-search-height);
 }
 
-.content {
-  height: calc(100% - 144px);
+.page-content-title {
+  height: var(--page-content-title-height);
+}
+
+.grid-title {
+  margin-top: var(--page-content-title-margin-height);
+  margin-left: 6px;
+  border-left: 6px solid green;
+  padding-left: 6px;
+  vertical-align: text-top;
+}
+
+.page-content {
+  margin-top: var(--page-content-margin-height);
+  height: calc(100vh - (
+                        var(--app-header-height) +
+                        var(--app-footer-height) +
+                        var(--page-header-height) +
+                        var(--page-search-height) +
+                        /*var(--page-content-title-height) +
+                        var(--page-content-title-margin-height) +*/
+                        var(--page-content-margin-height)
+                       )
+              );
   display: grid;
-  grid-template-rows: 34px 1fr 34px 1fr;
-  grid-template-columns: 1fr;
+  grid-template-rows: 34px 1fr;
+  grid-template-columns: 1fr 1.5fr;
+  column-gap: 12px;
+  grid-template-areas:
+    "header1 header2"
+    "grid1   grid2";
+}
+
+.text-align-right {
+  text-align: right;
+}
+
+.header1 {
+  grid-area: header1;
+  margin-top: var(--page-content-title-margin-height);
+  margin-left: 6px;
+  border-left: 6px solid green;
+  padding-left: 6px;
+  vertical-align: text-top;
+}
+
+.header2 {
+  grid-area: header2;
+  margin-top: var(--page-content-title-margin-height);
+  margin-left: 6px;
+  border-left: 6px solid green;
+  padding-left: 6px;
+  vertical-align: text-top;
+}
+
+.grid1 {
+  grid-area: grid1;
+}
+
+.grid2 {
+  grid-area: grid2;
 }
 
 .footer {
@@ -198,7 +243,7 @@ import { MenuRoleTreeComponent } from '../menu-role/menu-role-tree.component';
 }
   `
 })
-export class MenuComponent extends AppBase implements OnInit {
+export class MenuComponent extends AppBase {
 
   gridMenuGroup = viewChild.required(MenuGroupGridComponent);
   gridMenu = viewChild.required(MenuGridComponent);
@@ -208,7 +253,7 @@ export class MenuComponent extends AppBase implements OnInit {
     menu: { key: string, value: string, list: {label: string, value: string}[] }
   } = {
     menuGroup : {
-      key: 'menuGroupId',
+      key: 'menuGroupName',
       value: '',
       list: [
         {label: '메뉴그룹ID', value: 'menuGroupCode'},
@@ -216,7 +261,7 @@ export class MenuComponent extends AppBase implements OnInit {
       ]
     },
     menu: {
-      key: 'menuId',
+      key: 'menuName',
       value: '',
       list: [
         {label: '메뉴ID', value: 'menuCode'},
@@ -231,9 +276,6 @@ export class MenuComponent extends AppBase implements OnInit {
   } = {
     menuGroup: { visible: false, initLoadId: null },
     menu: { visible: false, initLoadId: null }
-  }
-
-  ngOnInit() {
   }
 
   //#region 메뉴그룹

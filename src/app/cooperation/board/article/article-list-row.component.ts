@@ -1,24 +1,36 @@
 import { Component, input, output } from '@angular/core';
 import { Article } from './article.model';
+import { ArticleList } from './article-list.model';
 
 @Component({
-  selector: 'app-article-list-row',
-  standalone: true,
-  template: `
-    {{article()?.title}} -
-    <a (click)="onViewClicked(article)"><div [innerHTML]="article()?.contents"></div></a>
+    selector: 'app-article-list-row',
+    standalone: true,
+    template: `
+    <div>
+      {{article()?.articleId}}
+      <a (click)="onViewClicked(article)">{{article()?.title}}</a>
+      <button (click)="onEditClicked(article)">수정</button>
+    </div>
   `,
-  styles: `
+    styles: `
+    :host {
+      display: inline
+    }
   `
 })
 export class ArticleListRowComponent {
 
-  article = input<Article>();
+  article = input<ArticleList>();
 
-  articleViewClicked = output<Article>();
+  viewClicked = output<ArticleList>();
+  editClicked = output<ArticleList>();
 
   onViewClicked(article: any) {
-    this.articleViewClicked.emit(article);
+    this.viewClicked.emit(article);
+  }
+
+  onEditClicked(article: any) {
+    this.editClicked.emit(article);
   }
 
 }

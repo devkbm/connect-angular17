@@ -1,10 +1,10 @@
 import { AfterViewInit, Component, ViewContainerRef, inject, viewChild } from '@angular/core';
-import { ArticleGridComponent } from './article/article-grid.component';
-import { BoardTreeComponent } from './board-hierarcy/board-tree.component';
-import { Article } from './article/article.model';
-import { NzMessageService } from 'ng-zorro-antd/message';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+
+
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
@@ -13,18 +13,21 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzTreeModule } from 'ng-zorro-antd/tree';
+
+import { WindowRef } from 'src/app/core/window-ref';
+import { BoardTreeComponent } from './board-hierarcy/board-tree.component';
 import { BoardFormComponent } from './board-management/board-form.component';
 import { BoardManagementComponent } from './board-management/board-management.component';
+
 import { ArticleFormComponent } from './article/article-form.component';
 import { ArticleViewComponent } from './article/article-view.component';
-import { WindowRef } from 'src/app/core/window-ref';
-import { Router } from '@angular/router';
+import { ArticleGridComponent } from './article/article-grid.component';
 import { ArticleListComponent } from './article/article-list.component';
+import { ArticleList } from './article/article-list.model';
 
 export interface TabArticle {
   tabName: string;
-  articleId: number;
-  article: Article;
+  articleId: string;
 }
 
 @Component({
@@ -92,16 +95,17 @@ export interface TabArticle {
         (editButtonClicked)="editArticleByButton($event)">
       </app-article-grid>
 -->
+
       <app-article-list
         [boardId]="drawer.board.initLoadId"
         (articleEditClicked)="popupEditArticle($event)"
-        (articleViewClicked)="popupArticleView($event)"
+        (articleViewClicked)="showArticle($event)"
       />
     </div>
   </nz-tab>
   @for (tab of tabs; track tab.articleId) {
   <nz-tab [nzClosable]="$index >= 0" [nzTitle]="tab.tabName">
-    <app-article-view [article]="tab.article">
+    <app-article-view [id]="tab.articleId">
     </app-article-view>
   </nz-tab>
   }
@@ -111,15 +115,15 @@ export interface TabArticle {
     [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
     [nzMaskClosable]="true"
     [nzWidth]="'80%'"
-    [nzVisible]="drawer.article.visible"
+    [nzVisible]="drawer.articleForm.visible"
     nzTitle="게시글 등록"
-    (nzOnClose)="drawer.article.visible = false">
+    (nzOnClose)="drawer.articleForm.visible = false">
     <app-article-form #articleForm *nzDrawerContent
       [boardId]="drawer.board.initLoadId"
-      [initLoadId]="this.drawer.article.initLoadId"
+      [initLoadId]="this.drawer.articleForm.initLoadId"
       (formSaved)="getArticleGridData()"
       (formDeleted)="getArticleGridData()"
-      (formClosed)="drawer.article.visible = false">
+      (formClosed)="drawer.articleForm.visible = false">
     </app-article-form>
 </nz-drawer>
 
@@ -130,7 +134,7 @@ export interface TabArticle {
     [nzVisible]="drawer.articleView.visible"
     nzTitle="게시글 조회"
     (nzOnClose)="drawer.articleView.visible = false">
-    <app-article-view [article]="drawer.articleView.article" *nzDrawerContent>
+    <app-article-view [id]="drawer.articleView.id" *nzDrawerContent>
     </app-article-view>
 </nz-drawer>
 
@@ -182,12 +186,12 @@ export class BoardComponent implements AfterViewInit {
 
   drawer: {
     board: { visible: boolean, initLoadId: any },
-    article: { use: boolean, visible: boolean, initLoadId: any },
-    articleView: { use: boolean, visible: boolean, article: any },
+    articleForm: { use: boolean, visible: boolean, initLoadId: any },
+    articleView: { use: boolean, visible: boolean, id: any, title: string }
   } = {
     board: { visible: false, initLoadId: null },
-    article: { use: false, visible: false, initLoadId: null },
-    articleView: { use: false, visible: false, article: null },
+    articleForm: { use: false, visible: false, initLoadId: null },
+    articleView: { use: false, visible: false, id: null, title: '' }
   }
 
   tabIndex: number = 0;
@@ -231,7 +235,7 @@ export class BoardComponent implements AfterViewInit {
   }
 
   getArticleGridData(): void {
-    this.drawer.article.visible = false;
+    this.drawer.articleForm.visible = false;
     this.drawer.articleView.visible = false;
 
     //this.articleGrid().getArticleList(this.drawer.board.initLoadId);
@@ -249,9 +253,9 @@ export class BoardComponent implements AfterViewInit {
       return;
     }
 
-    if (this.drawer.article.use) {
-      this.drawer.article.initLoadId = null;
-      this.drawer.article.visible = true;
+    if (this.drawer.articleForm.use) {
+      this.drawer.articleForm.initLoadId = null;
+      this.drawer.articleForm.visible = true;
     } else {
       this.popupNewArticle();
     }
@@ -268,7 +272,7 @@ export class BoardComponent implements AfterViewInit {
     windowObjectReference.focus();
   }
 
-  popupEditArticle(article: Article) {
+  popupEditArticle(article: ArticleList) {
     const url = this.router.serializeUrl(
       this.router.createUrlTree([`/article-edit`, this.drawer.board.initLoadId, article.articleId])  // /grw/boarda
     );
@@ -278,31 +282,36 @@ export class BoardComponent implements AfterViewInit {
   }
 
   selectArticle(item: any) {
-    this.drawer.articleView.article = item;
-    this.drawer.article.initLoadId = item.articleId;
+    this.drawer.articleView.id = item.articleId;
+    this.drawer.articleForm.initLoadId = item.articleId;
   }
 
   editArticleByButton(item: any) {
-    this.drawer.article.initLoadId = item.articleId;
-    if (this.drawer.article.initLoadId === null || this.drawer.article.initLoadId === undefined) {
+    this.drawer.articleForm.initLoadId = item.articleId;
+    if (this.drawer.articleForm.initLoadId === null || this.drawer.articleForm.initLoadId === undefined) {
       this.message.create('error', '게시글을 선택해주세요.');
       return;
     }
 
-    this.drawer.article.visible = true;
+    this.drawer.articleForm.visible = true;
   }
 
-  showAriticle() {
+  showArticle(article: ArticleList) {
+    this.drawer.articleView.id = article.articleId;
+    this.drawer.articleView.title = article.title;
+
     if (this.drawer.articleView.use) {
       this.addTabArticleView();
     } else {
-      this.popupArticleView(this.drawer.articleView.article);
+      this.popupArticleView(article.articleId);
     }
   }
 
-  popupArticleView(article: Article) {
+  //popupArticleView(article: ArticleList) {
+  popupArticleView(articleId: string) {
     const url = this.router.serializeUrl(
-      this.router.createUrlTree([`/article-view`, {article: JSON.stringify(article)}])  // /grw/boarda
+      //this.router.createUrlTree([`/article-view`, {article: JSON.stringify(article)}])  // /grw/boarda
+      this.router.createUrlTree([`/article-view`, {id: articleId}])  // /grw/boarda
     );
     const popOption = 'scrollbars=yes, menubar=no, resizable=no, top=0, left=0, width=800, height=800';
     var windowObjectReference = this.winRef.nativeWindow.open(url, '_blank', popOption);
@@ -311,24 +320,23 @@ export class BoardComponent implements AfterViewInit {
 
   addTabArticleView(): void {
     let title: string | null = '';
-    const title_lentgh = this.drawer.articleView.article?.title.length as number;
+    console.log(this.drawer.articleView);
+    const title_lentgh = this.drawer.articleView.title.length as number;
     if (title_lentgh > 8) {
-      title = this.drawer.articleView.article?.title.substring(0, 8) + '...';
+      title = this.drawer.articleView.title.substring(0, 8) + '...';
     } else {
-      title = this.drawer.articleView.article?.title as string;
+      title = this.drawer.articleView.title as string;
     }
 
-    const articleId = this.drawer.articleView.article?.articleId as number;
-    const article = this.drawer.articleView.article as Article;
+    const articleId = this.drawer.articleView.id;
     const newTab: TabArticle = {
       tabName: title,
-      articleId: articleId,
-      article: article
+      articleId: articleId
     }
 
     let tabIndex = null;
     for (const index in this.tabs) {
-      if (this.tabs[index].articleId === this.drawer.articleView.article?.articleId) {
+      if (this.tabs[index].articleId === this.drawer.articleView.id) {
         tabIndex = index;
       }
     }

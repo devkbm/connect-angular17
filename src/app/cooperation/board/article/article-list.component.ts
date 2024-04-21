@@ -1,14 +1,13 @@
 import { Component, effect, inject, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { Article } from './article.model';
 import { ArticleService } from './article.service';
-import { ResponseList } from 'src/app/core/model/response-list';
 import { NzListModule } from 'ng-zorro-antd/list';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { ArticleShareService } from './article-share.service';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { ArticleListRowComponent } from './article-list-row.component';
+import { ArticleList } from './article-list.model';
+import { ResponseSpringslice } from 'src/app/core/model/response-springslice';
 
 // 무한 스크롤 적용 필요
 // https://www.npmjs.com/package/ngx-infinite-scroll
@@ -30,6 +29,7 @@ import { ArticleListRowComponent } from './article-list-row.component';
       [scrollWindow]="false"
       (scrolled)="onScroll($event)"
       (scrolledUp)="onScrollUp()">
+      <!--
       <nz-list>
         @for (article of articles; track article.articleId; let idx = $index) {
           <nz-list-item>
@@ -37,18 +37,21 @@ import { ArticleListRowComponent } from './article-list-row.component';
               nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
               [nzDescription]="article.title">
               <nz-list-item-meta-title>
-                <!--{{idx+1}} -->
                 <a (click)="onViewClicked(article)"><div [innerHTML]="article.contents"></div></a>
                 <button nz-button (click)="onEditClicked(article)"><span nz-icon nzType="search" nzTheme="outline"></span>edit</button>
-                <!--<button nz-button (click)="onViewClicked(article)"><span nz-icon nzType="search" nzTheme="outline"></span>view</button>-->
-
               </nz-list-item-meta-title>
             </nz-list-item-meta>
           </nz-list-item>
-
-          <!--<app-article-list-row [article]="article"></app-article-list-row>-->
         }
       </nz-list>
+      -->
+      @for (article of articles; track article.articleId; let idx = $index) {
+        <app-article-list-row
+          [article]="article"
+          (viewClicked)="onViewClicked(article)"
+          (editClicked)="onEditClicked(article)">
+        </app-article-list-row>
+      }
     </div>
   `,
   styles: `
@@ -61,14 +64,12 @@ import { ArticleListRowComponent } from './article-list-row.component';
 export class ArticleListComponent {
 
   private service = inject(ArticleService);
-  articles: Article[] = [];
+  articles: ArticleList[] = [];
 
   boardId = input<string>();
 
-  articleEditClicked = output<Article>();
-  articleViewClicked = output<Article>();
-
-  articleShareService = inject(ArticleShareService);
+  articleEditClicked = output<ArticleList>();
+  articleViewClicked = output<ArticleList>();
 
   constructor() {
     effect(() => {
@@ -79,11 +80,11 @@ export class ArticleListComponent {
 
   getArticleList(fkBoard: any): void {
     this.service
-        .getArticleList(fkBoard)
+        .getArticleSlice(fkBoard)
         .subscribe(
-          (model: ResponseList<Article>) => {
-            if (model.total > 0) {
-              this.articles = model.data;
+          (model: ResponseSpringslice<ArticleList>) => {
+            if (model.numberOfElements > 0) {
+              this.articles = model.content;
               // this.sizeToFit();
             } else {
               this.articles = [];
@@ -98,8 +99,6 @@ export class ArticleListComponent {
   }
 
   onViewClicked(article: any) {
-    this.articleShareService.change(article);
-
     this.articleViewClicked.emit(article);
   }
 

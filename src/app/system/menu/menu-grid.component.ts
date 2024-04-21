@@ -61,15 +61,15 @@ export class MenuGridComponent extends AggridFunction implements OnInit {
       {
         headerName: 'No',
         valueGetter: 'node.rowIndex + 1',
-        width: 70,
+        width: 50,
         cellStyle: {'text-align': 'center'}
       },
-      {headerName: '메뉴그룹코드',  field: 'menuGroupCode',   width: 80 },
-      {headerName: '메뉴코드',      field: 'menuCode',        width: 100},
-      {headerName: '메뉴명',        field: 'menuName',        width: 150},
+      {headerName: '메뉴그룹코드',  field: 'menuGroupCode',   width: 100 },
+      {headerName: '메뉴코드',      field: 'menuCode',        width: 80},
+      {headerName: '메뉴명',        field: 'menuName',        width: 130},
       {headerName: '메뉴타입',      field: 'menuType',        width: 100 },
       {headerName: '상위메뉴코드',  field: 'parentMenuCode',  width: 100 },
-      {headerName: '순번',          field: 'sequence',        width: 80},
+      {headerName: '순번',          field: 'sequence',        width: 60},
       {headerName: 'APP URL',       field: 'appUrl',          width: 300 }
     ];
 

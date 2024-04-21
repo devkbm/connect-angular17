@@ -9,6 +9,8 @@ import { ResponseList } from '../../../core/model/response-list';
 import { Board } from './board.model';
 import { Article } from './article.model';
 import { GlobalProperty } from 'src/app/core/global-property';
+import { ResponseSpringslice } from 'src/app/core/model/response-springslice';
+import { ArticleList } from './article-list.model';
 
 
 @Injectable({
@@ -56,6 +58,29 @@ export class ArticleService extends DataService {
         //  catchError((err) => Observable.throw(err))
       );
   }
+
+  getArticleSlice(boardId: string, title?: string, contents?: string): Observable<ResponseSpringslice<ArticleList>> {
+    let url = `${this.API_URL}/board/article_slice?boardId=${boardId}`;
+    const options = {
+      headers: this.getAuthorizedHttpHeaders(),
+      withCredentials: true
+    };
+
+    if ( title !== undefined ) {
+        url = url + '&title=' + title;
+    }
+
+    if ( contents !== undefined ) {
+        url = url + '&contents=' + contents;
+    }
+
+    return this.http
+      .get<ResponseSpringslice<ArticleList>>(url, options)
+      .pipe(
+        //  catchError((err) => Observable.throw(err))
+      );
+  }
+
 
   getArticle(id: number): Observable<ResponseObject<Article>> {
     const url = `${this.API_URL}/board/article/${id}`;

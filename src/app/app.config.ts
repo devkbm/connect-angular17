@@ -1,5 +1,5 @@
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 import { routes } from './app.routes';
 import { ko_KR, provideNzI18n } from 'ng-zorro-antd/i18n';
@@ -16,7 +16,7 @@ registerLocaleData(ko);
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(routes),
+    provideRouter(routes, withComponentInputBinding()),
     provideNzI18n(ko_KR),
     importProvidersFrom(FormsModule),
     importProvidersFrom(HttpClientModule),

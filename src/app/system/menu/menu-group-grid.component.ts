@@ -64,19 +64,19 @@ export class MenuGroupGridComponent extends AggridFunction implements OnInit {
       {
         headerName: 'No',
         valueGetter: 'node.rowIndex + 1',
-        width: 70,
+        width: 50,
         cellStyle: {'text-align': 'center'}
       },
       {
         headerName: '메뉴그룹코드',
         field: 'menuGroupCode',
-        width: 120,
+        width: 100,
         cellStyle: {'text-align': 'center'}
       },
       {
         headerName: '메뉴그룹명',
         field: 'menuGroupName',
-        width: 150
+        width: 120
       },
       {
         headerName: '메뉴그룹URL',
