@@ -51,6 +51,8 @@ import { ResponseSpringslice } from 'src/app/core/model/response-springslice';
           (viewClicked)="onViewClicked(article)"
           (editClicked)="onEditClicked(article)">
         </app-article-list-row>
+
+        <hr class="hr-line">
       }
     </div>
   `,
@@ -58,6 +60,10 @@ import { ResponseSpringslice } from 'src/app/core/model/response-springslice';
     .search-results {
       height: 600px;
       overflow: scroll;
+    }
+
+    .hr-line {
+      border-width:1px 0 0 0; border-color:#818181;
     }
   `
 })
