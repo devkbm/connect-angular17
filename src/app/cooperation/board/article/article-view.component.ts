@@ -8,6 +8,7 @@ import { TrustHtmlPipe } from "src/app/shared-component/trust-html.pipe";
 import { ResponseObject } from 'src/app/core/model/response-object';
 import { ArticleService } from './article.service';
 import { Article } from './article.model';
+import { SessionManager } from 'src/app/core/session-manager';
 
 @Component({
   selector: 'app-article-view',
@@ -58,7 +59,19 @@ export class ArticleViewComponent {
             if (model.data) {
               this.article = model.data;
               this.fileList = model.data.fileList;
+
+              this.updateHitCount(this.article.articleId, SessionManager.getUserId());
             }
+          }
+        );
+  }
+
+  updateHitCount(id: any, userId: any) {
+    this.service
+        .updateHitCount(id, userId)
+        .subscribe(
+          (model: ResponseObject<void>) => {
+
           }
         );
   }

@@ -166,18 +166,27 @@ export class ArticleService extends DataService {
     this.http.get(url, {headers: this.getAuthorizedMultiPartHeaders(), responseType: 'blob'})
     .subscribe(
         (model: Blob) => {
-
             // const blob = new Blob([model], { type: 'application/octet-stream' });
-
             // FileSaver.saveAs(blob, fileName);
-          },
-          (err) => {
-            console.log(err);
-          },
-          () => {
-            console.log('완료');
           }
         );
+  }
+
+  updateHitCount(id: number, userId: string): Observable<ResponseObject<void>> {
+    const url = `${this.API_URL}/board/article/hitcnt`;
+    const param = {id: id, userId: userId};
+
+    const options = {
+      headers: this.getAuthorizedHttpHeaders(),
+      withCredentials: true,
+      params: param
+    };
+
+    return this.http
+      .get<ResponseObject<void>>(url, options)
+      .pipe(
+        //catchError((err) => Observable.throw(err))
+      );
   }
 
 }
