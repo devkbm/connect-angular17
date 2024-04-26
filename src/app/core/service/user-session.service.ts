@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 
 import { DataService } from './data.service';
 import { ResponseObject } from '../model/response-object';
-import { User } from '../../system/user/user.model';
 import { GlobalProperty } from 'src/app/core/global-property';
 
 export interface SystemUserProfile {

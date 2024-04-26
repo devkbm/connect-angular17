@@ -2,6 +2,7 @@ export interface ArticleList {
   boardId: string;
   articleId: string;
   writerName: string;
+  writerImage: string;
   title: string;
   hitCount: number;
   editable: boolean;
