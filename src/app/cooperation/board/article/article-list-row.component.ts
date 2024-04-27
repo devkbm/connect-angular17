@@ -9,14 +9,21 @@ import { GlobalProperty } from 'src/app/core/global-property';
     template: `
     <div>
       <nz-avatar class="avatar" nzShape="square" [nzSize]='24' [nzSrc]="imageSrc()"/>
-      {{article()?.articleId}} - {{article()?.writerName}} - {{article()?.hitCount}} <br>
-      <a (click)="onViewClicked(article)">{{article()?.title}}</a>
-      <button (click)="onEditClicked(article)">수정</button>
+      {{article()?.articleId}} - {{article()?.writerName}} - {{article()?.hitCount}} - {{article()?.isRead}}<br>
+      <a [class.text-bold]="!article()?.isRead" (click)="onViewClicked(article)">{{article()?.title}}</a>
+
+      @if (article()?.editable) {
+        <button (click)="onEditClicked(article)">수정</button>
+      }
     </div>
     `,
     styles: `
     :host {
       display: inline
+    }
+
+    .text-bold {
+      font-weight: bold;
     }
     `,
     imports: [ NzAvatarModule ]

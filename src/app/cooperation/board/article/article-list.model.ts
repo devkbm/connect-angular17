@@ -8,4 +8,5 @@ export interface ArticleList {
   editable: boolean;
   isAttachedFile: boolean;
   fileCount: number;
+  isRead: boolean;
 }
