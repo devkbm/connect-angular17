@@ -25,6 +25,15 @@ import { GlobalProperty } from 'src/app/core/global-property';
     .text-bold {
       font-weight: bold;
     }
+
+    a {
+      color: Silver;
+    }
+
+    a:hover {
+      color: LightSlateGray;
+      text-decoration: underline;
+    }
     `,
     imports: [ NzAvatarModule ]
 })

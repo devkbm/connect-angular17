@@ -9,6 +9,7 @@ import { ResponseObject } from 'src/app/core/model/response-object';
 import { ArticleService } from './article.service';
 import { Article } from './article.model';
 import { SessionManager } from 'src/app/core/session-manager';
+import { NzFileDownloadComponent } from 'src/app/shared-component/nz-file-download/nz-file-download.component';
 
 @Component({
   selector: 'app-article-view',
@@ -20,12 +21,10 @@ import { SessionManager } from 'src/app/core/session-manager';
     </nz-page-header-content>
   </nz-page-header>
 
-  <div [innerHTML]="article?.contents | trustHtml">
-  </div>
+  <!--<app-nz-file-upload [fileList]="fileList"></app-nz-file-upload>-->
+  <app-nz-file-download [fileList]="fileList" [height]="'100px'"></app-nz-file-download>
 
-  <app-nz-file-upload
-    [fileList]="fileList">
-  </app-nz-file-upload>
+  <div [innerHTML]="article?.contents | trustHtml"></div>
   `,
   styles: `
   nz-page-header {
@@ -33,7 +32,7 @@ import { SessionManager } from 'src/app/core/session-manager';
   }
   `,
   imports: [
-    CommonModule, TrustHtmlPipe, NzPageHeaderModule, NzFileUploadComponent
+    CommonModule, TrustHtmlPipe, NzPageHeaderModule, NzFileUploadComponent, NzFileDownloadComponent
   ]
 })
 export class ArticleViewComponent {

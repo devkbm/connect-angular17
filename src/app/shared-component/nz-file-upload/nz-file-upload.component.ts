@@ -1,12 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output, output } from '@angular/core';
+import { Component, OnInit, input, output } from '@angular/core';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzUploadChangeParam, NzUploadFile, NzUploadModule } from 'ng-zorro-antd/upload';
 import { GlobalProperty } from 'src/app/core/global-property';
 
 @Component({
-  standalone: true,
   selector: 'app-nz-file-upload',
-  imports: [NzUploadModule, NzButtonModule],
+  standalone: true,
   template: `
    <div class="clearfix" nz-row style="height: 100px">
       <nz-upload #upload class="upload-list-inline"
@@ -16,7 +15,7 @@ import { GlobalProperty } from 'src/app/core/global-property';
         [nzWithCredentials]="true"
         [nzData]="uploadParam"
         [nzHeaders]="fileUploadHeader"
-        [nzFileList]="fileList"
+        [nzFileList]="fileList()"
         (nzChange)="fileUploadChange($event)">
         <button nz-button>
           <span nz-icon nzType="upload"></span>
@@ -25,13 +24,14 @@ import { GlobalProperty } from 'src/app/core/global-property';
       </nz-upload>
   </div>
   `,
-  styles: [`
+  styles: `
     :host ::ng-deep .upload-list-inline .ant-upload-list-item {
       float: left;
       width: 200px;
       margin-right: 8px;
     }
-  `]
+  `,
+  imports: [NzUploadModule, NzButtonModule]
 })
 export class NzFileUploadComponent implements OnInit {
 
@@ -53,7 +53,7 @@ export class NzFileUploadComponent implements OnInit {
       status: 'done',
       url: 'http://www.baidu.com/yyy.png'
     }*/
-  @Input() fileList: NzUploadFile[] = [];
+  fileList = input<NzUploadFile[]>([]);
 
   uploadCompleted = output<NzUploadFile[]>();
 
@@ -66,8 +66,8 @@ export class NzFileUploadComponent implements OnInit {
   fileUploadChange(params: NzUploadChangeParam): void {
     if (params.type === 'success') {
       // this.fileList = param.file.response;
-      this.fileList.push(params.file.response[0]);
-      this.uploadCompleted.emit(this.fileList);
+      this.fileList().push(params.file.response[0]);
+      this.uploadCompleted.emit(this.fileList());
     }
   }
 
