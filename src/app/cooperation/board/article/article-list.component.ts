@@ -20,15 +20,15 @@ import { ResponseSpringslice } from 'src/app/core/model/response-springslice';
   ],
   template: `
     <div
-      class="search-results"
+      class="container" [style.height]="this.height()"
       infiniteScroll
-      [infiniteScrollDistance]="1"
+      [infiniteScrollDistance]="2"
+      [infiniteScrollThrottle]="275"
       [infiniteScrollUpDistance]="1"
-      [infiniteScrollThrottle]="350"
       [alwaysCallback]="true"
       [scrollWindow]="false"
       (scrolled)="onScroll($event)"
-      (scrolledUp)="onScrollUp()">
+      (scrolledUp)="onScrollUp($event)">
       <!--
       <nz-list>
         @for (article of articles; track article.articleId; let idx = $index) {
@@ -45,6 +45,8 @@ import { ResponseSpringslice } from 'src/app/core/model/response-springslice';
         }
       </nz-list>
       -->
+
+      {{this.pageable | json}}
       @for (article of articles; track article.articleId; let idx = $index) {
         <app-article-list-row
           [article]="article"
@@ -52,14 +54,15 @@ import { ResponseSpringslice } from 'src/app/core/model/response-springslice';
           (editClicked)="onEditClicked(article)">
         </app-article-list-row>
 
-        <hr class="hr-line">
+        @if (idx < articles.length - 1) {
+          <hr class="hr-line">
+        }
       }
     </div>
   `,
   styles: `
-    .search-results {
-      height: 600px;
-      overflow: scroll;
+    .container {
+      overflow: auto;
     }
 
     .hr-line {
@@ -73,9 +76,12 @@ export class ArticleListComponent {
   articles: ArticleList[] = [];
 
   boardId = input<string>();
+  height = input<string>('100%');
 
   articleEditClicked = output<ArticleList>();
   articleViewClicked = output<ArticleList>();
+
+  pageable: {page: number, isLast: boolean} = {page: 0, isLast: false};
 
   constructor() {
     effect(() => {
@@ -84,14 +90,16 @@ export class ArticleListComponent {
 
   }
 
-  getArticleList(fkBoard: any): void {
+  getArticleList(boardId: any, page: number = 0): void {
     this.service
-        .getArticleSlice(fkBoard)
+        .getArticleSlice(boardId, undefined, undefined, page)
         .subscribe(
           (model: ResponseSpringslice<ArticleList>) => {
             if (model.numberOfElements > 0) {
-              this.articles = model.content;
-              // this.sizeToFit();
+              if (model.first) this.articles = [];
+
+              this.articles.push(...model.content);
+              this.pageable ={page: model.number, isLast: model.last};
             } else {
               this.articles = [];
             }
@@ -109,11 +117,16 @@ export class ArticleListComponent {
   }
 
   onScroll(ev: any) {
-    //console.log("scrolled!" + ev);
-    console.log(ev);
+    //console.log("scrolled!");
+    //console.log(ev);
+
+    if (!this.pageable.isLast) {
+      this.getArticleList(this.boardId(), this.pageable.page + 1);
+    }
   }
 
-  onScrollUp() {
-    console.log("scrolled Up!");
+  onScrollUp(ev: any) {
+    //console.log("scrolled Up!");
+    //console.log(ev);
   }
 }

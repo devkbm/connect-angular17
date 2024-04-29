@@ -1,10 +1,10 @@
+import { Component, OnInit, inject, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AgGridModule } from 'ag-grid-angular';
 
-import { Component, OnInit, Output, EventEmitter, inject, output } from '@angular/core';
-import { AggridFunction } from '../../../core/grid/aggrid-function';
-import { ResponseList } from '../../../core/model/response-list';
-import { AppAlarmService } from '../../../core/service/app-alarm.service';
+import { AggridFunction } from 'src/app/core/grid/aggrid-function';
+import { ResponseList } from 'src/app/core/model/response-list';
+import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 
 import { WorkCalendarService } from './work-calendar.service';
 import { WorkCalendar } from './work-calendar.model';
@@ -75,7 +75,7 @@ export class MyWorkCalendarGridComponent extends AggridFunction implements OnIni
         }
       },
       {
-        headerName: '작업그룹명',
+        headerName: 'CALENDAR',
         field: 'name',
         width: 140
       }

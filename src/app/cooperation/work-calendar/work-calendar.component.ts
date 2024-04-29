@@ -116,7 +116,6 @@ import { MyWorkCalendarListComponent } from './calendar/my-work-calendar-list.co
 .grid-wrapper {
   height: calc(100% - 32px);
   display: grid;
-
   grid-template-rows: 220px 1fr;
   grid-template-columns: 200px 1fr;
   grid-template-areas:
@@ -227,7 +226,7 @@ export class WorkCalendarComponent implements OnInit {
   newScheduleByDateSelect(param: NewDateSelectedArgs) {
     console.log('newScheduleByDateSelect: start');
     if (param.workCalendarId === -1) {
-      alert('작업그룹을 선택해주세요.');
+      alert('CALENDAR를 선택해주세요.');
       return;
     }
 

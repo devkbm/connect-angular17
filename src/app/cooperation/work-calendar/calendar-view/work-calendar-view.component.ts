@@ -1,7 +1,7 @@
 import { CommonModule, formatDate } from '@angular/common';
 import { CalendarModule } from 'src/app/shared-component/calendar/calendar.module';
 
-import { Component, Output, EventEmitter, Input, AfterViewInit, inject, viewChild, output } from '@angular/core';
+import { Component, Input, AfterViewInit, inject, viewChild, output } from '@angular/core';
 
 import { ResponseList } from 'src/app/core/model/response-list';
 
@@ -45,6 +45,7 @@ export interface NewDateSelectedArgs {
       /*max-height: 800px; */
       overflow-y: hidden;
       overflow-x: hidden;
+      overflow: auto;
       height: 100%;
     }
   `]

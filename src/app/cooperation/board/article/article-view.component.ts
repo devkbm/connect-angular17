@@ -20,7 +20,7 @@ import { NzFileDownloadComponent } from 'src/app/shared-component/nz-file-downlo
         {{article?.fromDate}}
     </nz-page-header-content>
   </nz-page-header>
-
+  첨부파일 <br/>
   <!--<app-nz-file-upload [fileList]="fileList"></app-nz-file-upload>-->
   <app-nz-file-download [fileList]="fileList" [height]="'100px'"></app-nz-file-download>
 

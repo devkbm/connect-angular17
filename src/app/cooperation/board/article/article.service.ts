@@ -59,7 +59,7 @@ export class ArticleService extends DataService {
       );
   }
 
-  getArticleSlice(boardId: string, title?: string, contents?: string): Observable<ResponseSpringslice<ArticleList>> {
+  getArticleSlice(boardId: string, title?: string, contents?: string, page: number = 0, size: number = 10): Observable<ResponseSpringslice<ArticleList>> {
     let url = `${this.API_URL}/board/article_slice?boardId=${boardId}`;
     const options = {
       headers: this.getAuthorizedHttpHeaders(),
@@ -73,6 +73,8 @@ export class ArticleService extends DataService {
     if ( contents !== undefined ) {
         url = url + '&contents=' + contents;
     }
+
+    url = url + '&page='+ page + '&size='+ size;
 
     return this.http
       .get<ResponseSpringslice<ArticleList>>(url, options)
