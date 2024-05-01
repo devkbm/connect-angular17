@@ -1,4 +1,4 @@
-import { EventEmitter, HostListener, Injectable, Output, output } from '@angular/core';
+import { HostListener, Injectable, output } from '@angular/core';
 import { ButtonRendererComponent } from './renderer/button-renderer.component';
 import { CheckboxRendererComponent } from './renderer/checkbox-renderer.component';
 

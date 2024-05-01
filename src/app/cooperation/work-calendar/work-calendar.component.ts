@@ -12,25 +12,12 @@ import { CommonModule } from '@angular/common';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { CalendarModule } from 'src/app/shared-component/calendar/calendar.module';
 import { MyWorkCalendarListComponent } from './calendar/my-work-calendar-list.component';
 
 @Component({
-  selector: 'app-work-calendar',
-  standalone: true,
-  imports: [
-    CommonModule,
-    NzDrawerModule,
-    NzButtonModule,
-    NzIconModule,
-    CalendarModule,
-    MyWorkCalendarListComponent,
-    MyWorkCalendarGridComponent,
-    WorkCalendarFormComponent,
-    WorkCalendarViewComponent,
-    WorkCalendarEventFormComponent
-  ],
-  template: `
+    selector: 'app-work-calendar',
+    standalone: true,
+    template: `
 <button nz-button (click)="getMyWorkGroupList()">
   <span nz-icon nzType="search" nzTheme="outline"></span>
   조회
@@ -112,7 +99,7 @@ import { MyWorkCalendarListComponent } from './calendar/my-work-calendar-list.co
 </nz-drawer>
 
   `,
-  styles: `
+    styles: `
 .grid-wrapper {
   height: calc(100% - 32px);
   display: grid;
@@ -134,7 +121,19 @@ import { MyWorkCalendarListComponent } from './calendar/my-work-calendar-list.co
   grid-area: calendar;
 }
 
-  `
+  `,
+    imports: [
+        CommonModule,
+        NzDrawerModule,
+        NzButtonModule,
+        NzIconModule,
+        MyWorkCalendarListComponent,
+        MyWorkCalendarGridComponent,
+        WorkCalendarFormComponent,
+        WorkCalendarViewComponent,
+        WorkCalendarEventFormComponent,
+        DaypilotCalendarNavigatorComponent
+    ]
 })
 export class WorkCalendarComponent implements OnInit {
 

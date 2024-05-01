@@ -1,24 +1,19 @@
 import { CommonModule } from '@angular/common';
+import { Component, Input, OnInit, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatIconModule } from '@angular/material/icon';
 
-import { Component, EventEmitter, Input, OnInit, Output, output } from '@angular/core';
 import { TodoModel } from './todo.model';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
-  standalone: true,
   selector: 'app-todo-add-input',
-  imports: [ CommonModule, FormsModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule ],
+  standalone: true,
+  imports: [ CommonModule, FormsModule, NzButtonModule, NzInputModule ],
   template: `
-    <button mat-icon-button color="primary" (click)="addTodo(newText)"><mat-icon>add</mat-icon></button>
-    <mat-form-field style="width:100%">
-      <mat-label>할일</mat-label>
-      <input matInput placeholder="입력해주세요." [(ngModel)]="newText" (keyup.enter)="addTodo(newText)">
-      <mat-hint align="start"><strong>입력</strong> </mat-hint>
-    </mat-form-field>
+    <button nz-button (click)="addTodo(newText)">add</button>
+    <input nz-input placeholder="입력해주세요." [(ngModel)]="newText" (keyup.enter)="addTodo(newText)">
+
     <!--<button (click)="addTodo(newText)">+</button>-->
     <!--<button (click)="addTodo(newText)">+</button><input type="text" placeholder="할 일 추가" [(ngModel)]="newText" (keyup.enter)="addTodo(newText)">-->
   `,

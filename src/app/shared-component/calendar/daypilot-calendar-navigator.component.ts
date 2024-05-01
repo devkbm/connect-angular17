@@ -1,8 +1,5 @@
-import { AfterViewInit, Component, Input, output, viewChild } from '@angular/core';
-import {
-  DayPilot,
-  DayPilotNavigatorComponent
-} from "@daypilot/daypilot-lite-angular";
+import { Component, Input, output, viewChild } from '@angular/core';
+import { DayPilotModule, DayPilot, DayPilotNavigatorComponent } from "@daypilot/daypilot-lite-angular";
 
 
 interface NavigatorTimeRangeSelectedArgs {
@@ -21,6 +18,10 @@ interface NavigatorRangeChangedArgs {
 
 @Component({
   selector: 'app-daypilot-calendar-navigator',
+  standalone: true,
+  imports: [
+    DayPilotModule
+  ],
   template: `
     <daypilot-navigator #navigator
       [config]="configNavigator"
@@ -28,9 +29,10 @@ interface NavigatorRangeChangedArgs {
       [(date)]="date">
    </daypilot-navigator>
   `,
-  styles: []
+  styles: `
+  `
 })
-export class DaypilotCalendarNavigatorComponent implements AfterViewInit {
+export class DaypilotCalendarNavigatorComponent {
 
   nav = viewChild.required<DayPilotNavigatorComponent>('navigator');
 
@@ -73,10 +75,6 @@ export class DaypilotCalendarNavigatorComponent implements AfterViewInit {
     );
     DayPilot.Locale.register(localeKR);
 
-  }
-
-  ngAfterViewInit(): void {
-    console.log('ngAfterViewInit event');
   }
 
   setMode(mode: "Day" | "Week" | "Month" | "None", date: DayPilot.Date): void {

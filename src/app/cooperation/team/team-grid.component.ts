@@ -5,7 +5,6 @@ import { AgGridModule } from 'ag-grid-angular';
 import { AggridFunction } from 'src/app/core/grid/aggrid-function';
 
 import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-renderer.component';
-import { CheckboxRendererComponent } from 'src/app/core/grid/renderer/checkbox-renderer.component';
 
 import { TeamModel } from './team.model';
 
@@ -55,8 +54,8 @@ export class TeamGridComponent extends AggridFunction implements OnInit {
         width: 70,
         cellStyle: {'text-align': 'center'}
       },
-      { headerName: '코드',         field: 'teamId',      width: 150, filter: 'agTextColumnFilter' },
-      { headerName: '코드명',       field: 'teamName',    width: 200, filter: 'agTextColumnFilter' }
+      { headerName: '팀ID',       field: 'teamId',      width: 150, filter: 'agTextColumnFilter' },
+      { headerName: '팀명',       field: 'teamName',    width: 200, filter: 'agTextColumnFilter' }
     ];
 
     this.defaultColDef = {

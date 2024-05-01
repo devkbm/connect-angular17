@@ -2,8 +2,10 @@ import {Component, AfterViewInit, Input, viewChild, output} from "@angular/core"
 import {
   DayPilot,
   DayPilotCalendarComponent,
+  DayPilotModule,
   DayPilotMonthComponent
 } from "@daypilot/daypilot-lite-angular";
+import { DaypilotCalendarHeaderComponent } from "./daypilot-calendar-header.component";
 
 export interface ModeChangedArgs {
   readonly mode: "Day" | "Week" | "Month" | "None";
@@ -12,35 +14,23 @@ export interface ModeChangedArgs {
 
 @Component({
   selector: 'app-daypilot-calendar',
+  standalone: true,
+  imports: [
+    DaypilotCalendarHeaderComponent,
+    DayPilotModule
+  ],
   template: `
     <div class="calendar">
-      <div class="header">
-
-        <div class="nav-buttons">
-          <button (click)="navigatePrevious($event)" class="direction-button"><</button>
-          <button (click)="navigateToday($event)">Today</button>
-          <button (click)="navigateNext($event)" class="direction-button">></button>
-        </div>
-
-        <div class="title">
-          <div *ngIf="this.mode === 'Day'">
-            {{selectedDate.toDate() | date : 'YYYY-MM-dd' }}
-          </div>
-          <div *ngIf="this.mode === 'Week'">
-            {{start.toDate() | date : 'YYYY-MM-dd' }} ~ {{end.toDate() | date : 'YYYY-MM-dd' }}
-          </div>
-          <div *ngIf="this.mode === 'Month'">
-            {{selectedDate.toDate() | date : 'YYYY-MM' }}
-          </div>
-        </div>
-
-        <div class="view-buttons">
-          <button (click)="viewDay()" [class]="this.mode == 'Day' ? 'selected' : ''">Day</button>
-          <button (click)="viewWeek()" [class]="this.mode == 'Week' ? 'selected' : ''">Week</button>
-          <button (click)="viewMonth()" [class]="this.mode == 'Month' ? 'selected' : ''">Month</button>
-        </div>
-      </div>
-
+      <!--
+      <app-daypilot-calendar-header
+        [titleStartDate]="start.toDate()"
+        [titleEndDate]="end.toDate()"
+        (previousButtonClicked)="navigatePrevious($event)"
+        (todayButtonClicked)="navigateToday($event)"
+        (nextButtonClicked)="navigateNext($event)"
+        (selectedModeChanged)="modeChange($event)">
+      </app-daypilot-calendar-header>
+      -->
       <div class="contents">
         <daypilot-calendar #day   [config]="configDay" [events]="events"></daypilot-calendar>
         <daypilot-calendar #week  [config]="configWeek" [events]="events"></daypilot-calendar>
@@ -49,7 +39,19 @@ export interface ModeChangedArgs {
 
     </div>
   `,
-  styleUrls: ['./daypilot-calendar.component.css']
+  styles: `
+  .calendar {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    vertical-align: top;
+  }
+
+  /* 달력 높이 100%가 안됨 */
+  .contents {
+    flex: 0 0 100%;
+  }
+  `
 })
 export class DaypilotCalendarComponent implements AfterViewInit {
 
@@ -142,6 +144,19 @@ export class DaypilotCalendarComponent implements AfterViewInit {
     this.selectedDate = date;
   }
 
+  modeChange(mode: any) {
+    console.log(mode);
+    this.mode = mode;
+
+    switch (this.mode) {
+      case "Day": this.viewDay(); break;
+      case "Week": this.viewWeek(); break;
+      case "Month": this.viewMonth(); break;
+      default: this.viewMonth(); break;
+    }
+
+  }
+
   viewDay(): void {
     this.mode = "Day";
     this.rangeChangedEvent(this.selectedDate);
@@ -222,7 +237,8 @@ export class DaypilotCalendarComponent implements AfterViewInit {
       this.configWeek.startDate = this.start;
     } else if (this.mode === 'Month') {
       this.selectedDate = date;
-      this.start = this.selectedDate.firstDayOfMonth().firstDayOfWeek('ko-kr');
+      //this.start = this.selectedDate.firstDayOfMonth().firstDayOfWeek('ko-kr');
+      this.start = date;
       this.end = this.selectedDate.lastDayOfMonth().addDays(7).firstDayOfWeek('ko-kr').addDays(-1);
       const range = {start: this.start.toDateLocal(), end: this.end.toDateLocal(), date: this.selectedDate.toDateLocal()};
       this.rangeChanged.emit(range);

@@ -1,6 +1,5 @@
 import { Component, EventEmitter, OnInit, Output, inject, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatListModule } from '@angular/material/list';
 
 import { ResponseList } from 'src/app/core/model/response-list';
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
@@ -12,11 +11,12 @@ import { WorkCalendar } from './work-calendar.model';
 @Component({
   selector: 'app-my-work-calendar-list',
   standalone: true,
-  imports: [ CommonModule, MatListModule ],
+  imports: [ CommonModule ],
   template: `
+  <!--
     <mat-selection-list #list (selectionChange)="selectionChanged($event, list)" color="primary">
       @for (item of workGroupList; track item.workCalendarId) {
-      <mat-list-option
+        <mat-list-option
         togglePosition="before"
         [value]="item"
         (dblclick)="rowDbClicked(item)">
@@ -24,6 +24,7 @@ import { WorkCalendar } from './work-calendar.model';
       </mat-list-option>
       }
     </mat-selection-list>
+    -->
   `,
   styles: [`
     .mat-mdc-list-base {

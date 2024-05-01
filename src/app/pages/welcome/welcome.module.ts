@@ -5,8 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { WelcomeRoutingModule } from './welcome-routing.module';
 import { WelcomeComponent } from './welcome.component';
 
-import { CalendarModule } from 'src/app/shared-component/calendar/calendar.module';
-
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 
 import ko from '@angular/common/locales/ko';
@@ -34,7 +32,6 @@ import { NzInputSimpleColorPickerComponent } from 'src/app/shared-component/nz-i
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    CalendarModule,
     NzCheckboxModule,
     WelcomeRoutingModule,
     NzInputTextComponent,

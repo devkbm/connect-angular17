@@ -1,7 +1,4 @@
 import { CommonModule } from '@angular/common';
-import { MatListModule } from '@angular/material/list';
-import { MatButtonModule } from '@angular/material/button';
-import { MatMenuTrigger } from '@angular/material/menu';
 import { ContextMenuComponent, ContextMenuModule, ContextMenuService } from '@perfectmemory/ngx-contextmenu';
 
 import { Component, OnInit, output, viewChild } from '@angular/core';
@@ -10,35 +7,49 @@ import { ResponseList } from 'src/app/core/model/response-list';
 import { ResponseObject } from 'src/app/core/model/response-object';
 import { TodoGroupModel } from './todo-group.model';
 import { TodoService } from './todo.service';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { FormsModule } from '@angular/forms';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 
 @Component({
-  standalone: true,
   selector: 'app-todo-group-list',
-  imports: [ CommonModule, MatListModule, MatButtonModule, ContextMenuModule ],
+  standalone: true,
+  imports: [ CommonModule, FormsModule, ContextMenuModule, NzButtonModule, NzCheckboxModule ],
   template: `
+    <button nz-button (click)="addTodoGroup()" style="width:100%">그룹 추가</button>
 
-    <button mat-raised-button color="primary" (click)="addTodoGroup()" style="width:100%">그룹 추가</button>
+    @for (todoGroup of todoGroupList; track todoGroup.pkTodoGroup) {
+      <div
+        [contextMenu]="basicMenu()" [contextMenuValue]="todoGroup"
+        (click)="selectTodoGroup(todoGroup.pkTodoGroup)">
+        {{todoGroup.todoGroupName}}
+        <label nz-checkbox [(ngModel)]="todoGroup.isSelected" ></label>
+      </div>
+
+      <context-menu menuClass="custom-style">
+        <ng-template contextMenuItem let-value [passive]="true"
+          (execute)="showMessage('Hi, someone', $event.value.pkTodoGroup)">
+
+          <input #rename value="{{value.todoGroupName}}" (keydown.enter)="renameTodoGroup(value, rename.value)"/>
+          <button (click)="renameTodoGroup(value, rename.value)">변경</button>
+        </ng-template>
+        <ng-template contextMenuItem let-value (execute)="onContextMenuAction2($event.value)">
+        그룹 삭제
+        </ng-template>
+      </context-menu>
+    }
+
+    <!--
     <mat-selection-list #todoGroups [multiple]="false"  color="primary"
                         (selectionChange)="selectTodoGroup(todoGroups.selectedOptions.selected[0].value)">
-      <!--<mat-list-option *ngFor="let todoGroup of todoGroupList; index as i" [value]="todoGroup.pkTodoGroup" (contextmenu)="onContextMenu($event, todoGroup)">-->
       @for (todoGroup of todoGroupList; track todoGroup.pkTodoGroup) {
       <mat-list-option [value]="todoGroup.pkTodoGroup" [contextMenu]="basicMenu()" [contextMenuValue]="todoGroup">
         {{todoGroup.todoGroupName}}
       </mat-list-option>
       }
     </mat-selection-list>
+    -->
 
-    <context-menu menuClass="custom-style">
-      <ng-template contextMenuItem let-item="item" [passive]="true"
-        (execute)="showMessage('Hi, someone', $event.value.pkTodoGroup)">
-        <input #rename value="{{item.todoGroupName}}" (keydown.enter)="renameTodoGroup(item, rename.value)"/>
-        <button (click)="renameTodoGroup(item, rename.value)">변경</button>
-      </ng-template>
-
-      <ng-template contextMenuItem let-item (execute)="onContextMenuAction2($event.value)">
-      그룹 삭제
-      </ng-template>
-    </context-menu>
 
     <!--
       input 텍스트박스가 사라져서 다른 방법을 찾고 있음
@@ -97,7 +108,7 @@ export class TodoGroupListComponent implements OnInit {
 
   todoGroupList: TodoGroupModel[] = [];
 
-  contextMenu = viewChild.required(MatMenuTrigger);
+  //contextMenu = viewChild.required(MatMenuTrigger);
   contextMenuPosition = { x: '0px', y: '0px' };
 
   // https://perfectmemory.github.io/ngx-contextmenu/?path=/docs/context-menu-introduction--docs
@@ -146,9 +157,12 @@ export class TodoGroupListComponent implements OnInit {
     event.preventDefault();
     this.contextMenuPosition.x = event.clientX + 'px';
     this.contextMenuPosition.y = event.clientY + 'px';
+
+    /*
     this.contextMenu().menuData = { 'item': item };
     this.contextMenu().menu?.focusFirstItem('mouse');
     this.contextMenu().openMenu();
+    */
   }
 
   onContextMenuAction1(item: TodoGroupModel) {
@@ -169,9 +183,9 @@ export class TodoGroupListComponent implements OnInit {
 
   renameTodoGroup(item: TodoGroupModel, name: string) {
     item.todoGroupName = name;
-
+    console.log(item);
     this.service
-        .saveTodoGroup({pkTodoGroup: item.pkTodoGroup, todoGroupName: name})
+        .saveTodoGroup({pkTodoGroup: item.pkTodoGroup, todoGroupName: name, isSelected: false})
         .subscribe(
           (model: ResponseObject<TodoGroupModel>) => {
 

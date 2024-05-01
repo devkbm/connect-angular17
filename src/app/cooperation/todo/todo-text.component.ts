@@ -1,96 +1,54 @@
+import { Component, model, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatIconModule } from '@angular/material/icon';
 
-import { Component, Input, OnInit, output } from '@angular/core';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+
 import { TodoModel } from './todo.model';
 
-
 @Component({
-  standalone: true,
   selector: 'app-todo-text',
-  imports: [ CommonModule, FormsModule, MatButtonModule, MatCheckboxModule, MatIconModule ],
+  standalone: true,
+  imports: [CommonModule, FormsModule, NzCheckboxModule, NzButtonModule],
   template: `
-    <mat-checkbox [(ngModel)]="todo.isCompleted" (change)="changeState()"></mat-checkbox>
-    <label (click)="toggleState()" [class.line-break]="todo.isCompleted"> {{ todo.todo }} </label>
-    <button mat-icon-button color="warn" (click)="deleteTodo()"><mat-icon>delete</mat-icon></button>
+    <label nz-checkbox [(ngModel)]="todo().isCompleted" (change)="changeState()"></label>
+    <label (click)="toggleState()" [class.line-break]="todo().isCompleted"> {{ todo().todo }} </label>
+    <button nz-button nzType="primary" nzDanger (click)="deleteTodo()">delete</button>
   `,
-  styles: [`
-
+  styles: `
     :host {
       display: block;
       /*padding: 16px;*/
       color: darkgray;
       background-color: white;
     }
-    /*
-    input {
-      position: relative;
-    }
 
-    input:before {
-      content: "";
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      background-color: white;
-      border-radius: 20px;
-      position: absolute;
-      top: -3px;
-      left: -6px;
-      border: 1px solid darkgray;
-    }
-
-    input:checked:after {
-      content: '\\2713';
-      display: inline-block;
-      font-size: 12px;
-      width: 20px;
-      height: 20px;
-      border-radius: 20px;
-      position: absolute;
-      top: -3px;
-      left: -6px;
-      border: 1px solid darkgray;
-      backgroud-color: darkgray;
-      text-align: center;
-      color: red;
-    }
-
-    input:checked + label {
-      text-decoration: line-through;
-    }
-*/
     .line-break {
       text-decoration: line-through;
     }
-  `]
+  `
 })
-export class TodoTextComponent implements OnInit {
+export class TodoTextComponent {
 
-  @Input({required: true}) todo!: TodoModel;
+  //@Input({required: true}) todo!: TodoModel;
+  todo = model.required<TodoModel>();
 
   stateChanged = output<any>();
   deleteClicked = output<TodoModel>();
 
   constructor() {}
 
-  ngOnInit() {
-  }
-
   changeState() {
-    this.stateChanged.emit(this.todo);
+    this.stateChanged.emit(this.todo());
   }
 
   toggleState() {
-    this.todo.isCompleted = !this.todo.isCompleted;
-    this.stateChanged.emit(this.todo);
+    this.stateChanged.emit(this.todo());
   }
 
   deleteTodo() {
-    this.deleteClicked.emit(this.todo);
+    this.deleteClicked.emit(this.todo());
   }
 
 
