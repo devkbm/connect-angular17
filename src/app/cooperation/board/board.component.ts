@@ -72,12 +72,11 @@ export interface TabArticle {
 
 <div class="tree">
   <h3 class="pgm-title">게시판 목록</h3>
-  <nz-input-group nzSearch [nzSuffix]="suffixIconSearch">
+  <nz-input-group nzSearch [nzSuffix]="suffixIconSearch" style="margin-bottom: 8px">
     <input type="text" [(ngModel)]="queryValue" nz-input placeholder="input search text">
+    <ng-template #suffixIconSearch><span nz-icon nzType="search"></span></ng-template>
   </nz-input-group>
-  <ng-template #suffixIconSearch>
-    <span nz-icon nzType="search"></span>
-  </ng-template>
+
   <app-board-tree id="boardTree" #boardTree
     [searchValue]="queryValue"
     (itemSelected)="setBoardSelect($event)">
@@ -156,6 +155,8 @@ export interface TabArticle {
   width: 200px;
   height: calc(100vh - 140px);
   float: left;
+  margin-right: 8px;
+  overflow: auto;
   /*background-color:burlywood*/
 }
 

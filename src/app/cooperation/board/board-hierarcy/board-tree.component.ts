@@ -1,61 +1,62 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, Input, inject, viewChild, output } from '@angular/core';
+import { Component, inject, viewChild, output, input } from '@angular/core';
 
 import { NzFormatEmitEvent, NzTreeComponent, NzTreeModule } from 'ng-zorro-antd/tree';
 
-import { ResponseList } from '../../../core/model/response-list';
+import { ResponseList } from 'src/app/core/model/response-list';
 import { BoardHierarchy } from './board-hierarchy.model';
 import { BoardHierarcyService } from './board-hierarcy.service';
 
 
 @Component({
-  standalone: true,
   selector: 'app-board-tree',
+  standalone: true,
   imports: [
     CommonModule, NzTreeModule
   ],
   template: `
+    <!--{{items | json}}-->
+    <!--{{ searchValue() }}-->
     <nz-tree
       #treeCom
-      [nzData]="boardItems"
+      nzShowLine
+      [nzData]="items"
       [nzSelectedKeys]="selectedKeys"
-      [nzSearchValue]="searchValue"
+      [nzSearchValue]="searchValue()"
+      (nzSearchValueChange)="searchValueChange($event)"
       (nzClick)="nzClick($event)"
       (nzDblClick)="nzDbClick($event)">
   </nz-tree>
   `,
-  styles: ['']
+  styles: `
+  `
 })
-export class BoardTreeComponent implements OnInit {
+export class BoardTreeComponent {
 
   treeCom = viewChild.required(NzTreeComponent);
 
-  boardItems: BoardHierarchy[] = [];
+  protected items: BoardHierarchy[] = [];
   selectedKeys: string[] = [];
 
-  @Input() searchValue = '';
+  searchValue = input.required<string>();
 
   itemSelected = output<any>();
   itemDbClicked = output<any>();
 
-  private boardService = inject(BoardHierarcyService);
-
-  ngOnInit(): void {
-    console.log('BoardTreeComponent init');
-  }
+  #service = inject(BoardHierarcyService);
 
   getboardHierarchy(): void {
-    this.boardService
+    this.#service
         .getBoardHierarchy()
         .subscribe(
           (model: ResponseList<BoardHierarchy>) => {
               if ( model.total > 0 ) {
-                this.boardItems = model.data;
-                console.log(this.boardItems[0].key);
-                this.selectedKeys = [this.boardItems[0].key];
-                this.itemSelected.emit(this.boardItems[0]);
+                this.items = model.data;
+                console.log(this.items[0].key);
+                this.selectedKeys = [this.items[0].key];
+                this.itemSelected.emit(this.items[0]);
               } else {
-                this.boardItems = [];
+                this.items = [];
               }
 
               // title 노드 텍스트
@@ -74,6 +75,12 @@ export class BoardTreeComponent implements OnInit {
   public nzDbClick(event: NzFormatEmitEvent): void {
     const node = event.node?.origin;
     this.itemDbClicked.emit(node);
+  }
+
+  searchValueChange(event: NzFormatEmitEvent): void {
+    const keys = event.keys;
+
+    console.log(keys);
   }
 
 }
