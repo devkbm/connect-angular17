@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { NzTreeComponent, NzTreeModule, NzTreeNode } from 'ng-zorro-antd/tree';
 import { NzFormatEmitEvent } from 'ng-zorro-antd/tree';
 
-import { Component, OnInit, Output, EventEmitter, Input, inject, viewChild, input, output } from '@angular/core';
+import { Component, OnInit, Input, inject, viewChild, input, output } from '@angular/core';
 import { ResponseList } from 'src/app/core/model/response-list';
 
 import { MenuRoleHierarchy } from '../menu/menu-role-hierarchy.model';
@@ -11,13 +11,12 @@ import { MenuRoleMapping } from '../menu/menu-role-mapping.model';
 import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 
 import { MenuRoleService } from './menu-role.service';
-
-
+import { NzTreeNodeKey } from 'ng-zorro-antd/core/tree';
 
 @Component({
-  standalone: true,
   selector: 'app-menu-role-tree',
-  imports: [ CommonModule, FormsModule, NzTreeModule, NzInputSelectComponent ],
+  standalone: true,
+  imports: [CommonModule, FormsModule, NzTreeModule, NzInputSelectComponent],
   template: `
     <!--
     <button (click)="getCommonCodeHierarchy()">
@@ -26,7 +25,7 @@ import { MenuRoleService } from './menu-role.service';
     -->
     {{searchValue}}
     <!--{{nodeItems | json}}-->
-    {{saveNodes | json}}
+    <!--{{saveNodes | json}}-->
     {{defaultCheckedKeys | json}}
     <button (click)="getHierarchy()">조회</button>
     <button (click)="save()">저장</button>
@@ -36,7 +35,7 @@ import { MenuRoleService } from './menu-role.service';
         nzCheckable
         [nzData]="nodeItems"
         [nzSearchValue]="searchValue"
-
+        [nzCheckedKeys]="defaultCheckedKeys"
         (nzCheckBoxChange)="nzCheck($event)"
         (nzClick)="nzClick($event)">
     </nz-tree>
@@ -54,7 +53,7 @@ export class MenuRoleTreeComponent implements OnInit {
   saveNodes: MenuRoleMapping[] = [];
   saveNodeKeys = new Set<string>();
 
-  defaultCheckedKeys = ['1'];
+  defaultCheckedKeys: NzTreeNodeKey[] = [];
 
   @Input() searchValue = '';
 
@@ -75,6 +74,9 @@ export class MenuRoleTreeComponent implements OnInit {
             (model: ResponseList<MenuRoleHierarchy>) => {
                 if ( model.total > 0 ) {
                 this.nodeItems = model.data;
+
+                let items = this.nodeItems.flatMap(e => e.checked ? e.key : -1).filter(val => val !== -1);
+                this.defaultCheckedKeys = items;
                 } else {
                 this.nodeItems = [];
                 }
@@ -89,6 +91,9 @@ export class MenuRoleTreeComponent implements OnInit {
 
   nzCheck(event: NzFormatEmitEvent): void {
     console.log(this.treeComponent().getCheckedNodeList());
+    console.log(this.treeComponent().getHalfCheckedNodeList());
+
+    console.log(event);
     this.setSaveNodes();
   }
 
@@ -115,6 +120,10 @@ export class MenuRoleTreeComponent implements OnInit {
     */
     this.saveNodeKeys.clear();
     this.saveNodes = [];
+
+    // getCheckedNodeList() + getHalfCheckedNodeList() 로 변경해야함
+    //console.log(this.treeComponent().getCheckedNodeList());
+    //console.log(this.treeComponent().getHalfCheckedNodeList());
 
     const nodes: NzTreeNode[] = this.treeComponent().getCheckedNodeList();
     for (var node of nodes) {
