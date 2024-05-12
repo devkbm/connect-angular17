@@ -1,4 +1,4 @@
-import { Self, Optional, Component, ElementRef, Input, TemplateRef, OnInit, viewChild, input, model, effect } from '@angular/core';
+import { Self, Optional, Component, ElementRef, TemplateRef, viewChild, input, model, effect } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NgModel, NgControl, FormsModule } from '@angular/forms';
 import { NzFormControlComponent, NzFormModule } from 'ng-zorro-antd/form';
 import { ColorPickerModule } from 'ngx-color-picker';
@@ -6,8 +6,8 @@ import { ColorPickerModule } from 'ngx-color-picker';
 // https://zefoy.github.io/ngx-color-picker/
 
 @Component({
-  standalone: true,
   selector: 'app-nz-input-color-picker',
+  standalone: true,
   imports: [FormsModule, NzFormModule,ColorPickerModule],
   template: `
     <!--{{formField.errors | json}}-->

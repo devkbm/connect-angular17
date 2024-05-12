@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 
-import { Component, OnInit, ViewChild, Output, EventEmitter, Input, inject, viewChild, output } from '@angular/core';
+import { Component, OnInit, inject, viewChild, output, input } from '@angular/core';
 import { ResponseList } from 'src/app/core/model/response-list';
 import { DeptHierarchy } from './dept-hierarchy.model';
 
@@ -10,8 +10,8 @@ import { NzFormatEmitEvent, NzTreeComponent, NzTreeModule } from 'ng-zorro-antd/
 
 
 @Component({
-  standalone: true,
   selector: 'app-checkable-dept-tree',
+  standalone: true,
   imports: [
     CommonModule, NzTreeModule
   ],
@@ -22,31 +22,26 @@ import { NzFormatEmitEvent, NzTreeComponent, NzTreeModule } from 'ng-zorro-antd/
         nzCheckable
         [nzData]="nodeItems"
         [nzCheckedKeys]="defaultCheckedKeys"
-        [nzSearchValue]="searchValue"
+        [nzSearchValue]="searchValue()"
         (nzCheckBoxChange)="nzCheck($event)"
         (nzClick)="nzClick($event)">
     </nz-tree>
   `,
   styles: ['']
 })
-export class CheckableDeptTreeComponent implements OnInit {
+export class CheckableDeptTreeComponent {
 
     treeComponent = viewChild.required(NzTreeComponent);
 
     nodeItems: DeptHierarchy[] = [];
     defaultCheckedKeys: any = [''];
 
-    @Input()
-    searchValue = '';
+    searchValue = input.required<string>();
 
     itemSelected = output<any>();
     itemChecked = output<any>();
 
     private deptService = inject(DeptService);
-
-    ngOnInit(): void {
-        console.log('CheckableDeptTreeComponent init');
-    }
 
     public getDeptHierarchy(): void {
         this.deptService

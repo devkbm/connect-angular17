@@ -1,4 +1,4 @@
-import { Self, Optional, Component, Input, TemplateRef, ViewChild, OnInit, AfterViewInit, viewChild, input, effect } from '@angular/core';
+import { Self, Optional, Component,  TemplateRef, ViewChild, OnInit, AfterViewInit, viewChild, input, effect } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NgModel, NgControl, FormsModule } from '@angular/forms';
 import { NzFormControlComponent, NzFormModule } from 'ng-zorro-antd/form';
 import { NzDatePickerComponent, NzDatePickerModule } from 'ng-zorro-antd/date-picker';
@@ -6,8 +6,8 @@ import { NzDatePickerComponent, NzDatePickerModule } from 'ng-zorro-antd/date-pi
 import * as dateFns from "date-fns";
 
 @Component({
-  standalone: true,
   selector: 'app-nz-input-date',
+  standalone: true,
   imports: [FormsModule, NzFormModule, NzDatePickerModule],
   template: `
     <nz-form-item>

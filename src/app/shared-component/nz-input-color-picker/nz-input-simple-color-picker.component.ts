@@ -4,8 +4,8 @@ import { NzFormControlComponent, NzFormModule } from 'ng-zorro-antd/form';
 import { NgxColorsModule } from 'ngx-colors';
 
 @Component({
-  standalone: true,
   selector: 'app-nz-input-simple-color-picker',
+  standalone: true,
   imports: [FormsModule, NzFormModule, NgxColorsModule],
   template: `
     <nz-form-item>

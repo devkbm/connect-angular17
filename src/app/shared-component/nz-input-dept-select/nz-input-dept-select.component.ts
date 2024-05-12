@@ -1,4 +1,4 @@
-import { Component, Self, Optional, Input, TemplateRef, OnInit, input, model, effect, viewChild } from '@angular/core';
+import { Component, Self, Optional, TemplateRef, OnInit, input, model, effect, viewChild, inject } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NgModel, NgControl, FormsModule } from '@angular/forms';
 import { NzFormControlComponent, NzFormModule } from 'ng-zorro-antd/form';
 
@@ -9,8 +9,8 @@ import { NzInputDeptSelectModel } from './nz-input-dept-select.model';
 import { NzInputDeptSelectService } from './nz-input-dept-select.service';
 
 @Component({
-  standalone: true,
   selector: 'app-nz-input-dept-select',
+  standalone: true,
   imports: [FormsModule, NzFormModule, NzSelectModule],
   template: `
    <nz-form-item>
@@ -61,8 +61,9 @@ export class NzInputDeptSelectComponent implements ControlValueAccessor, OnInit 
 
   deptList: NzInputDeptSelectModel[] = [];
 
-  constructor(@Self()  @Optional() private ngControl: NgControl
-             ,private service: NzInputDeptSelectService ) {
+  private service = inject(NzInputDeptSelectService);
+
+  constructor(@Self()  @Optional() private ngControl: NgControl) {
     if (this.ngControl) {
       this.ngControl.valueAccessor = this;
     }

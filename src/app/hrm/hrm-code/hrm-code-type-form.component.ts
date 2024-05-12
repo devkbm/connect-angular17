@@ -33,12 +33,12 @@ import { existingHrmTypeValidator } from './hrm-code-type-duplication-validator'
     <form nz-form [formGroup]="fg" nzLayout="vertical">
       <!-- ERROR TEMPLATE-->
       <ng-template #errorTpl let-control>
-        <ng-container *ngIf="control.hasError('required')">
+        @if (control.hasError('required')) {
           필수 입력 값입니다.
-        </ng-container>
-        <ng-container *ngIf="control.hasError('exists')">
+        }
+        @if (control.hasError('exists')) {
           기존 코드가 존재합니다.
-        </ng-container>
+        }
       </ng-template>
 
       <!-- 1 row -->

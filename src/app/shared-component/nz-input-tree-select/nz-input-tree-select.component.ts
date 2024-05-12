@@ -5,8 +5,8 @@ import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/tree';
 import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 
 @Component({
-  standalone: true,
   selector: 'app-nz-input-tree-select',
+  standalone: true,
   imports: [FormsModule, NzFormModule, NzTreeSelectModule],
   template: `
    <nz-form-item>

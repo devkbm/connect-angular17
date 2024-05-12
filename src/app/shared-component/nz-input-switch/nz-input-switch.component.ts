@@ -1,11 +1,11 @@
-import { Self, Optional, Component, Input, TemplateRef, ViewChild, OnInit, viewChild, effect, input, model } from '@angular/core';
+import { Self, Optional, Component, TemplateRef, viewChild, effect, input, model } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, FormGroup, NgModel, NgControl, FormsModule } from '@angular/forms';
 import { NzFormControlComponent, NzFormModule } from 'ng-zorro-antd/form';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 
 @Component({
-  standalone: true,
   selector: 'app-nz-input-switch',
+  standalone: true,
   imports: [FormsModule, NzFormModule, NzSwitchModule],
   template: `
    <nz-form-item>

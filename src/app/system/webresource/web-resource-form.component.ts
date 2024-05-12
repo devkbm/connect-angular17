@@ -31,12 +31,12 @@ import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-text
     <form nz-form [formGroup]="fg" nzLayout="vertical">
       <!-- 폼 오류 메시지 템플릿 -->
       <ng-template #errorTpl let-control>
-        <ng-container *ngIf="control.hasError('required')">
-            필수 입력 값입니다.
-        </ng-container>
-        <ng-container *ngIf="control.hasError('exists')">
-            기존 코드가 존재합니다.
-        </ng-container>
+        @if (control.hasError('required')) {
+          필수 입력 값입니다.
+        }
+        @if (control.hasError('exists')) {
+          기존 코드가 존재합니다.
+        }
       </ng-template>
 
       <!-- 1 row -->

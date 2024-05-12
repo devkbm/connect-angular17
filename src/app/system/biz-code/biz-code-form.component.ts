@@ -34,9 +34,9 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 
       <!-- ERROR TEMPLATE-->
       <ng-template #errorTpl let-control>
-        <ng-container *ngIf="control.hasError('required')">
+        @if (control.hasError('required')) {
           필수 입력 값입니다.
-        </ng-container>
+        }
       </ng-template>
 
       <!-- 1 row -->

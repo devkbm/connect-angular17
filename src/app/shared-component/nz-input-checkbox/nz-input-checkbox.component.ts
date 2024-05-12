@@ -4,8 +4,8 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzFormControlComponent, NzFormModule } from 'ng-zorro-antd/form';
 
 @Component({
-  standalone: true,
   selector: 'app-nz-input-checkbox',
+  standalone: true,
   imports: [FormsModule, NzFormModule, NzCheckboxModule],
   template: `
    <nz-form-item>

@@ -4,8 +4,8 @@ import { NzFormControlComponent, NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 
 @Component({
-  standalone: true,
   selector: 'app-nz-input-number-custom',
+  standalone: true,
   imports: [FormsModule, NzFormModule, NzInputNumberModule],
   template: `
     <!--{{formField.errors | json}}-->

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Self, Optional, Component, Input, TemplateRef, ViewChild, OnInit, AfterViewInit, viewChild, effect, input, model } from '@angular/core';
+import { Self, Optional, Component, Input, TemplateRef, OnInit, viewChild, effect, input, model, inject } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NgModel, NgControl, FormsModule } from '@angular/forms';
 import { NzFormControlComponent, NzFormModule } from 'ng-zorro-antd/form';
 import { NzSelectModeType, NzSelectModule } from 'ng-zorro-antd/select';
@@ -63,8 +63,9 @@ export class NzInputSelectStaffComponent implements ControlValueAccessor, OnInit
   _disabled = false;
   _value = model();
 
-  constructor(@Self()  @Optional() private ngControl: NgControl,
-              private service: NzInputSelectStaffService) {
+  private service = inject(NzInputSelectStaffService);
+
+  constructor(@Self()  @Optional() private ngControl: NgControl) {
     if (this.ngControl) {
       this.ngControl.valueAccessor = this;
     }

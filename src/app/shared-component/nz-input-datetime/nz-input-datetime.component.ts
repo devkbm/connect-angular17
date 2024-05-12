@@ -12,8 +12,8 @@ export enum TimeFormat {
 }
 
 @Component({
-  standalone: true,
   selector: 'app-nz-input-datetime',
+  standalone: true,
   imports: [FormsModule, NzFormModule, NzDatePickerModule, NzTimePickerModule],
   template: `
     <!--{{formField.errors | json}}-->

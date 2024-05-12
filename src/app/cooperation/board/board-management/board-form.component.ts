@@ -70,9 +70,9 @@ import { FormBase, FormType } from 'src/app/core/form/form-base';
 
     <!-- ERROR TEMPLATE-->
     <ng-template #errorTpl let-control>
-      <ng-container *ngIf="control.hasError('required')">
+      @if (control.hasError('required')) {
         필수 입력 값입니다.
-      </ng-container>
+      }
     </ng-template>
 
     <form nz-form [formGroup]="fg" nzLayout="vertical">

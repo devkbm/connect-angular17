@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { SystemUserProfile, UserSessionService } from 'src/app/core/service/user-session.service';
@@ -16,14 +16,6 @@ import { NzCardModule } from 'ng-zorro-antd/card';
   ],
   template: `
     <div class="card">
-      <!--
-      <nz-avatar
-        [nzSrc]="profilePictureSrc"
-        nzIcon="user"
-        [nzSize]='48'>
-      </nz-avatar>
-      {{user?.staffName}}
--->
       <nz-card [nzBordered]="false">
         <nz-card-meta
           [nzAvatar]="avatarTemplate"
@@ -31,12 +23,14 @@ import { NzCardModule } from 'ng-zorro-antd/card';
           [nzDescription]="descTemplate">
         </nz-card-meta>
       </nz-card>
+
       <ng-template #avatarTemplate>
         <nz-avatar class="avatar" [nzShape]="'square'" [nzSize]='48' [nzSrc]="profilePictureSrc"></nz-avatar>
       </ng-template>
 
       <ng-template #titleTemplate>
-        {{profile?.staffName + '(' + profile?.userId + ')'}}
+        {{profile?.staffName + '(' + profile?.userId + ')'}} <br/>
+        {{profile?.session?.lastAccessedTime | date:"yyyy/MM/dd HH:mm:ss"}}
       </ng-template>
 
       <ng-template #descTemplate>
@@ -46,7 +40,7 @@ import { NzCardModule } from 'ng-zorro-antd/card';
   `,
   styles: [`
     .card {
-      width: 200px;
+      width: 300px;
       height: 100px;
       background-color: green;
       border: 1px solid rgb(232, 232, 232);
@@ -59,14 +53,14 @@ import { NzCardModule } from 'ng-zorro-antd/card';
     }
   `]
 })
-export class UserProfileComponent implements OnInit {
+export class UserProfileComponent {
 
   profilePictureSrc: any;
   profile?: SystemUserProfile;
 
   private sessionService = inject(UserSessionService);
 
-  ngOnInit() {
+  constructor() {
     this.profilePictureSrc = this.sessionService.getAvartarImageString();
     this.getMyInfo();
   }

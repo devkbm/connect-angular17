@@ -29,7 +29,9 @@ import { ResponseList } from '../core/model/response-list';
                 [nzSelected]="menu.selected"
                 (click)="moveToUrl(menu.url)"
               >
-                <span nz-icon [nzType]="menu.icon" *ngIf="menu.icon"></span>
+                @if (menu.icon) {
+                  <span nz-icon [nzType]="menu.icon"></span>
+                }
                 <span>{{ menu.title }}</span>
               </li>
             } @else {

@@ -13,7 +13,7 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
-import { UserProfileComponent } from 'src/app/system/user/user-profile.component';
+import { UserProfileComponent } from 'src/app/app-layout/user-profile/user-profile.component';
 import { SideMenuComponent } from 'src/app/app-layout/side-menu.component';
 
 @Component({

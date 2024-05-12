@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -50,16 +50,19 @@ export interface ButtonTemplate {
   }];
  */
 @Component({
-  standalone: true,
   selector: 'app-nz-buttons',
+  standalone: true,
   imports: [CommonModule, NzButtonModule, NzIconModule, NzPopconfirmModule, NzDividerModule],
   template: `
-    @for (btn of buttons; track $index) {
+    @for (btn of buttons(); track $index) {
       <div class="button-group">
         @if (btn.text !== '|' && btn.popConfirm === null) {
         <!-- nz-popconfirm을 사용하지 않을 경우 -->
         <button nz-button [nzDanger]="btn.isDanger" (click)="btn?.click === undefined ? true : btn?.click($event)">
-          <span nz-icon [nzType]="btn.nzType" nzTheme="outline" *ngIf="btn.nzType"></span>{{btn.text}}
+          @if (btn.nzType) {
+            <span nz-icon [nzType]="btn.nzType" nzTheme="outline"></span>
+          }
+          {{btn.text}}
         </button>
         }
 
@@ -69,14 +72,19 @@ export interface ButtonTemplate {
           nz-popconfirm [nzPopconfirmTitle]="btn.popConfirm?.title" [nzOkType]="btn.isDanger === true ? 'danger' : 'primary'"
           (nzOnConfirm)="btn.popConfirm?.confirmClick === undefined ? true : btn.popConfirm?.confirmClick()"
           (nzOnCancel)="btn.popConfirm?.cancelClick === undefined ? true : btn.popConfirm?.cancelClick()">
-          <span nz-icon [nzType]="btn.nzType" nzTheme="outline" *ngIf="btn.nzType"></span>{{btn.text}}
+          @if (btn.nzType) {
+            <span nz-icon [nzType]="btn.nzType" nzTheme="outline"></span>
+          }
+          {{btn.text}}
         </button>
         }
 
-        <nz-divider nzType="vertical" *ngIf="btn.text === '|'"></nz-divider>
+        @if (btn.text === '|') {
+          <nz-divider nzType="vertical"></nz-divider>
+        }
 
         <!-- isAutoDevider가 true일 경우 버튼마다 devider 생성 -->
-        @if (this.isAutoDevider && buttons.length > 0 && $index < buttons.length - 1) {
+        @if (this.isAutoDevider() && buttons.length > 0 && $index < buttons.length - 1) {
           <nz-divider nzType="vertical"></nz-divider>
         }
       </div>
@@ -88,12 +96,8 @@ export interface ButtonTemplate {
     }
   `]
 })
-export class NzButtonsComponent implements OnInit {
+export class NzButtonsComponent {
 
-  @Input() buttons!: ButtonTemplate[];
-  @Input() isAutoDevider: boolean = true;
-
-  ngOnInit() {
-  }
-
+  buttons = input.required<ButtonTemplate[]>();
+  isAutoDevider = input<boolean>();
 }

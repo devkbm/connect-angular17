@@ -13,7 +13,6 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzPageHeaderCustomComponent } from 'src/app/shared-component/nz-page-header-custom/nz-page-header-custom.component';
 import { CheckableDeptTreeComponent } from './checkable-dept-tree.component';
-import { DeptSelectComponent } from './dept-select.component';
 
 @Component({
   selector: 'app-dept',
@@ -29,7 +28,6 @@ import { DeptSelectComponent } from './dept-select.component';
     NzDividerModule,
     NzPageHeaderCustomComponent,
     DeptTreeComponent,
-    DeptSelectComponent,
     CheckableDeptTreeComponent,
     DeptFormComponent
   ],

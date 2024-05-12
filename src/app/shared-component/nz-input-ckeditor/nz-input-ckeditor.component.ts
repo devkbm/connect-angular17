@@ -1,4 +1,4 @@
-import { Self, Optional, Component, Input, TemplateRef, HostBinding, viewChild, effect, input, model } from '@angular/core';
+import { Self, Optional, Component, TemplateRef, HostBinding, viewChild, effect, input, model } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NgModel, NgControl, FormsModule } from '@angular/forms';
 import { NzFormControlComponent, NzFormModule } from 'ng-zorro-antd/form';
 
@@ -16,8 +16,8 @@ import { MyUploadAdapter } from './my-upload-adapter';
 // https://ckeditor.com/ckeditor-5/online-builder/
 
 @Component({
-  standalone: true,
   selector: 'app-nz-input-ckeditor',
+  standalone: true,
   imports: [FormsModule, NzFormModule, CKEditorModule],
   template: `
    <nz-form-item>
@@ -56,7 +56,7 @@ export class NzInputCkeditorComponent implements ControlValueAccessor {
   placeholder = input<string>('');
 
   @HostBinding("style.--height")
-  @Input() height: string = '100px';
+  height = input<string>('100px');
 
   nzErrorTip = input<string | TemplateRef<{$implicit: AbstractControl | NgModel;}>>();
 

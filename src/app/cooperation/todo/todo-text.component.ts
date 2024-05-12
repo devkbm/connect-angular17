@@ -31,7 +31,6 @@ import { TodoModel } from './todo.model';
 })
 export class TodoTextComponent {
 
-  //@Input({required: true}) todo!: TodoModel;
   todo = model.required<TodoModel>();
 
   stateChanged = output<any>();

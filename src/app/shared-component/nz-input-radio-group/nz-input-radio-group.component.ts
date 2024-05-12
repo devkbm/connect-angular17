@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Self, Optional, Component, Input, TemplateRef, ViewChild, OnInit, viewChild } from '@angular/core';
+import { Self, Optional, Component, Input, TemplateRef, OnInit, viewChild } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NgModel, NgControl, FormsModule } from '@angular/forms';
 import { NzFormControlComponent, NzFormModule } from 'ng-zorro-antd/form';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 @Component({
-  standalone: true,
   selector: 'app-nz-input-radio-group',
+  standalone: true,
   imports: [CommonModule, FormsModule, NzFormModule, NzRadioModule],
   template: `
    <nz-form-item>

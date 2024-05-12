@@ -1,4 +1,4 @@
-import { Self, Optional, Component, ElementRef, Input, TemplateRef, ViewChild, OnInit, AfterViewInit, viewChild, effect, input, model } from '@angular/core';
+import { Self, Optional, Component, ElementRef, TemplateRef, viewChild, effect, input, model } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NgModel, NgControl, FormsModule } from '@angular/forms';
 import { NzFormModule, NzFormControlComponent } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -9,8 +9,8 @@ export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
 // https://www.npmjs.com/package/ngx-mask
 
 @Component({
-  standalone: true,
   selector: 'app-nz-input-mobile',
+  standalone: true,
   imports: [FormsModule, NzFormModule, NzInputModule, NgxMaskDirective],
   providers: [
     provideNgxMask()

@@ -22,7 +22,7 @@ import { NzSearchAreaComponent } from 'src/app/shared-component/nz-search-area/n
 import { UserFormComponent } from './user-form.component';
 import { UserImageUploadComponent } from './user-image-upload.component';
 import { UserPopupComponent } from './user-popup.component';
-import { UserProfileComponent } from './user-profile.component';
+import { UserProfileComponent } from '../../app-layout/user-profile/user-profile.component';
 
 @Component({
   selector: 'app-user',

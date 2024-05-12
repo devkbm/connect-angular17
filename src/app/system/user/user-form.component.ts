@@ -40,15 +40,15 @@ import { GlobalProperty } from 'src/app/core/global-property';
     <form nz-form [formGroup]="fg" nzLayout="vertical">
 
       <ng-template #errorTpl let-control>
-        <ng-container *ngIf="control.hasError('required')">
+        @if (control.hasError('required')) {
           필수 입력 값입니다.
-        </ng-container>
-        <ng-container *ngIf="control.hasError('exists')">
+        }
+        @if (control.hasError('exists')) {
           기존 아이디가 존재합니다.
-        </ng-container>
-        <ng-container *ngIf="control.hasError('email')">
+        }
+        @if (control.hasError('email')) {
           이메일을 확인해주세요.
-        </ng-container>
+        }
       </ng-template>
 
       <!-- 1 row -->

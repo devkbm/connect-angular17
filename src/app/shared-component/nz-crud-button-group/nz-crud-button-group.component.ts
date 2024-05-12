@@ -1,17 +1,17 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, HostListener, Input, OnInit, Output, output } from '@angular/core';
+import { Component, HostListener, OnInit, input, output } from '@angular/core';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 
 @Component({
-  standalone: true,
   selector: 'app-nz-crud-button-group',
+  standalone: true,
   imports: [CommonModule, NzButtonModule, NzDividerModule, NzIconModule, NzPopconfirmModule],
   template:`
     <nz-button-group>
-      @if (searchVisible) {
+      @if (searchVisible()) {
         <button nz-button (click)="searchButtonClick($event)">
           <span nz-icon nzType="search"></span>
           조회
@@ -19,8 +19,8 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
         <nz-divider nzType="vertical"></nz-divider>
       }
 
-      @if (saveVisible) {
-        @if (isSavePopupConfirm) {
+      @if (saveVisible()) {
+        @if (isSavePopupConfirm()) {
           <!--저장 재확인할 경우 -->
           <button nz-button nzType="primary"
                   nz-popconfirm nzPopconfirmTitle="저장하시겠습니까?"
@@ -37,8 +37,8 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
         <nz-divider nzType="vertical"></nz-divider>
       }
 
-      @if (deleteVisible) {
-        @if (isDeletePopupConfirm) {
+      @if (deleteVisible()) {
+        @if (isDeletePopupConfirm()) {
         <!--삭제 재확인할 경우 -->
         <button  nz-button nzDanger
           nz-popconfirm nzPopconfirmTitle="삭제하시겠습니까?"
@@ -68,12 +68,12 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 })
 export class NzCrudButtonGroupComponent implements OnInit {
 
-  @Input() isSavePopupConfirm: boolean = true;
-  @Input() isDeletePopupConfirm: boolean = true;
+  isSavePopupConfirm = input<boolean>(true);
+  isDeletePopupConfirm = input<boolean>(true);
 
-  @Input() searchVisible: boolean = true;
-  @Input() saveVisible: boolean = true;
-  @Input() deleteVisible: boolean = true;
+  searchVisible = input<boolean>(true);
+  saveVisible = input<boolean>(true);
+  deleteVisible = input<boolean>(true);
 
   searchClick = output<any>();
   saveClick = output<any>();

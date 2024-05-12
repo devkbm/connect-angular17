@@ -18,7 +18,7 @@ import { AppLayoutService } from './app-layout.service';
 import { AppLayoutComponent } from './app-layout.component';
 
 import { UserPopupComponent } from 'src/app/system/user/user-popup.component';
-import { UserProfileComponent } from 'src/app/system/user/user-profile.component';
+import { UserProfileComponent } from 'src/app/app-layout/user-profile/user-profile.component';
 import { SideMenuComponent } from './side-menu.component';
 
 

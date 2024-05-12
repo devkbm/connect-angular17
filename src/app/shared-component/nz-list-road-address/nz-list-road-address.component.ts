@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, Output, EventEmitter, inject, input, model, output } from '@angular/core';
+import { Component, Input, OnInit, inject, input, model, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzListModule } from 'ng-zorro-antd/list';
@@ -14,7 +14,7 @@ import { RoadAddressService } from './road-address.service';
   imports: [CommonModule, FormsModule, NzInputModule, NzListModule, NzPaginationModule],
   providers: [NzMessageService],
   template: `
-    111- {{searchText}}
+    111- {{searchText()}}
     <div class="container" [style.height]="height">
       <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
         <input nz-input type="text" [(ngModel)]="searchText" (keyup.enter)="fetch()" placeholder="input search text"/>
@@ -46,8 +46,7 @@ import { RoadAddressService } from './road-address.service';
 })
 export class NzListRoadAddressComponent implements OnInit {
 
-  @Input() searchText: string = '';
-  //searchText = model('');
+  searchText = model('');
   height = input<string>('100%');
   countPerPage = input<number>(10);
 
@@ -78,7 +77,7 @@ export class NzListRoadAddressComponent implements OnInit {
 
   fetch() {
     let currentPage: number = this._page?.index ?? 1;
-    this.getList(this.searchText, currentPage, this.countPerPage());
+    this.getList(this.searchText(), currentPage, this.countPerPage());
   }
 
   getList(keyword: string, currentPage: number, countPerPage: number) {

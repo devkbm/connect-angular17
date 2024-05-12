@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NzTreeComponent, NzTreeModule } from 'ng-zorro-antd/tree';
 
-import { Component, OnInit, Output, EventEmitter, Input, inject, viewChild, output } from '@angular/core';
+import { Component, OnInit, inject, viewChild, output, input } from '@angular/core';
 import { ResponseList } from 'src/app/core/model/response-list';
 import { DeptHierarchy } from './dept-hierarchy.model';
 
@@ -11,8 +11,8 @@ import { NzFormatEmitEvent } from 'ng-zorro-antd/tree';
 
 
 @Component({
-  standalone: true,
   selector: 'app-dept-tree',
+  standalone: true,
   imports: [ CommonModule, NzTreeModule ],
   template: `
     <!--
@@ -20,11 +20,11 @@ import { NzFormatEmitEvent } from 'ng-zorro-antd/tree';
         조회
     </button>
     -->
-    {{searchValue}}
+    {{searchValue()}}
     <nz-tree
         #treeComponent
         [nzData]="nodeItems"
-        [nzSearchValue]="searchValue"
+        [nzSearchValue]="searchValue()"
         (nzClick)="nzClick($event)">
     </nz-tree>
   `,
@@ -36,8 +36,7 @@ export class DeptTreeComponent implements OnInit {
 
   nodeItems: DeptHierarchy[] = [];
 
-  @Input()
-  searchValue = '';
+  searchValue = input.required<string>();
 
   itemSelected = output<any>();
 
