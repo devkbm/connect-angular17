@@ -7,6 +7,7 @@ export interface MenuRoleHierarchy {
   isLeaf: boolean;
   children: MenuRoleHierarchy[];
 
+  halfChecked: boolean;
   menuGroupCode: string;
   menuCode: string;
   roleCode: string;

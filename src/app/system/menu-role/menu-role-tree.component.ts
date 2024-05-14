@@ -14,6 +14,16 @@ import { MenuRoleService } from './menu-role.service';
 import { NzTreeNodeKey } from 'ng-zorro-antd/core/tree';
 import { NzButtonComponent } from 'ng-zorro-antd/button';
 
+function convert(tree: MenuRoleHierarchy[]) {
+  return tree.reduce(function(acc: string[], o) {
+    if (o.checked)
+      acc.push(o.key);
+    if (o.children)
+      acc = acc.concat(convert(o.children));
+    return acc;
+  }, []);
+}
+
 @Component({
   selector: 'app-menu-role-tree',
   standalone: true,
@@ -74,8 +84,11 @@ export class MenuRoleTreeComponent {
               if ( model.total > 0 ) {
                 this.nodeItems = model.data;
 
-                this.defaultCheckedKeys = this.nodeItems.flatMap(e => [e, ...e.children || []]).map(e => e.checked ? e.key : -1).filter(val => val !== -1);
-                //console.log(this.defaultCheckedKeys);
+                //this.defaultCheckedKeys = this.nodeItems.flatMap(e => [e, ...e.children || []]).map(e => e.checked ? e.key : -1).filter(val => val !== -1);
+                this.defaultCheckedKeys = convert(this.nodeItems);
+                console.log(this.defaultCheckedKeys);
+                console.log(convert(this.nodeItems));
+
               } else {
                 this.nodeItems = [];
               }
@@ -114,6 +127,8 @@ export class MenuRoleTreeComponent {
     this.saveNodes = [];
 
     const nodes: NzTreeNode[] = this.treeComponent().getCheckedNodeList();
+    console.log("checked");
+    console.log(nodes);
     for (var node of nodes) {
       const menu_role = node.origin as MenuRoleHierarchy;
       this.saveNodeKeys.add(menu_role.menuGroupCode + menu_role.menuCode + menu_role.roleCode);
@@ -123,6 +138,29 @@ export class MenuRoleTreeComponent {
         roleCode: menu_role.roleCode
       });
 
+      var addChildren = (nodes: NzTreeNode[]) => {
+          for (var childNode of nodes) {
+            const child_menu_role = childNode.origin as MenuRoleHierarchy;
+            if (!this.saveNodeKeys.has(child_menu_role.menuGroupCode+ child_menu_role.menuCode + child_menu_role.roleCode)) {
+              this.saveNodeKeys.add(child_menu_role.menuGroupCode + child_menu_role.menuCode + child_menu_role.roleCode);
+              this.saveNodes.push({
+                menuGroupCode: child_menu_role.menuGroupCode,
+                menuCode: child_menu_role.menuCode,
+                roleCode: child_menu_role.roleCode
+              });
+            }
+
+            if (childNode.children) {
+              addChildren(childNode.children);
+            }
+        }
+      };
+
+      if (node.children !== null) {
+        addChildren(node.children);
+      }
+
+      /*
       if (node.children !== null) {
         for (var childNode of node.children) {
           const child_menu_role = childNode.origin as MenuRoleHierarchy;
@@ -136,11 +174,14 @@ export class MenuRoleTreeComponent {
           }
         }
       }
+      */
       //console.log(menu_role.children);
     }
 
     // 하위 노드 중 일부만 선택(HalfChecked)되어있을 경우 상위 노드도 포함
     const halfCheckedNodes: NzTreeNode[] = this.treeComponent().getHalfCheckedNodeList();
+    console.log("halfCheckedNodes");
+    console.log(halfCheckedNodes);
     for (var node of halfCheckedNodes) {
       const menu_role = node.origin as MenuRoleHierarchy;
       if (!this.saveNodeKeys.has(menu_role.menuGroupCode+ menu_role.menuCode + menu_role.roleCode)) {
