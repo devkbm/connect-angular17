@@ -6,18 +6,20 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 
 import { TodoModel } from './todo.model';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'app-todo-text',
   standalone: true,
-  imports: [CommonModule, FormsModule, NzCheckboxModule, NzButtonModule],
+  imports: [CommonModule, FormsModule, NzCheckboxModule, NzButtonModule, NzIconModule],
   template: `
     <label nz-checkbox [(ngModel)]="todo().isCompleted" (change)="changeState()"></label>
     <label (click)="toggleState()" [class.line-break]="todo().isCompleted"> {{ todo().todo }} </label>
-    <button nz-button nzType="primary" nzDanger (click)="deleteTodo()">delete</button>
+    <button nz-button nzType="primary" nzDanger (click)="deleteTodo()"><span nz-icon nzType="delete" nzTheme="outline"></span></button>
   `,
   styles: `
     :host {
+      padding-left: 5px;
       display: block;
       /*padding: 16px;*/
       color: darkgray;

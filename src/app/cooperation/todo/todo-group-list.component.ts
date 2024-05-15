@@ -23,7 +23,7 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
         [contextMenu]="basicMenu()" [contextMenuValue]="todoGroup"
         (click)="selectTodoGroup(todoGroup.pkTodoGroup)">
         {{todoGroup.todoGroupName}}
-        <label nz-checkbox [(ngModel)]="todoGroup.isSelected" ></label>
+        <label nz-checkbox [(ngModel)]="todoGroup.isSelected" (ngModelChange)="selectTodoGroup(todoGroup.pkTodoGroup)" ></label>
       </div>
 
       <context-menu menuClass="custom-style">
@@ -146,6 +146,19 @@ export class TodoGroupListComponent implements OnInit {
   }
 
   selectTodoGroup(pkTodoGroup: string): void {
+    for (const todoGroup of this.todoGroupList) {
+      // 선택되지 않은 TodoGroup 속성 변경
+      /*
+      if (todoGroup.pkTodoGroup === pkTodoGroup) {
+        todoGroup.isSelected = true;
+      } else {
+        todoGroup.isSelected = false;
+      }
+      */
+     // 선택되지 않은 TodoGroup 속성 변경
+      todoGroup.pkTodoGroup === pkTodoGroup ? todoGroup.isSelected = true : todoGroup.isSelected = false;
+    }
+
     this.onSelectedTodoGroup.emit(pkTodoGroup);
   }
 
