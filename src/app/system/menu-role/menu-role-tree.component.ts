@@ -131,22 +131,22 @@ export class MenuRoleTreeComponent {
     console.log(nodes);
     for (var node of nodes) {
       const menu_role = node.origin as MenuRoleHierarchy;
-      this.saveNodeKeys.add(menu_role.menuGroupCode + menu_role.menuCode + menu_role.roleCode);
+      this.saveNodeKeys.add(menu_role.menuGroupCode + menu_role.menuCode + this.roleCode());
       this.saveNodes.push({
         menuGroupCode: menu_role.menuGroupCode,
         menuCode: menu_role.menuCode,
-        roleCode: menu_role.roleCode
+        roleCode: this.roleCode()
       });
 
       var addChildren = (nodes: NzTreeNode[]) => {
           for (var childNode of nodes) {
             const child_menu_role = childNode.origin as MenuRoleHierarchy;
-            if (!this.saveNodeKeys.has(child_menu_role.menuGroupCode+ child_menu_role.menuCode + child_menu_role.roleCode)) {
-              this.saveNodeKeys.add(child_menu_role.menuGroupCode + child_menu_role.menuCode + child_menu_role.roleCode);
+            if (!this.saveNodeKeys.has(child_menu_role.menuGroupCode+ child_menu_role.menuCode + this.roleCode())) {
+              this.saveNodeKeys.add(child_menu_role.menuGroupCode + child_menu_role.menuCode + this.roleCode());
               this.saveNodes.push({
                 menuGroupCode: child_menu_role.menuGroupCode,
                 menuCode: child_menu_role.menuCode,
-                roleCode: child_menu_role.roleCode
+                roleCode: this.roleCode()
               });
             }
 
@@ -184,12 +184,12 @@ export class MenuRoleTreeComponent {
     console.log(halfCheckedNodes);
     for (var node of halfCheckedNodes) {
       const menu_role = node.origin as MenuRoleHierarchy;
-      if (!this.saveNodeKeys.has(menu_role.menuGroupCode+ menu_role.menuCode + menu_role.roleCode)) {
-        this.saveNodeKeys.add(menu_role.menuGroupCode + menu_role.menuCode + menu_role.roleCode);
+      if (!this.saveNodeKeys.has(menu_role.menuGroupCode+ menu_role.menuCode + this.roleCode())) {
+        this.saveNodeKeys.add(menu_role.menuGroupCode + menu_role.menuCode + this.roleCode());
         this.saveNodes.push({
           menuGroupCode: menu_role.menuGroupCode,
           menuCode: menu_role.menuCode,
-          roleCode: menu_role.roleCode
+          roleCode: this.roleCode()
         });
       }
     }
