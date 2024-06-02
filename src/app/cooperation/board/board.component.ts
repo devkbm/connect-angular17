@@ -265,8 +265,10 @@ export class BoardComponent implements AfterViewInit {
 
   // 게시글 등록 폼 팝업으로 오픈
   popupNewArticle() {
+    const boardId = btoa(this.drawer.board.initLoadId);
+
     const url = this.router.serializeUrl(
-      this.router.createUrlTree([`/article-write`, this.drawer.board.initLoadId])  // /grw/boarda
+      this.router.createUrlTree([`/article-write`, boardId])  // /grw/boarda
     );
     const popOption = 'scrollbars=yes, menubar=no, resizable=no, top=0, left=0, width=800, height=800';
     var windowObjectReference = this.winRef.nativeWindow.open(url, '_blank', popOption);
@@ -274,8 +276,11 @@ export class BoardComponent implements AfterViewInit {
   }
 
   popupEditArticle(article: ArticleList) {
+    const boardId = btoa(this.drawer.board.initLoadId);
+    const articleId = btoa(article.articleId);
+
     const url = this.router.serializeUrl(
-      this.router.createUrlTree([`/article-edit`, this.drawer.board.initLoadId, article.articleId])  // /grw/boarda
+      this.router.createUrlTree([`/article-edit`, boardId, articleId])  // /grw/boarda
     );
     const popOption = 'scrollbars=yes, menubar=no, resizable=no, top=0, left=0, width=800, height=800';
     var windowObjectReference = this.winRef.nativeWindow.open(url, '_blank', popOption);
@@ -310,9 +315,11 @@ export class BoardComponent implements AfterViewInit {
 
   //popupArticleView(article: ArticleList) {
   popupArticleView(articleId: string) {
+    const articleIdParam = btoa(articleId);
+
     const url = this.router.serializeUrl(
       //this.router.createUrlTree([`/article-view`, {article: JSON.stringify(article)}])  // /grw/boarda
-      this.router.createUrlTree([`/article-view`, {id: articleId}])  // /grw/boarda
+      this.router.createUrlTree([`/article-view`, {id: articleIdParam}])  // /grw/boarda
     );
     const popOption = 'scrollbars=yes, menubar=no, resizable=no, top=0, left=0, width=800, height=800';
     var windowObjectReference = this.winRef.nativeWindow.open(url, '_blank', popOption);
