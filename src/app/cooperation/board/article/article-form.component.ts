@@ -283,6 +283,12 @@ export class ArticleFormComponent extends FormBase implements OnInit, AfterViewI
       .subscribe(
         (model: ResponseObject<Article>) => {
           this.formDeleted.emit(this.fg.getRawValue());
+
+          // 팝업 호출한 경우 재조회 후 팝업 종료
+          if (window.opener) {
+            window.opener.postMessage(this.boardId);
+            window.close();
+          }
         }
       );
   }

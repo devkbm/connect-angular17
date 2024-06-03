@@ -46,7 +46,7 @@ import { ResponseSpringslice } from 'src/app/core/model/response-springslice';
       </nz-list>
       -->
 
-      {{this.pageable | json}}
+      <!--{{this.pageable | json}}-->
       @for (article of articles; track article.articleId; let idx = $index) {
         <app-article-list-row
           [article]="article"

@@ -214,7 +214,7 @@ export class BoardComponent implements AfterViewInit {
 
     window.addEventListener('message', (event) => {
       // 팝업에서 온 메시지가 아니라면 아무 작업도 하지 않는다.
-      //if (event.origin !== 'http://example.com') {
+      //if (event.origin !== 'http://localhost:4200') {
       //  return;
       //}
 
@@ -222,7 +222,7 @@ export class BoardComponent implements AfterViewInit {
       //console.log(event.data);
       //console.log(event);
       // BoardId가 저장한 게시글의 boardId가 일치하면 재조회
-      if (this.drawer.board.initLoadId == event.data) {
+      if (btoa(this.drawer.board.initLoadId) === event.data) {
         this.getArticleGridData();
       }
     }, false);
