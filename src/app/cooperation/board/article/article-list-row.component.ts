@@ -2,6 +2,8 @@ import { Component, Signal, computed, input, output, signal } from '@angular/cor
 import { ArticleList } from './article-list.model';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { GlobalProperty } from 'src/app/core/global-property';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 
 @Component({
     selector: 'app-article-list-row',
@@ -9,11 +11,20 @@ import { GlobalProperty } from 'src/app/core/global-property';
     template: `
     <div>
       <nz-avatar class="avatar" nzShape="square" [nzSize]='24' [nzSrc]="imageSrc()"/>
-      {{article()?.articleId}} - {{article()?.writerName}} - {{article()?.hitCount}} - {{article()?.isRead}}<br>
+      {{article()?.writerName}} ·
+      <span nz-icon nzType="eye" nzTheme="outline"></span> {{article()?.hitCount}}
+      @if (article()?.fileCount ?? false) {
+        · <span nz-icon nzType="file" nzTheme="outline"></span> {{article()?.fileCount}}
+      }
+      <br/>
+      <!--
+      {{article()?.isRead}} -
+      {{article()?.articleId}} -
+      -->
       <a [class.text-bold]="!article()?.isRead" (click)="onViewClicked(article)">{{article()?.title}}</a>
-
+      &nbsp;
       @if (article()?.editable) {
-        <button (click)="onEditClicked(article)">수정</button>
+        <button nz-button nzShape="circle" (click)="onEditClicked(article)"><span nz-icon nzType="edit" nzTheme="outline"></span></button>
       }
     </div>
     `,
@@ -35,7 +46,7 @@ import { GlobalProperty } from 'src/app/core/global-property';
       text-decoration: underline;
     }
     `,
-    imports: [ NzAvatarModule ]
+    imports: [ NzAvatarModule, NzButtonModule, NzIconModule ]
 })
 export class ArticleListRowComponent {
 
