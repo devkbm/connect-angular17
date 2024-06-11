@@ -11,12 +11,15 @@ import { MenuGroup } from '../menu/menu-group.model';
 import { Role } from '../role/role.model';
 import { UserService } from '../user/user.service';
 import { MenuService } from '../menu/menu.service';
+import { MenuGroupGridComponent } from '../menu/menu-group-grid.component';
+import { RoleGridComponent } from '../role/role-grid.component';
 
 @Component({
   selector: 'app-menu-role',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, NzInputSelectComponent, MenuRoleTreeComponent
+    CommonModule, FormsModule, NzInputSelectComponent,
+    MenuRoleTreeComponent, MenuGroupGridComponent, RoleGridComponent
   ],
   template: `
     <div nz-col nzSpan="12">
@@ -36,12 +39,71 @@ import { MenuService } from '../menu/menu.service';
       </app-nz-input-select>
     </div>
 
-    <app-menu-role-tree
-      [menuGroupCode]="menuGroup.selectedItem"
-      [roleCode]="role.selectedItem">
-    </app-menu-role-tree>
+    <div class="page-content">
+      <app-menu-group-grid class="grid1" (rowClicked)="menuGroupClicked($event)"></app-menu-group-grid>
+
+      <app-role-grid class="grid2" (rowClicked)="roleClicked($event)"></app-role-grid>
+
+      <app-menu-role-tree class="tree"
+        [menuGroupCode]="menuGroup.selectedItem"
+        [roleCode]="role.selectedItem">
+      </app-menu-role-tree>
+    </div>
   `,
   styles: `
+  :host {
+    --page-header-height: 98px;
+    --page-search-height: 46px;
+    --page-content-title-height: 26px;
+    --page-content-title-margin-height: 6px;
+    --page-content-margin-height: 6px;
+  }
+
+  .page-header {
+    height: var(--page-header-height);
+  }
+
+  .page-search {
+    height: var(--page-search-height);
+  }
+
+  .page-content-title {
+    height: var(--page-content-title-height);
+  }
+
+  .page-content {
+    margin-top: var(--page-content-margin-height);
+    height: calc(100vh - (
+                          var(--app-header-height) +
+                          var(--app-footer-height) +
+                          var(--page-header-height) +
+                          var(--page-search-height) +
+                          var(--page-content-margin-height)
+                        )
+                );
+    /*height: 900px;*/
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1.5fr;
+    column-gap: 12px;
+    row-gap: 12px;
+    grid-template-areas:
+      "grid1  tree"
+      "grid2  tree";
+  }
+
+  .grid1 {
+    grid-area: grid1;
+  }
+
+  .grid2 {
+    grid-area: grid2;
+  }
+
+  .tree {
+    grid-area: tree;
+  }
+
   `
 })
 export class MenuRoleComponent {
@@ -79,6 +141,16 @@ export class MenuRoleComponent {
             }
           }
         );
+  }
+
+  menuGroupClicked(args: any) {
+    console.log(args);
+    this.menuGroup.selectedItem = args.menuGroupCode;
+  }
+
+  roleClicked(args: any) {
+    console.log(args);
+    this.role.selectedItem = args.roleCode;
   }
 
 }

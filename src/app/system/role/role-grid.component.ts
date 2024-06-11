@@ -15,33 +15,23 @@ import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-rende
 @Component({
   selector: 'app-role-grid',
   standalone: true,
-  imports: [ CommonModule, AgGridModule, NzSpinModule ],
+  imports: [ CommonModule, AgGridModule ],
   template: `
-    <nz-spin nzTip="Loading..." [nzSpinning]="isLoading">
-      <ag-grid-angular
-        [ngStyle]="style"
-        class="ag-theme-balham-dark"
-        rowSelection="single"
-        [rowData]="roleList"
-        [columnDefs]="columnDefs"
-        [defaultColDef]="defaultColDef"
-        [getRowId]="getRowId"
-        (gridSize)="test($event)"
-        (gridReady)="onGridReady($event)"
-        (rowClicked)="rowClickedEvent($event)"
-        (rowDoubleClicked)="rowDbClicked($event)">
-      </ag-grid-angular>
-    </nz-spin>
+    <ag-grid-angular
+      [ngStyle]="style"
+      class="ag-theme-balham-dark"
+      rowSelection="single"
+      [rowData]="roleList"
+      [columnDefs]="columnDefs"
+      [defaultColDef]="defaultColDef"
+      [getRowId]="getRowId"
+      (gridSize)="test($event)"
+      (gridReady)="onGridReady($event)"
+      (rowClicked)="rowClickedEvent($event)"
+      (rowDoubleClicked)="rowDbClicked($event)">
+    </ag-grid-angular>
   `,
   styles: [`
-    nz-spin {
-      height:100%
-    }
-    /** nz-spin component 하위 엘리먼트 크기 조정 */
-    ::ng-deep .ant-spin-container.ng-star-inserted {
-      height: 100%;
-    }
-
     /* 헤더 텍스트를 중앙으로 변경 - ::ng-deep대신 다른 방법이 있는지 확인 필요 */
     :host::ng-deep .header-center .ag-cell-label-container { flex-direction: row; justify-content: center; }
     :host::ng-deep .header-center .ag-header-cell-label { flex-direction: row; justify-content: center; }
@@ -49,12 +39,10 @@ import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-rende
     /* 헤더 텍스트를 우측으로 변경 - ::ng-deep대신 다른 방법이 있는지 확인 필요 */
     :host::ng-deep .header-right .ag-cell-label-container { flex-direction: row; }
     :host::ng-deep .header-right .ag-header-cell-label { flex-direction: row-reverse; }
-
   `]
 })
 export class RoleGridComponent extends AggridFunction implements OnInit {
 
-  isLoading: boolean = false;
   roleList: Role[] = [];
 
   rowClicked = output<any>();
@@ -111,7 +99,6 @@ export class RoleGridComponent extends AggridFunction implements OnInit {
   }
 
   getList(params?: any): void {
-    this.isLoading = true;
     this.service
         .getRoleList(params)
         .subscribe(
@@ -122,7 +109,6 @@ export class RoleGridComponent extends AggridFunction implements OnInit {
             } else {
               this.roleList = [];
             }
-            this.isLoading = false;
             this.appAlarmService.changeMessage(model.message);
           }
         );
