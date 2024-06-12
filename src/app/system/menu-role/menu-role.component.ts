@@ -84,7 +84,7 @@ import { RoleGridComponent } from '../role/role-grid.component';
     /*height: 900px;*/
     display: grid;
     grid-template-rows: 1fr 1fr;
-    grid-template-columns: 1fr 1.5fr;
+    grid-template-columns: 1fr 0.3fr;
     column-gap: 12px;
     row-gap: 12px;
     grid-template-areas:

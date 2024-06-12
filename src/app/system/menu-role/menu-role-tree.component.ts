@@ -31,10 +31,11 @@ function convert(tree: MenuRoleHierarchy[]) {
   template: `
     <!--{{defaultCheckedKeys | json}}-->
     <!--{{saveNodes | json}}-->
-    <button nz-button (click)="getHierarchy()">조회</button>
-    <button nz-button (click)="save()">저장</button>
-
+    <!--{{menuGroupCode()}} - {{roleCode()}}-->
+    <!--<button nz-button (click)="getHierarchy()">조회</button>-->
+    메뉴-롤 설정
     <nz-tree
+        class="body"
         #treeComponent
         nzCheckable
         [nzData]="nodeItems"
@@ -43,10 +44,25 @@ function convert(tree: MenuRoleHierarchy[]) {
         (nzCheckBoxChange)="nzCheck($event)"
         (nzClick)="nzClick($event)">
     </nz-tree>
-    <!--{{menuGroupCode()}} - {{roleCode()}}-->
 
+    <div class="footer">
+      <button nz-button (click)="save()">저장</button>
+    </div>
   `,
   styles: `
+    :host {
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    .body {
+      flex: 1;
+    }
+
+    .footer {
+      text-align: right;
+    }
   `
 })
 export class MenuRoleTreeComponent {
