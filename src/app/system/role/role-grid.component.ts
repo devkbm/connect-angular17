@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { AgGridModule } from 'ag-grid-angular';
-import { NzSpinModule } from 'ng-zorro-antd/spin';
 
-import { Component, OnInit, Output, EventEmitter, inject, output } from '@angular/core';
+import { Component, OnInit, inject, output } from '@angular/core';
 
 import { AppAlarmService } from 'src/app/core/service/app-alarm.service';
 import { AggridFunction } from 'src/app/core/grid/aggrid-function';
@@ -79,15 +78,29 @@ export class RoleGridComponent extends AggridFunction implements OnInit {
           cellStyle: {'text-align': 'center'}
         },
         {
-          headerName: '권한코드',
+          headerName: '롤코드',
           headerClass: 'header-center',
           field: 'roleCode',
           suppressSizeToFit: true,
           width: 100
-      },
+        },
+        {
+          headerName: '롤명',
+          headerClass: 'header-center',
+          field: 'roleName',
+          suppressSizeToFit: true,
+          width: 100
+        },
         {
           headerName: '설명',
           field: 'description'
+        },
+        {
+          headerName: '메뉴그룹코드',
+          headerClass: 'header-center',
+          field: 'menuGroupCode',
+          suppressSizeToFit: true,
+          width: 100
         }
     ];
 

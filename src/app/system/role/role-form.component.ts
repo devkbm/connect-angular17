@@ -13,14 +13,18 @@ import { RoleService } from './role.service';
 import { NzInputTextComponent } from 'src/app/shared-component/nz-input-text/nz-input-text.component';
 import { NzInputTextareaComponent } from 'src/app/shared-component/nz-input-textarea/nz-input-textarea.component';
 import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-button-group/nz-crud-button-group.component';
+import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 
+import { ResponseList } from 'src/app/core/model/response-list';
+import { MenuService } from '../menu/menu.service';
+import { MenuGroup } from '../menu/menu-group.model';
 
 @Component({
   selector: 'app-role-form',
   standalone: true,
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule,
-    NzInputTextComponent, NzInputTextareaComponent, NzCrudButtonGroupComponent
+    NzInputTextComponent, NzInputTextareaComponent, NzCrudButtonGroupComponent, NzInputSelectComponent
   ],
   template: `
     {{fg.getRawValue() | json}} - {{fg.valid}}
@@ -37,18 +41,28 @@ import { NzCrudButtonGroupComponent } from 'src/app/shared-component/nz-crud-but
       </ng-template>
 
       <div class="card-1">
-        <!--권한 필드-->
         <app-nz-input-text #roleCode
           formControlName="roleCode" itemId="roleCode"
-          placeholder="권한코드를 입력해주세요."
-          [required]="true" [nzErrorTip]="errorTpl">권한코드
+          placeholder="롤 코드를 입력해주세요."
+          [required]="true" [nzErrorTip]="errorTpl">롤 코드
         </app-nz-input-text>
 
-        <!--설명 필드-->
+        <app-nz-input-text
+          formControlName="roleName" itemId="roleName"
+          placeholder="롤 명을 입력해주세요."
+          [required]="false" [nzErrorTip]="errorTpl">롤 명
+        </app-nz-input-text>
+
+        <app-nz-input-select
+            formControlName="menuGroupCode" itemId="menuGroupCode"
+            [options]="menuGroupList" [opt_value]="'menuGroupCode'" [opt_label]="'menuGroupName'"
+            [placeholder]="'Please select'" [nzErrorTip]="errorTpl" [required]="true">메뉴그룹
+          </app-nz-input-select>
+
         <app-nz-input-textarea
           formControlName="description" itemId="description"
           placeholder="권한에 대한 설명을 입력해주세요."
-          [rows]="20"
+          [rows]="10"
           [required]="false" [nzErrorTip]="errorTpl">설명
         </app-nz-input-textarea>
       </div>
@@ -183,16 +197,23 @@ export class RoleFormComponent extends FormBase implements OnInit, AfterViewInit
   private service = inject(RoleService);
   private appAlarmService = inject(AppAlarmService);
 
+  private menuService = inject(MenuService);
+  menuGroupList: any;
+
   override fg = this.fb.group({
     roleCode : new FormControl<string | null>('', {
                                                     validators: Validators.required,
                                                     asyncValidators: [existingRoleValidator(this.service)],
                                                     updateOn: 'blur'
                                                   }),
-    description   : new FormControl<string | null>(null)
+    roleName      : new FormControl<string | null>(null),
+    description   : new FormControl<string | null>(null),
+    menuGroupCode : new FormControl<string | null>(null)
   });
 
   ngOnInit() {
+    this.getMenuGroupList();
+
     if (this.initLoadId) {
       this.get(this.initLoadId);
     } else {
@@ -272,6 +293,20 @@ export class RoleFormComponent extends FormBase implements OnInit, AfterViewInit
           (model: ResponseObject<Role>) => {
             this.appAlarmService.changeMessage(model.message);
             this.formDeleted.emit(this.fg.getRawValue());
+          }
+        );
+  }
+
+  getMenuGroupList(): void {
+    this.menuService
+        .getMenuGroupList()
+        .subscribe(
+          (model: ResponseList<MenuGroup>) => {
+            if (model.total > 0) {
+              this.menuGroupList = model.data;
+            } else {
+              this.menuGroupList = [];
+            }
           }
         );
   }

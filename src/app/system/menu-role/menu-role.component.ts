@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgModel } from '@angular/forms';
 
@@ -13,15 +13,19 @@ import { UserService } from '../user/user.service';
 import { MenuService } from '../menu/menu.service';
 import { MenuGroupGridComponent } from '../menu/menu-group-grid.component';
 import { RoleGridComponent } from '../role/role-grid.component';
+import { RoleFormComponent } from '../role/role-form.component';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 
 @Component({
   selector: 'app-menu-role',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, NzInputSelectComponent,
-    MenuRoleTreeComponent, MenuGroupGridComponent, RoleGridComponent
+    CommonModule, FormsModule, NzButtonModule, NzDrawerModule, NzInputSelectComponent,
+    MenuRoleTreeComponent, MenuGroupGridComponent, RoleGridComponent, RoleFormComponent
   ],
   template: `
+    <button nz-button (click)="openDrawer()">신규 롤</button>
     <div nz-col nzSpan="12">
       <app-nz-input-select
         [(ngModel)]="menuGroup.selectedItem"
@@ -49,6 +53,22 @@ import { RoleGridComponent } from '../role/role-grid.component';
         [roleCode]="role.selectedItem">
       </app-menu-role-tree>
     </div>
+
+
+    <nz-drawer
+      [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px'}"
+      [nzMaskClosable]="true"
+      [nzWidth]="720"
+      [nzVisible]="drawer.role.visible"
+      nzTitle="롤 등록"
+      (nzOnClose)="closeDrawer()">
+        <app-role-form #form *nzDrawerContent
+          [initLoadId]="drawer.role.initLoadId"
+          (formSaved)="getRoleList()"
+          (formDeleted)="getRoleList()"
+          (formClosed)="closeDrawer()">
+        </app-role-form>
+    </nz-drawer>
   `,
   styles: `
   :host {
@@ -114,6 +134,14 @@ export class MenuRoleComponent {
   private menuService = inject(MenuService);
   private userService = inject(UserService);
 
+  roleGrid = viewChild(RoleGridComponent);
+
+  drawer: {
+    role: { visible: boolean, initLoadId: any }
+  } = {
+    role: { visible: false, initLoadId: null }
+  }
+
   constructor() {
     this.getMenuGroupList();
     this.getRoleList();
@@ -146,11 +174,21 @@ export class MenuRoleComponent {
   menuGroupClicked(args: any) {
     console.log(args);
     this.menuGroup.selectedItem = args.menuGroupCode;
+    this.role.selectedItem = '';
+    this.roleGrid()?.getList({menuGroupCode: this.menuGroup.selectedItem});
   }
 
   roleClicked(args: any) {
     console.log(args);
     this.role.selectedItem = args.roleCode;
+  }
+
+  openDrawer() {
+    this.drawer.role.visible = true;
+  }
+
+  closeDrawer() {
+    this.drawer.role.visible = false;
   }
 
 }

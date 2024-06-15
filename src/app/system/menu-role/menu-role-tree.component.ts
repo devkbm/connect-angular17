@@ -88,6 +88,8 @@ export class MenuRoleTreeComponent {
     effect(() => {
       if (this.menuGroupCode() && this.roleCode()) {
         this.getHierarchy();
+      } else {
+        this.nodeItems = [];
       }
     });
   }
