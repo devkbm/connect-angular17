@@ -1,6 +1,6 @@
-import { Component, OnInit, inject, viewChild } from '@angular/core';
+import { Component, inject, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, NgModel } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 import { NzInputSelectComponent } from 'src/app/shared-component/nz-input-select/nz-input-select.component';
 
@@ -16,16 +16,17 @@ import { RoleGridComponent } from '../role/role-grid.component';
 import { RoleFormComponent } from '../role/role-form.component';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { MenuGridComponent } from '../menu/menu-grid.component';
 
 @Component({
   selector: 'app-menu-role',
   standalone: true,
   imports: [
     CommonModule, FormsModule, NzButtonModule, NzDrawerModule, NzInputSelectComponent,
-    MenuRoleTreeComponent, MenuGroupGridComponent, RoleGridComponent, RoleFormComponent
+    MenuGroupGridComponent, MenuGridComponent, RoleGridComponent, RoleFormComponent, MenuRoleTreeComponent
   ],
   template: `
-    <button nz-button (click)="openDrawer()">신규 롤</button>
+    <button nz-button (click)="newRole()">신규 롤</button>
     <div nz-col nzSpan="12">
       <app-nz-input-select
         [(ngModel)]="menuGroup.selectedItem"
@@ -46,7 +47,14 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
     <div class="page-content">
       <app-menu-group-grid class="grid1" (rowClicked)="menuGroupClicked($event)"></app-menu-group-grid>
 
-      <app-role-grid class="grid2" (rowClicked)="roleClicked($event)"></app-role-grid>
+      <app-menu-grid></app-menu-grid>
+
+      <app-role-grid class="grid3"
+        (rowClicked)="roleClicked($event)"
+        (editButtonClicked)="editDrawOpen($event)"
+        (rowDoubleClicked)="editDrawOpen($event)">
+      </app-role-grid>
+
 
       <app-menu-role-tree class="tree"
         [menuGroupCode]="menuGroup.selectedItem"
@@ -61,12 +69,12 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
       [nzWidth]="720"
       [nzVisible]="drawer.role.visible"
       nzTitle="롤 등록"
-      (nzOnClose)="closeDrawer()">
+      (nzOnClose)="closeDrawer('role')">
         <app-role-form #form *nzDrawerContent
           [initLoadId]="drawer.role.initLoadId"
           (formSaved)="getRoleList()"
           (formDeleted)="getRoleList()"
-          (formClosed)="closeDrawer()">
+          (formClosed)="closeDrawer('role')">
         </app-role-form>
     </nz-drawer>
   `,
@@ -104,12 +112,12 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
     /*height: 900px;*/
     display: grid;
     grid-template-rows: 1fr 1fr;
-    grid-template-columns: 1fr 0.3fr;
+    grid-template-columns: 1fr 0.6fr 0.4fr;
     column-gap: 12px;
     row-gap: 12px;
     grid-template-areas:
-      "grid1  tree"
-      "grid2  tree";
+      "grid1  grid3 tree"
+      "grid2  grid3  tree";
   }
 
   .grid1 {
@@ -118,6 +126,10 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 
   .grid2 {
     grid-area: grid2;
+  }
+
+  .grid3 {
+    grid-area: grid3;
   }
 
   .tree {
@@ -134,11 +146,17 @@ export class MenuRoleComponent {
   private menuService = inject(MenuService);
   private userService = inject(UserService);
 
-  roleGrid = viewChild(RoleGridComponent);
+  roleGrid = viewChild.required(RoleGridComponent);
+  menuGroupGrid = viewChild.required(MenuGroupGridComponent);
+  menuGrid = viewChild.required(MenuGridComponent);
 
   drawer: {
+    menuGroup: { visible: boolean, initLoadId: any },
+    menu: { visible: boolean, initLoadId: any },
     role: { visible: boolean, initLoadId: any }
   } = {
+    menuGroup: { visible: false, initLoadId: null },
+    menu: { visible: false, initLoadId: null },
     role: { visible: false, initLoadId: null }
   }
 
@@ -175,20 +193,37 @@ export class MenuRoleComponent {
     console.log(args);
     this.menuGroup.selectedItem = args.menuGroupCode;
     this.role.selectedItem = '';
-    this.roleGrid()?.getList({menuGroupCode: this.menuGroup.selectedItem});
+    this.roleGrid().getList({menuGroupCode: this.menuGroup.selectedItem});
+
+    this.menuGrid().getMenuList({menuGroupCode: this.menuGroup.selectedItem});
   }
 
   roleClicked(args: any) {
     console.log(args);
     this.role.selectedItem = args.roleCode;
+    this.drawer.role.initLoadId = args.roleCode;
   }
 
-  openDrawer() {
-    this.drawer.role.visible = true;
+  openDrawer(type: any) {
+    if (type === 'role') {
+      this.drawer.role.visible = true;
+    }
+
   }
 
-  closeDrawer() {
-    this.drawer.role.visible = false;
+  closeDrawer(type: any) {
+    if (type === 'role') {
+      this.drawer.role.visible = false;
+    }
+  }
+
+  editDrawOpen(args: any) {
+    this.openDrawer('role');
+  }
+
+  newRole() {
+    this.drawer.role.initLoadId = null;
+    this.openDrawer('role');
   }
 
 }

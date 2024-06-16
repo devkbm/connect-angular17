@@ -12,8 +12,8 @@ import { Menu } from './menu.model';
 import { ButtonRendererComponent } from 'src/app/core/grid/renderer/button-renderer.component';
 
 @Component({
-  standalone: true,
   selector: 'app-menu-grid',
+  standalone: true,
   imports: [
     CommonModule, AgGridModule
   ],

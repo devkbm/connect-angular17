@@ -8,7 +8,9 @@ export interface MenuBreadCrumb {
   marked?: boolean
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class SessionManager {
 
   constructor() { }
