@@ -17,16 +17,22 @@ import { RoleFormComponent } from '../role/role-form.component';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { MenuGridComponent } from '../menu/menu-grid.component';
+import { MenuFormComponent } from '../menu/menu-form.component';
+import { MenuGroupFormComponent } from '../menu/menu-group-form.component';
 
 @Component({
   selector: 'app-menu-role',
   standalone: true,
   imports: [
     CommonModule, FormsModule, NzButtonModule, NzDrawerModule, NzInputSelectComponent,
-    MenuGroupGridComponent, MenuGridComponent, RoleGridComponent, RoleFormComponent, MenuRoleTreeComponent
+    MenuGroupGridComponent, MenuGroupFormComponent,
+    MenuGridComponent, MenuFormComponent,
+    RoleGridComponent, RoleFormComponent, MenuRoleTreeComponent
   ],
   template: `
     <button nz-button (click)="newRole()">신규 롤</button>
+    <button nz-button (click)="newMenuGroup()">신규 메뉴그룹</button>
+    <button nz-button (click)="newMenu()">신규 메뉴</button>
     <div nz-col nzSpan="12">
       <app-nz-input-select
         [(ngModel)]="menuGroup.selectedItem"
@@ -45,14 +51,22 @@ import { MenuGridComponent } from '../menu/menu-grid.component';
     </div>
 
     <div class="page-content">
-      <app-menu-group-grid class="grid1" (rowClicked)="menuGroupClicked($event)"></app-menu-group-grid>
+      <app-menu-group-grid class="grid1"
+        (rowClicked)="menuGroupClicked($event)"
+        (editButtonClicked)="editMenuGroup($event)"
+        (rowDoubleClicked)="editMenuGroup($event)">
+      </app-menu-group-grid>
 
-      <app-menu-grid></app-menu-grid>
+      <app-menu-grid class="grid2"
+        (rowClicked)="menuClicked($event)"
+        (editButtonClicked)="editMenu($event)"
+        (rowDoubleClicked)="editMenu($event)">
+      </app-menu-grid>
 
       <app-role-grid class="grid3"
         (rowClicked)="roleClicked($event)"
-        (editButtonClicked)="editDrawOpen($event)"
-        (rowDoubleClicked)="editDrawOpen($event)">
+        (editButtonClicked)="editRole($event)"
+        (rowDoubleClicked)="editRole($event)">
       </app-role-grid>
 
 
@@ -76,6 +90,37 @@ import { MenuGridComponent } from '../menu/menu-grid.component';
           (formDeleted)="getRoleList()"
           (formClosed)="closeDrawer('role')">
         </app-role-form>
+    </nz-drawer>
+
+    <nz-drawer
+      [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
+      [nzMaskClosable]="true"
+      nzWidth="80%"
+      [nzVisible]="drawer.menuGroup.visible"
+      nzTitle="메뉴그룹 등록"
+      (nzOnClose)="drawer.menuGroup.visible = false">
+        <app-menu-group-form #menuGroupForm *nzDrawerContent
+          [initLoadId]="drawer.menuGroup.initLoadId"
+          (formSaved)="getMenuGroupList()"
+          (formDeleted)="getMenuGroupList()"
+          (formClosed)="drawer.menuGroup.visible = false">
+        </app-menu-group-form>
+    </nz-drawer>
+
+    <nz-drawer
+      [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"
+      [nzMaskClosable]="true"
+      nzWidth="80%"
+      [nzVisible]="drawer.menu.visible"
+      nzTitle="메뉴 등록"
+      (nzOnClose)="drawer.menu.visible = false">
+        <app-menu-form #menuForm *nzDrawerContent
+          [menuGroupId]="drawer.menuGroup.initLoadId"
+          [initLoadId]="drawer.menu.initLoadId"
+          (formSaved)="getMenuList()"
+          (formDeleted)="getMenuList()"
+          (formClosed)="drawer.menu.visible = false">
+        </app-menu-form>
     </nz-drawer>
   `,
   styles: `
@@ -189,41 +234,88 @@ export class MenuRoleComponent {
         );
   }
 
+  openDrawer(type: 'role' | 'menuGroup' | 'menu') {
+    switch (type) {
+      case 'role':
+        this.drawer.role.visible = true;
+        break;
+      case 'menuGroup':
+        this.drawer.menuGroup.visible = true;
+        break;
+      case 'menu':
+        this.drawer.menu.visible = true;
+        break;
+    }
+  }
+
+  closeDrawer(type: 'role' | 'menuGroup' | 'menu') {
+    switch (type) {
+      case 'role':
+        this.drawer.role.visible = false;
+        break;
+      case 'menuGroup':
+        this.drawer.menuGroup.visible = false;
+        break;
+      case 'menu':
+        this.drawer.menu.visible = false;
+        break;
+    }
+  }
+
+  //#region MenuGroup
   menuGroupClicked(args: any) {
-    console.log(args);
     this.menuGroup.selectedItem = args.menuGroupCode;
+    this.drawer.menuGroup.initLoadId = args.menuGroupCode;
     this.role.selectedItem = '';
     this.roleGrid().getList({menuGroupCode: this.menuGroup.selectedItem});
 
+    this.getMenuList();
+  }
+
+  newMenuGroup() {
+    this.drawer.menuGroup.initLoadId = null;
+    this.openDrawer('menuGroup');
+  }
+
+  editMenuGroup(args: any) {
+    this.openDrawer('menuGroup');
+  }
+  //#endregion
+
+  //#region Menu
+  getMenuList() {
     this.menuGrid().getMenuList({menuGroupCode: this.menuGroup.selectedItem});
   }
 
+  menuClicked(args: any) {
+    this.drawer.menu.initLoadId = {menuGroupCode: args.menuGroupCode, menuCode: args.menuCode};
+  }
+
+  newMenu() {
+    this.drawer.role.initLoadId = null;
+    this.openDrawer('menu');
+  }
+
+  editMenu(args: any) {
+    this.drawer.menu.initLoadId = {menuGroupCode: args.menuGroupCode, menuCode: args.menuCode};
+    this.openDrawer('menu');
+  }
+  //#endregion
+
+  //#region Role
   roleClicked(args: any) {
-    console.log(args);
     this.role.selectedItem = args.roleCode;
     this.drawer.role.initLoadId = args.roleCode;
-  }
-
-  openDrawer(type: any) {
-    if (type === 'role') {
-      this.drawer.role.visible = true;
-    }
-
-  }
-
-  closeDrawer(type: any) {
-    if (type === 'role') {
-      this.drawer.role.visible = false;
-    }
-  }
-
-  editDrawOpen(args: any) {
-    this.openDrawer('role');
   }
 
   newRole() {
     this.drawer.role.initLoadId = null;
     this.openDrawer('role');
   }
+
+  editRole(args: any) {
+    this.openDrawer('role');
+  }
+  //#endregion
 
 }

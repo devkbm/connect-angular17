@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { AgGridModule } from 'ag-grid-angular';
 
-import { Component, OnInit, Output, EventEmitter, inject, output } from '@angular/core';
+import { Component, OnInit, inject, output } from '@angular/core';
 
 import { ResponseList } from 'src/app/core/model/response-list';
 import { AggridFunction } from 'src/app/core/grid/aggrid-function';
